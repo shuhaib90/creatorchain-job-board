@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Project (Community) | CreatorChain Terminal</title>
+    <meta name="description" content="Submit a Web3 project or community opportunity to be listed on CreatorChain.">
+    <link rel="icon" href="/favicon.ico">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary:#FF4D00; --primary-glow:rgba(255,77,0,0.3); --bg:#050505; --card-bg:#0a0a0a; --border:#1a1a1a; --text:#fff; --text-dim:#888; --font-main:'Inter',sans-serif; --font-mono:'Space Mono',monospace; }
+        * { box-sizing:border-box; }
+        body { background:var(--bg); color:var(--text); font-family:var(--font-main); margin:0; overflow-x:hidden; background-image:radial-gradient(circle at 2px 2px,#111 1px,transparent 0); background-size:40px 40px; }
+        .container { max-width:900px; margin:60px auto; padding:0 20px; animation:fadeIn .8s ease-out; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+        .terminal-header { background:var(--card-bg); border:1px solid var(--border); padding:40px; margin-bottom:40px; position:relative; overflow:hidden; }
+        .terminal-header::before { content:''; position:absolute; top:0;left:0;width:100%;height:2px; background:linear-gradient(90deg,transparent,var(--primary),transparent); animation:scanline 3s linear infinite; }
+        @keyframes scanline { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+        .terminal-header h1 { font-size:42px; font-weight:900; margin:0; text-transform:uppercase; letter-spacing:-1px; background:linear-gradient(to bottom,#fff,#888); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .terminal-header p { font-family:var(--font-mono); font-size:13px; color:var(--primary); margin-top:10px; letter-spacing:2px; }
+        .brutal-form { background:var(--card-bg); border:1px solid var(--border); padding:40px; }
+        .form-section { margin-bottom:50px; border-bottom:1px solid #1a1a1a; padding-bottom:30px; }
+        .form-section:last-child { border:none; }
+        .section-title { font-family:var(--font-mono); font-size:11px; color:var(--text-dim); text-transform:uppercase; margin-bottom:25px; display:flex; align-items:center; gap:10px; }
+        .section-title::after { content:''; flex:1; height:1px; background:#1a1a1a; }
+        .form-group { margin-bottom:25px; }
+        .form-label { display:block; font-weight:700; font-size:12px; margin-bottom:10px; color:var(--text); text-transform:uppercase; letter-spacing:.5px; }
+        .form-input,.form-select,.form-textarea { width:100%; padding:14px 18px; background:#000; border:1px solid var(--border); color:#fff; font-family:var(--font-main); font-size:15px; transition:all .2s; outline:none; }
+        .form-input:focus,.form-textarea:focus { border-color:var(--primary); box-shadow:0 0 15px var(--primary-glow); }
+        .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:25px; }
+        .form-select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 15px center; background-size:16px; }
+        .upload-wrapper { display:flex; gap:10px; }
+        .upload-btn { background:#111; border:1px solid var(--border); color:var(--text); padding:0 20px; cursor:pointer; transition:.2s; display:flex; align-items:center; }
+        .upload-btn:hover { background:#1a1a1a; border-color:#333; }
+        .submit-btn { background:var(--primary); color:white; border:none; padding:20px 40px; font-size:18px; font-weight:900; text-transform:uppercase; cursor:pointer; width:100%; transition:all .3s cubic-bezier(.175,.885,.32,1.275); display:flex; align-items:center; justify-content:center; gap:15px; letter-spacing:1px; margin-top:20px; }
+        .submit-btn:hover { transform:scale(1.02); box-shadow:0 0 30px var(--primary-glow); }
+        .submit-btn:disabled { background:#222; cursor:not-allowed; transform:none; box-shadow:none; }
+        .req { color:var(--primary); }
+        #success-msg { display:none; background:#000; border:1px solid #00E676; padding:60px 40px; text-align:center; margin-bottom:40px; animation:slideUp .5s ease-out; }
+        @keyframes slideUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+        #success-msg h2 { margin:0; font-weight:900; text-transform:uppercase; font-size:32px; color:#00E676; text-shadow:0 0 20px rgba(0,230,118,.3); }
+        #success-msg p { color:var(--text-dim); margin:20px 0; }
+        .tracking-box { background:#111; border:2px solid var(--primary); padding:20px; margin:20px auto; max-width:300px; text-align:center; }
+        .tracking-code { font-family:var(--font-mono); font-size:28px; font-weight:700; color:var(--primary); letter-spacing:3px; }
+        @media(max-width:600px) { .form-grid{grid-template-columns:1fr} .terminal-header h1{font-size:32px} }
+        @keyframes pulse { 0%{opacity:1} 50%{opacity:.5} 100%{opacity:1} }
+    </style>
+</head>
+<body>
+    <nav style="background:rgba(10,10,10,0.8);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:20px 0;position:sticky;top:0;z-index:1000;">
+        <div style="max-width:1100px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;">
+            <a href="/" style="text-decoration:none;display:flex;align-items:center;gap:12px;">
+                <img src="/logo.png" alt="Logo" style="height:36px;filter:drop-shadow(0 0 10px var(--primary-glow));">
+                <span style="font-weight:900;font-size:18px;color:var(--text);font-family:var(--font-mono);letter-spacing:-1px;">CREATOR<span style="color:var(--primary);">CHAIN</span></span>
+            </a>
+            <div style="display:flex;gap:30px;">
+                <a href="/" style="font-family:var(--font-mono);font-weight:700;font-size:11px;color:var(--text-dim);text-decoration:none;">TERMINAL</a>
+                <a href="/submit-opportunity.html" style="font-family:var(--font-mono);font-weight:700;font-size:11px;color:var(--text-dim);text-decoration:none;">POST_JOB</a>
+                <a href="/submit-community.html" style="font-family:var(--font-mono);font-weight:700;font-size:11px;color:var(--primary);text-decoration:none;">SUBMIT_PROJECT</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="success-msg">
+            <div style="font-size:64px;margin-bottom:20px;">⚡</div>
+            <h2>Transmission Successful</h2>
+            <p>Your project has been queued for validation. Admin review pending.</p>
+            <div class="tracking-box">
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);margin-bottom:8px;text-transform:uppercase;letter-spacing:2px;">🔖 Tracking Code</div>
+                <div class="tracking-code" id="final-token">---</div>
+                <p style="font-size:11px;color:var(--text-dim);margin-top:10px;">Save this code to check your status anytime.</p>
+            </div>
+            <div style="display:flex;gap:15px;justify-content:center;margin-top:20px;">
+                <button onclick="copyToken()" style="font-family:var(--font-mono);font-weight:900;color:var(--primary);background:transparent;border:1px solid var(--primary);padding:10px 25px;cursor:pointer;">📋 COPY CODE</button>
+                <a href="/" style="font-family:var(--font-mono);font-weight:900;color:var(--text-dim);text-decoration:none;border:1px solid var(--border);padding:10px 25px;">RETURN_TO_BASE</a>
+            </div>
+        </div>
+
+        <div class="terminal-header" id="header-area">
+            <h1>Submit Project</h1>
+            <p>// COMMUNITY_OPPORTUNITY_BROADCAST</p>
+        </div>
+
+        <form id="community-form" class="brutal-form">
+            <div class="form-section">
+                <div class="section-title">01_PROJECT_IDENTITY</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Category <span class="req">*</span></label>
+                        <select id="section" class="form-select" required>
+                            <option value="">Select...</option>
+                            <option value="ambassador">Ambassador Program</option>
+                            <option value="discord">Discord Role</option>
+                            <option value="bounty">Content Bounty</option>
+                            <option value="developer">Developer Bounty</option>
+                            <option value="campaign">Project Campaign</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Project Name <span class="req">*</span></label>
+                        <input type="text" id="project" class="form-input" placeholder="e.g. Starknet" required>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Position / Title <span class="req">*</span></label>
+                        <input type="text" id="title" class="form-input" placeholder="e.g. Ambassador Program" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Reward</label>
+                        <input type="text" id="reward" class="form-input" placeholder="e.g. $2,000 / 1000 STRK">
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Project Logo</label>
+                        <div class="upload-wrapper">
+                            <input type="text" id="logo_url" class="form-input" placeholder="🔷 Emoji or URL" style="flex:1;">
+                            <input type="file" id="logo_file" accept="image/*" style="display:none;" onchange="handleFileSelect(this,'logo_url')">
+                            <button type="button" class="upload-btn" onclick="document.getElementById('logo_file').click()"><i data-lucide="upload" style="width:16px;"></i></button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Deadline</label>
+                        <input type="date" id="deadline" class="form-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">02_OPPORTUNITY_DETAILS</div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea id="description" class="form-textarea" rows="4" placeholder="Describe the opportunity..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">About Project</label>
+                    <textarea id="about" class="form-textarea" rows="3" placeholder="Tell us about the project..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mission</label>
+                    <textarea id="mission" class="form-textarea" rows="3" placeholder="What's the goal of this opportunity?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Scope & Requirements</label>
+                    <textarea id="scope" class="form-textarea" rows="3" placeholder="List requirements (one per line)..."></textarea>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">03_REWARD_TIERS</div>
+                <div class="form-group">
+                    <label class="form-label">Number of Tiers</label>
+                    <select id="tier_count" class="form-select" onchange="renderTiers(this.value)" style="max-width:150px;">
+                        <option value="1">1 Tier</option>
+                        <option value="2">2 Tiers</option>
+                        <option value="3" selected>3 Tiers</option>
+                        <option value="4">4 Tiers</option>
+                        <option value="5">5 Tiers</option>
+                    </select>
+                    <div id="tiers_container" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-top:15px;">
+                        <input type="text" id="prize_1" class="form-input" placeholder="1st Place">
+                        <input type="text" id="prize_2" class="form-input" placeholder="2nd Place">
+                        <input type="text" id="prize_3" class="form-input" placeholder="3rd Place">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">04_LINKS</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Apply / External Link <span class="req">*</span></label>
+                        <input type="url" id="apply_url" class="form-input" placeholder="https://..." required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">X (Twitter) URL</label>
+                        <input type="url" id="twitter_url" class="form-input" placeholder="https://x.com/project">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Banner Image URL</label>
+                    <input type="text" id="banner_url" class="form-input" placeholder="https://...">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">05_CONTACT</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Your Handle / Name <span class="req">*</span></label>
+                        <input type="text" id="submitter" class="form-input" placeholder="@handle" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contact Email <span class="req">*</span></label>
+                        <input type="email" id="email" class="form-input" placeholder="For status updates" required>
+                    </div>
+                </div>
+                <div class="form-group" style="max-width:50%;">
+                    <label class="form-label">Telegram (Optional)</label>
+                    <input type="text" id="telegram" class="form-input" placeholder="@username">
+                </div>
+            </div>
+
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);margin-bottom:15px;padding:12px;border:1px dashed #333;">⚡ Submissions go to admin review before going live. Usually approved within 24 hours.</div>
+
+            <button type="submit" class="submit-btn" id="submit-btn">
+                <i data-lucide="zap" style="width:20px;"></i>
+                BROADCAST PROJECT
+            </button>
+        </form>
+    </div>
+
+    <script type="module">
+        const SUPABASE_URL = 'https://mwefmtmcljdsptcgowmb.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_SdGsB-hhvxF2-rq_fBiM0A_y3_mQn2n';
+
+        window.handleFileSelect = (input, urlId) => {
+            if (input.files[0]) {
+                document.getElementById(urlId).value = `FILE: ${input.files[0].name}`;
+                document.getElementById(urlId).style.color = '#FF4D00';
+            }
+        };
+
+        window.renderTiers = (count) => {
+            const c = document.getElementById('tiers_container');
+            c.innerHTML = '';
+            for (let i = 1; i <= parseInt(count); i++) {
+                const inp = document.createElement('input');
+                inp.type = 'text'; inp.id = `prize_${i}`; inp.className = 'form-input';
+                inp.placeholder = i===1?'1st Place':i===2?'2nd Place':i===3?'3rd Place':`${i}th Place`;
+                c.appendChild(inp);
+            }
+        };
+
+        window.copyToken = () => {
+            const code = document.getElementById('final-token').textContent;
+            navigator.clipboard.writeText(code);
+            alert('Tracking code copied!');
+        };
+
+        function generateToken() {
+            return 'CC-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+        }
+
+        document.getElementById('community-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+            const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+            const btn = document.getElementById('submit-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<span style="animation:pulse 1s infinite">ENCRYPTING_DATA...</span>';
+
+            try {
+                // Upload logo if file selected
+                let logoVal = document.getElementById('logo_url').value;
+                const fileInput = document.getElementById('logo_file');
+                if (fileInput.files && fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const ext = file.name.split('.').pop();
+                    const name = `${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`;
+                    const { data, error } = await supabase.storage.from('logos').upload(`public/${name}`, file);
+                    if (!error) {
+                        const { data: urlData } = supabase.storage.from('logos').getPublicUrl(`public/${name}`);
+                        logoVal = urlData.publicUrl;
+                    }
+                }
+                if (logoVal.startsWith('FILE:')) logoVal = '';
+
+                const token = generateToken();
+                const item = {
+                    section: document.getElementById('section').value,
+                    project: document.getElementById('project').value,
+                    title: document.getElementById('title').value,
+                    reward: document.getElementById('reward').value,
+                    description: document.getElementById('description').value,
+                    apply_url: document.getElementById('apply_url').value,
+                    logo: logoVal || '/logo.png',
+                    deadline: document.getElementById('deadline').value || 'N/A',
+                    twitter_url: document.getElementById('twitter_url').value,
+                    submitted_by: document.getElementById('submitter').value.replace('@',''),
+                    submitter_email: document.getElementById('email').value,
+                    submitter_twitter: document.getElementById('telegram').value || '',
+                    share_image: document.getElementById('banner_url').value || '',
+                    about_project: document.getElementById('about').value || '',
+                    mission: document.getElementById('mission').value || '',
+                    scope_requirements: document.getElementById('scope').value || '',
+                    prize_breakdown: {
+                        first: document.getElementById('prize_1')?.value||'',
+                        second: document.getElementById('prize_2')?.value||'',
+                        third: document.getElementById('prize_3')?.value||'',
+                        fourth: document.getElementById('prize_4')?.value||'',
+                        fifth: document.getElementById('prize_5')?.value||''
+                    },
+                    submission_token: token,
+                    approval_status: 'pending',
+                    submitted_at: new Date().toISOString(),
+                    featured: false,
+                    urgency: 'MEDIUM'
+                };
+
+                const { error } = await supabase.from('listings').insert([item]);
+                if (error) throw error;
+
+                // Notify admin
+                try {
+                    fetch('/api/send-email', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ type:'admin_alert', payload:{ project_name:item.project, submitted_by:item.submitted_by, submitter_email:item.submitter_email, submitter_telegram:item.submitter_twitter, category:item.section }}) });
+                    fetch('/api/send-telegram', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ type:'admin_alert', payload:{ project_name:item.project, submitted_by:item.submitted_by, category:item.section }}) });
+                } catch(e) { console.warn('Alerts failed:', e); }
+
+                // Track submission on profile
+                try {
+                    const email = item.submitter_email?.trim();
+                    const handle = item.submitted_by?.trim();
+                    const { data: rpcData } = await supabase.rpc('increment_submission_reputation', { p_email: email||null, p_handle: handle||null });
+                    if (!rpcData?.success) {
+                        let profile = null;
+                        if (email) { const {data}=await supabase.from('user_profiles').select('id,total_submissions,reputation_score,score').ilike('email',email).limit(1).maybeSingle(); if(data) profile=data; }
+                        if (!profile && handle) { const {data}=await supabase.from('user_profiles').select('id,total_submissions,reputation_score,score').ilike('username',handle).limit(1).maybeSingle(); if(data) profile=data; }
+                        if (profile) { await supabase.from('user_profiles').update({ total_submissions:(profile.total_submissions||0)+1, reputation_score:(profile.reputation_score||0)+1, score:(profile.score||0)+1 }).eq('id',profile.id); }
+                    }
+                } catch(e) { console.warn('Tracking failed:', e); }
+
+                // Show success
+                document.getElementById('final-token').textContent = token;
+                document.getElementById('community-form').style.display = 'none';
+                document.getElementById('header-area').style.display = 'none';
+                document.getElementById('success-msg').style.display = 'block';
+                window.scrollTo(0,0);
+            } catch (err) {
+                console.error('Submission Error:', err);
+                alert('CRITICAL_ERROR: ' + err.message);
+                btn.disabled = false;
+                btn.innerHTML = 'RETRY_BROADCAST';
+            }
+        });
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
