@@ -304,16 +304,7 @@
             <form id="proposal-form" onsubmit="handleProposalSubmit(event)">
                 <input type="hidden" id="app-opportunity-id">
                 
-                <div class="field">
-                    <label>WALLET_ADDRESS (FOR REWARDS) <span style="color:var(--accent)">*</span></label>
-                    <input type="text" id="app-wallet" placeholder="0x..." required>
-                    <p style="font-size:10px; color:var(--muted); margin-top:5px;">Enter the address where you'd like to receive prizes.</p>
-                </div>
-
-                <div class="field">
-                    <label>SUBMISSION_LINK (POST/ARTICLE/PORTFOLIO) <span style="color:var(--accent)">*</span></label>
-                    <input type="url" id="app-link" placeholder="https://x.com/... or https://github.com/..." required>
-                </div>
+                <div id="dynamic-fields-container"></div>
 
                 <!-- AI COACH BUTTON -->
                 <div class="field">
@@ -539,7 +530,7 @@
                             <button class="btn btn-white" style="width:100%; padding:20px; font-weight:900; cursor:not-allowed; opacity:0.6;">ENDED</button>
                         ` : `
                             ${item.is_exclusive ? `
-                                <button class="btn btn-primary" onclick="openApplicationForm('${item.id}', '${item.project.replace(/'/g, "\\'")}')" style="width:100%; padding:20px; font-weight:900; font-size:18px; box-shadow:8px 8px 0 #000;">APPLY_NOW &rarr;</button>
+                                <button class="btn btn-primary" onclick="openApplicationForm('${item.id}', '${item.project.replace(/'/g, "\\'")}', '${item.type || 'content_bounty'}')" style="width:100%; padding:20px; font-weight:900; font-size:18px; box-shadow:8px 8px 0 #000;">APPLY_NOW &rarr;</button>
                             ` : `
                                 <a href="${item.apply_url||'#'}" target="_blank" class="btn btn-primary" style="width:100%; padding:20px; font-weight:900; font-size:18px; box-shadow:8px 8px 0 #000; text-align:center;">APPLY_NOW &rarr;</a>
                             `}
@@ -660,16 +651,95 @@
         window.location.reload();
     }
 
-    async function openApplicationForm(id, projectName) {
+    async function openApplicationForm(id, projectName, category) {
         if (!currentUser) {
             openAuthModal();
             return;
         }
         document.getElementById('app-opportunity-id').value = id;
         document.getElementById('app-project-name').textContent = projectName.toUpperCase();
+        
+        renderDynamicFields(category);
+
         document.getElementById('application-modal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
         lucide.createIcons();
+    }
+
+    function renderDynamicFields(category) {
+        const container = document.getElementById('dynamic-fields-container');
+        let html = '';
+
+        if (category === 'ambassador') {
+            html = `
+                <div class="field">
+                    <label>FULL_NAME <span style="color:var(--accent)">*</span></label>
+                    <input type="text" id="dyn-name" placeholder="Your name" required>
+                </div>
+                <div class="field">
+                    <label>EXPERIENCE <span style="color:var(--accent)">*</span></label>
+                    <textarea id="dyn-experience" placeholder="Briefly describe your experience" rows="3" required></textarea>
+                </div>
+                <div class="field">
+                    <label>X (TWITTER) URL <span style="color:var(--accent)">*</span></label>
+                    <input type="url" id="app-link" placeholder="https://x.com/username" required>
+                </div>
+                <div class="field">
+                    <label>PORTFOLIO_URL</label>
+                    <input type="url" id="dyn-portfolio" placeholder="https://...">
+                </div>
+                <div class="field">
+                    <label>TELL_US_ABOUT_YOURSELF <span style="color:var(--accent)">*</span></label>
+                    <textarea id="dyn-about" placeholder="Why are you a great fit?" rows="4" required></textarea>
+                </div>
+            `;
+        } else if (category === 'developer_bounty') {
+            html = `
+                <div class="field">
+                    <label>GITHUB_LINK <span style="color:var(--accent)">*</span></label>
+                    <input type="url" id="app-link" placeholder="https://github.com/..." required>
+                </div>
+                <div class="field">
+                    <label>PROJECT_LIVE_LINK</label>
+                    <input type="url" id="dyn-project-link" placeholder="https://...">
+                </div>
+                <div class="field">
+                    <label>WALLET_ADDRESS (FOR REWARDS) <span style="color:var(--accent)">*</span></label>
+                    <input type="text" id="app-wallet" placeholder="0x..." required>
+                    <p style="font-size:10px; color:var(--muted); margin-top:5px;">Enter the address where you'd like to receive prizes.</p>
+                </div>
+            `;
+        } else if (category === 'full_time') {
+            html = `
+                <div class="field">
+                    <label>FULL_NAME <span style="color:var(--accent)">*</span></label>
+                    <input type="text" id="dyn-name" placeholder="Your name" required>
+                </div>
+                <div class="field">
+                    <label>RESUME / PORTFOLIO LINK <span style="color:var(--accent)">*</span></label>
+                    <input type="url" id="app-link" placeholder="https://..." required>
+                </div>
+                <div class="field">
+                    <label>EXPERIENCE <span style="color:var(--accent)">*</span></label>
+                    <textarea id="dyn-experience" placeholder="Describe your relevant experience" rows="4" required></textarea>
+                </div>
+            `;
+        } else {
+            // Default: content_bounty or others
+            html = `
+                <div class="field">
+                    <label>WALLET_ADDRESS (FOR REWARDS) <span style="color:var(--accent)">*</span></label>
+                    <input type="text" id="app-wallet" placeholder="0x..." required>
+                    <p style="font-size:10px; color:var(--muted); margin-top:5px;">Enter the address where you'd like to receive prizes.</p>
+                </div>
+                <div class="field">
+                    <label>SUBMISSION_LINK (POST/ARTICLE/PORTFOLIO) <span style="color:var(--accent)">*</span></label>
+                    <input type="url" id="app-link" placeholder="https://x.com/... or https://github.com/..." required>
+                </div>
+            `;
+        }
+
+        container.innerHTML = html;
     }
 
     function closeApplicationForm() {
@@ -690,9 +760,16 @@
         }
 
         const opportunity_id = document.getElementById('app-opportunity-id').value;
-        const wallet = document.getElementById('app-wallet').value;
-        const link = document.getElementById('app-link').value;
+        const link = document.getElementById('app-link') ? document.getElementById('app-link').value : '';
         const telegram = document.getElementById('app-telegram').value;
+        
+        // Collect dynamic fields if they exist
+        const wallet = document.getElementById('app-wallet') ? document.getElementById('app-wallet').value : undefined;
+        const name = document.getElementById('dyn-name') ? document.getElementById('dyn-name').value : undefined;
+        const experience = document.getElementById('dyn-experience') ? document.getElementById('dyn-experience').value : undefined;
+        const portfolio = document.getElementById('dyn-portfolio') ? document.getElementById('dyn-portfolio').value : undefined;
+        const about = document.getElementById('dyn-about') ? document.getElementById('dyn-about').value : undefined;
+        const projectLink = document.getElementById('dyn-project-link') ? document.getElementById('dyn-project-link').value : undefined;
 
         const payload = {
             opportunity_id,
@@ -701,6 +778,11 @@
             message: JSON.stringify({ 
                 telegram, 
                 wallet_address: wallet,
+                name,
+                experience,
+                portfolio,
+                about,
+                projectLink,
                 submitted_at: new Date().toISOString(),
                 user_handle: currentUser.user_metadata.user_name || currentUser.email
             }),
