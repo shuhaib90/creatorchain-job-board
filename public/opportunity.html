@@ -65,8 +65,8 @@
         .status-dot.ended { background: var(--accent); }
 
         /* APPLICATION MODAL (FORM) */
-        .application-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 10000; backdrop-filter: blur(8px); padding: 20px; }
-        .application-card { background: #fff; border: 4px solid var(--black); width: 100%; max-width: 500px; box-shadow: 20px 20px 0 var(--black); position: relative; }
+        .application-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: flex-start; justify-content: center; z-index: 10000; backdrop-filter: blur(8px); padding: 20px; overflow-y: auto; }
+        .application-card { background: #fff; border: 4px solid var(--black); width: 100%; max-width: 500px; box-shadow: 20px 20px 0 var(--black); position: relative; margin: auto; }
         .application-header { background: var(--black); color: var(--primary); padding: 25px; border-bottom: 4px solid var(--black); }
         .application-body { padding: 30px; }
         .field { margin-bottom: 20px; }
@@ -135,110 +135,85 @@
 
         /* ===== AI COACH STYLES ===== */
         .ai-coach-btn {
-            width: 100%;
-            padding: 12px;
+            width: 100%; padding: 10px;
             background: linear-gradient(135deg, #7000ff 0%, #00f2ff 100%);
-            color: #fff;
-            border: 3px solid var(--black);
-            font-family: 'Space Mono', monospace;
-            font-weight: 900;
-            font-size: 12px;
-            text-transform: uppercase;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 4px 4px 0 var(--black);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
+            color: #fff; border: 2px solid var(--black);
+            font-family: 'Space Mono', monospace; font-weight: 900; font-size: 11px;
+            text-transform: uppercase; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 3px 3px 0 var(--black);
+            transition: all 0.2s ease; letter-spacing: 1px;
+            position: relative; overflow: hidden;
         }
         .ai-coach-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
+            content: ''; position: absolute; inset: 0;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: translateX(-100%);
-            animation: shimmer 3s infinite;
+            transform: translateX(-100%); animation: shimmer 3s infinite;
         }
         @keyframes shimmer { to { transform: translateX(100%); } }
-        .ai-coach-btn:hover { transform: translateY(-2px); box-shadow: 6px 6px 0 var(--black); }
+        .ai-coach-btn:hover { transform: translateY(-1px); box-shadow: 4px 4px 0 var(--black); }
         .ai-coach-btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
-        .ai-coach-btn .spinner { display: none; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .ai-coach-btn .spinner { display: none; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
         .ai-coach-btn.loading .spinner { display: inline-block; }
         .ai-coach-btn.loading .btn-text { display: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .ai-feedback-panel {
-            display: none;
-            background: var(--black);
-            border: 3px solid #7000ff;
-            margin-top: 15px;
-            overflow: hidden;
-            animation: slideDown 0.4s ease-out;
-            box-shadow: 0 0 20px rgba(112, 0, 255, 0.2);
+            display: none; background: #111; border: 2px solid #7000ff;
+            margin-top: 12px; overflow: hidden;
+            animation: fadeIn 0.3s ease-out;
         }
-        @keyframes slideDown {
-            from { opacity: 0; max-height: 0; transform: translateY(-10px); }
-            to { opacity: 1; max-height: 1000px; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
         .ai-feedback-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 14px;
             background: linear-gradient(135deg, #7000ff, #00f2ff);
         }
         .ai-feedback-header h4 {
-            color: #fff;
-            font-family: 'Space Mono', monospace;
-            font-size: 12px;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            letter-spacing: 1px;
+            color: #fff; font-family: 'Space Mono', monospace;
+            font-size: 10px; margin: 0; letter-spacing: 1px;
         }
-        .ai-score-ring {
-            width: 60px; height: 60px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'Space Mono', monospace;
-            font-weight: 900; font-size: 18px;
-            color: #fff;
-            position: relative;
+        .ai-feedback-close {
+            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.3);
+            color: #fff; width: 22px; height: 22px; cursor: pointer;
+            font-size: 12px; font-weight: 900; display: flex;
+            align-items: center; justify-content: center; transition: 0.2s;
         }
-        .ai-score-ring::before {
-            content: '';
-            position: absolute; inset: 0;
-            border-radius: 50%;
-            border: 3px solid rgba(255,255,255,0.15);
-        }
-        .ai-score-ring.high { background: rgba(0, 232, 122, 0.25); border: 3px solid var(--primary); }
-        .ai-score-ring.mid { background: rgba(255, 230, 0, 0.2); border: 3px solid var(--secondary); }
-        .ai-score-ring.low { background: rgba(255, 59, 0, 0.2); border: 3px solid var(--accent); }
+        .ai-feedback-close:hover { background: rgba(255,59,0,0.5); }
 
-        .ai-feedback-body { padding: 20px; color: #fff; }
+        .ai-score-badge {
+            display: flex; align-items: center; gap: 8px;
+        }
+        .ai-score-num {
+            font-family: 'Space Mono', monospace; font-weight: 900;
+            font-size: 20px; color: #fff; line-height: 1;
+        }
+        .ai-score-num.high { color: var(--primary); }
+        .ai-score-num.mid { color: var(--secondary); }
+        .ai-score-num.low { color: var(--accent); }
+        .ai-score-label {
+            font-family: 'Space Mono', monospace; font-size: 8px;
+            color: rgba(255,255,255,0.6); text-transform: uppercase;
+        }
+
+        .ai-feedback-body {
+            padding: 12px 14px; color: #fff;
+            max-height: 220px; overflow-y: auto;
+        }
+        .ai-feedback-body::-webkit-scrollbar { width: 4px; }
+        .ai-feedback-body::-webkit-scrollbar-track { background: transparent; }
+        .ai-feedback-body::-webkit-scrollbar-thumb { background: #7000ff; border-radius: 2px; }
+
         .ai-feedback-summary {
-            font-size: 14px; line-height: 1.5;
-            color: rgba(255,255,255,0.85);
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px dashed rgba(255,255,255,0.15);
+            font-size: 12px; line-height: 1.4; color: rgba(255,255,255,0.8);
+            margin-bottom: 12px; padding-bottom: 10px;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
         }
-        .ai-meta-row {
-            display: flex; gap: 12px; flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
+        .ai-meta-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
         .ai-meta-tag {
-            padding: 4px 10px;
-            font-family: 'Space Mono', monospace;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            border: 2px solid;
+            padding: 2px 8px; font-family: 'Space Mono', monospace;
+            font-size: 9px; font-weight: 700; text-transform: uppercase; border: 1px solid;
         }
         .ai-meta-tag.type { border-color: #00f2ff; color: #00f2ff; }
         .ai-meta-tag.match { border-color: var(--primary); color: var(--primary); }
@@ -248,58 +223,39 @@
         .ai-meta-tag.grade-d { border-color: var(--accent); color: var(--accent); }
 
         .ai-section-title {
-            font-family: 'Space Mono', monospace;
-            font-size: 11px; font-weight: 900;
-            color: #7000ff;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 900;
+            color: #00f2ff; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px;
         }
-        .ai-strengths { margin-bottom: 20px; }
+        .ai-strengths { margin-bottom: 12px; }
         .ai-strength-item {
-            display: flex; align-items: flex-start; gap: 8px;
-            color: rgba(255,255,255,0.8);
-            font-size: 13px; margin-bottom: 8px;
+            color: rgba(255,255,255,0.7); font-size: 11px; margin-bottom: 4px;
+            padding-left: 14px; position: relative;
         }
-        .ai-strength-item::before { content: '✓'; color: var(--primary); font-weight: 900; flex-shrink: 0; }
+        .ai-strength-item::before { content: '✓'; position: absolute; left: 0; color: var(--primary); font-weight: 900; font-size: 10px; }
 
         .ai-tip-card {
-            background: rgba(255,255,255,0.05);
-            border-left: 3px solid;
-            padding: 12px 15px;
-            margin-bottom: 10px;
+            background: rgba(255,255,255,0.04); border-left: 2px solid;
+            padding: 8px 10px; margin-bottom: 6px;
         }
         .ai-tip-card.high { border-color: var(--accent); }
         .ai-tip-card.medium { border-color: var(--secondary); }
-        .ai-tip-card.low { border-color: rgba(255,255,255,0.3); }
+        .ai-tip-card.low { border-color: rgba(255,255,255,0.2); }
         .ai-tip-title {
-            font-family: 'Space Mono', monospace;
-            font-size: 11px; font-weight: 900;
-            color: #fff; margin-bottom: 4px;
-            display: flex; align-items: center; gap: 8px;
+            font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 900;
+            color: #fff; margin-bottom: 2px; display: flex; align-items: center; gap: 6px;
         }
-        .ai-tip-title .impact {
-            font-size: 9px; padding: 1px 6px;
-            border: 1px solid; opacity: 0.7;
-        }
-        .ai-tip-detail { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.4; }
+        .ai-tip-title .impact { font-size: 8px; padding: 0 4px; border: 1px solid; opacity: 0.5; }
+        .ai-tip-detail { font-size: 10px; color: rgba(255,255,255,0.5); line-height: 1.3; }
 
         .ai-pro-tip {
-            background: linear-gradient(135deg, rgba(112, 0, 255, 0.15), rgba(0, 242, 255, 0.1));
-            border: 2px solid #7000ff;
-            padding: 15px;
-            margin-top: 15px;
+            background: rgba(112, 0, 255, 0.1); border: 1px solid #7000ff;
+            padding: 10px; margin-top: 10px;
         }
         .ai-pro-tip-label {
-            font-family: 'Space Mono', monospace;
-            font-size: 10px; font-weight: 900;
-            color: #00f2ff;
-            margin-bottom: 6px;
-            text-transform: uppercase;
+            font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 900;
+            color: #00f2ff; margin-bottom: 4px; text-transform: uppercase;
         }
-        .ai-pro-tip p {
-            font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.5; margin: 0;
-        }
+        .ai-pro-tip p { font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.4; margin: 0; }
 
         @media (max-width: 900px) {
             .project-detail-layout { grid-template-columns: 1fr; }
@@ -869,16 +825,20 @@
 
         panel.innerHTML = `
             <div class="ai-feedback-header">
-                <h4>🤖 AI_COACH_ANALYSIS</h4>
-                <div class="ai-score-ring ${scoreClass}">
-                    ${prob}%
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <h4>🤖 AI_COACH</h4>
+                    <div class="ai-score-badge">
+                        <span class="ai-score-num ${scoreClass}">${prob}%</span>
+                        <span class="ai-score-label">WIN<br>PROB</span>
+                    </div>
                 </div>
+                <button class="ai-feedback-close" onclick="closeAIFeedback()">✕</button>
             </div>
             <div class="ai-feedback-body">
                 <div class="ai-meta-row">
                     <span class="ai-meta-tag type">${a.content_type_label || a.content_type || 'Content'}</span>
-                    <span class="ai-meta-tag match">Match: ${(a.platform_match || 'moderate').toUpperCase()}</span>
-                    <span class="ai-meta-tag grade-${gradeClass}">Grade: ${a.quality_grade || 'B'}</span>
+                    <span class="ai-meta-tag match">${(a.platform_match || 'moderate').toUpperCase()}</span>
+                    <span class="ai-meta-tag grade-${gradeClass}">Grade ${a.quality_grade || 'B'}</span>
                 </div>
 
                 <div class="ai-feedback-summary">
@@ -887,21 +847,21 @@
 
                 ${strengthsHtml ? `
                     <div class="ai-strengths">
-                        <div class="ai-section-title">✦ Strengths</div>
+                        <div class="ai-section-title">✓ Strengths</div>
                         ${strengthsHtml}
                     </div>
                 ` : ''}
 
                 ${tipsHtml ? `
                     <div>
-                        <div class="ai-section-title">⚡ Improvements</div>
+                        <div class="ai-section-title">⚡ Improve</div>
                         ${tipsHtml}
                     </div>
                 ` : ''}
 
                 ${a.pro_tip ? `
                     <div class="ai-pro-tip">
-                        <div class="ai-pro-tip-label">💎 PRO_TIP</div>
+                        <div class="ai-pro-tip-label">💎 PRO TIP</div>
                         <p>${a.pro_tip}</p>
                     </div>
                 ` : ''}
@@ -909,7 +869,10 @@
         `;
 
         panel.style.display = 'block';
-        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function closeAIFeedback() {
+        document.getElementById('ai-feedback-panel').style.display = 'none';
     }
 
     document.addEventListener('DOMContentLoaded', init);
