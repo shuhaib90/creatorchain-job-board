@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exclusive Opportunities | CreatorChain</title>
+    <meta property="og:title" content="Exclusive Opportunities — CreatorChain">
+    <meta property="og:description" content="Hand-picked Web3 opportunities. Ambassador roles, developer bounties, content campaigns and more.">
+    <meta property="og:image" content="/social-preview.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root{--primary:#FF4D00;--black:#000;--white:#fff;--surface:#fafafa;--muted:#888;--font-mono:'Space Mono',monospace;--accent:#ef4444}
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{background:var(--surface);font-family:'Inter',sans-serif;color:var(--black)}
+
+        /* NAV */
+        .nav{background:#fff;border-bottom:4px solid #000;padding:16px 40px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+        .nav-logo{font-weight:900;font-size:22px;text-transform:uppercase;letter-spacing:-1px;text-decoration:none;color:#000}
+        .nav-logo span{color:var(--primary)}
+        .nav-links{display:flex;gap:12px;align-items:center}
+        .nav-btn{padding:6px 14px;border:2px solid #000;font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:.15s}
+        .nav-btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #000}
+        .nav-btn-dark{background:#000;color:#fff}
+        .nav-btn-primary{background:var(--primary);color:#fff;border-color:#000}
+
+        /* HERO */
+        .hero{background:#000;color:#fff;padding:80px 40px 60px;text-align:center;border-bottom:4px solid var(--primary);position:relative;overflow:hidden}
+        .hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,77,0,.03) 2px,rgba(255,77,0,.03) 4px);pointer-events:none}
+        .hero h1{font-size:clamp(36px,6vw,64px);font-weight:900;text-transform:uppercase;letter-spacing:-2px;margin-bottom:12px}
+        .hero h1 span{-webkit-text-stroke:2px var(--primary);color:transparent}
+        .hero p{font-family:var(--font-mono);font-size:13px;color:#999;max-width:600px;margin:0 auto}
+        .hero-stats{display:flex;gap:40px;justify-content:center;margin-top:30px}
+        .hero-stat{text-align:center}
+        .hero-stat-val{font-size:32px;font-weight:900;color:var(--primary);font-family:var(--font-mono)}
+        .hero-stat-lbl{font-family:var(--font-mono);font-size:10px;color:#666;text-transform:uppercase;margin-top:4px}
+
+        /* CATEGORY FILTER */
+        .filter-bar{max-width:1200px;margin:30px auto 0;padding:0 20px;display:flex;gap:10px;flex-wrap:wrap}
+        .filter-chip{padding:8px 16px;border:3px solid #000;font-family:var(--font-mono);font-size:11px;font-weight:700;text-transform:uppercase;cursor:pointer;background:#fff;transition:.15s}
+        .filter-chip:hover,.filter-chip.active{background:#000;color:var(--primary);transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--primary)}
+
+        /* SECTIONS */
+        .container{max-width:1200px;margin:0 auto;padding:40px 20px 80px}
+        .section{margin-bottom:50px}
+        .section-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:12px;border-bottom:3px solid #000}
+        .section-icon{width:36px;height:36px;background:#000;color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900}
+        .section-title{font-size:24px;font-weight:900;text-transform:uppercase;letter-spacing:-1px}
+        .section-count{font-family:var(--font-mono);font-size:11px;background:var(--primary);color:#fff;padding:2px 8px;border:2px solid #000;margin-left:auto}
+
+        /* GRID */
+        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px}
+
+        /* CARD */
+        .card{background:#fff;border:4px solid #000;box-shadow:8px 8px 0 #000;transition:.2s;display:flex;flex-direction:column;cursor:pointer;position:relative;overflow:hidden}
+        .card:hover{transform:translate(-4px,-4px);box-shadow:12px 12px 0 var(--primary)}
+        .card-urgency{height:4px;width:100%}
+        .card-urgency.HIGH{background:var(--primary)}
+        .card-urgency.MEDIUM{background:#f59e0b}
+        .card-urgency.LOW{background:#22c55e}
+        .card-body{padding:24px;flex:1;display:flex;flex-direction:column;gap:14px}
+        .card-badge{display:inline-block;padding:3px 10px;border:2px solid #000;font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;width:fit-content}
+        .badge-ambassador{background:#E8F5E9;color:#2e7d32}
+        .badge-dev{background:#E3F2FD;color:#1565c0}
+        .badge-content{background:#F3E5F5;color:#7b1fa2}
+        .badge-bounty{background:#FFF3E0;color:#e65100}
+        .badge-campaign{background:#FCE4EC;color:#c62828}
+        .badge-default{background:#f0f0f0;color:#333}
+        .card-top{display:flex;gap:12px;align-items:center}
+        .card-logo{width:44px;height:44px;border:2px solid #000;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fff;flex-shrink:0}
+        .card-logo img{width:100%;height:100%;object-fit:contain}
+        .card-project{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-transform:uppercase}
+        .card-title{font-size:18px;font-weight:900;line-height:1.15;letter-spacing:-.5px}
+        .card-desc{font-size:13px;color:#555;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .card-reward{font-family:var(--font-mono);font-size:12px;font-weight:700;background:#000;color:var(--primary);padding:6px 12px;display:inline-block;width:fit-content}
+        .card-footer{padding:14px 24px;border-top:2px solid #000;display:flex;justify-content:space-between;align-items:center;background:#fafafa}
+        .card-deadline{font-family:var(--font-mono);font-size:10px;color:var(--muted)}
+        .card-cta{padding:8px 16px;background:var(--primary);color:#fff;border:2px solid #000;font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:.1s}
+        .card-cta:hover{box-shadow:4px 4px 0 #000}
+        .card-cta.closed{background:#eee;color:#999;border-color:#ccc;cursor:not-allowed}
+        .card-exclusive-tag{position:absolute;top:12px;right:-30px;background:var(--primary);color:#fff;font-family:var(--font-mono);font-size:9px;font-weight:700;padding:3px 36px;transform:rotate(45deg);letter-spacing:1px}
+
+        /* EMPTY STATE */
+        .empty{text-align:center;padding:60px 20px;border:3px dashed #ddd}
+        .empty-icon{font-size:48px;margin-bottom:12px}
+        .empty-msg{font-family:var(--font-mono);font-size:12px;color:var(--muted);text-transform:uppercase}
+
+        /* AUTH MODAL */
+        .auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:10000;backdrop-filter:blur(8px);padding:20px}
+        .auth-card{background:#fff;border:4px solid #000;max-width:400px;width:100%;padding:40px;box-shadow:20px 20px 0 #000;text-align:center}
+        .auth-btn{width:100%;padding:15px;margin-bottom:12px;border:3px solid #000;font-family:var(--font-mono);font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;transition:.2s;font-size:12px}
+        .auth-btn:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 #000}
+        .auth-google{background:#fff;color:#000}
+        .auth-x{background:#000;color:#fff}
+
+        /* FOOTER */
+        .footer{background:#000;color:#fff;padding:40px;text-align:center;border-top:4px solid var(--primary)}
+        .footer p{font-family:var(--font-mono);font-size:11px;color:#666}
+        .footer a{color:var(--primary);text-decoration:none}
+
+        @media(max-width:768px){
+            .nav{padding:12px 16px}
+            .hero{padding:50px 20px 40px}
+            .hero-stats{gap:20px}
+            .grid{grid-template-columns:1fr}
+            .filter-bar{padding:0 16px}
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <a href="/" class="nav-logo">CREATOR<span>CHAIN</span></a>
+    <div class="nav-links">
+        <a href="/" class="nav-btn">← BACK TO HQ</a>
+        <a href="/opportunities.html" class="nav-btn">ALL OPPORTUNITIES</a>
+        <a href="/leaderboard.html" class="nav-btn">LEADERBOARD</a>
+        <div id="auth-nav"></div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <h1>Exclusive <span>Opportunities</span></h1>
+    <p>HAND-PICKED ROLES, BOUNTIES & CAMPAIGNS. CURATED BY THE CREATORCHAIN TEAM FOR VERIFIED BUILDERS.</p>
+    <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-val" id="stat-live">--</div><div class="hero-stat-lbl">Live Now</div></div>
+        <div class="hero-stat"><div class="hero-stat-val" id="stat-reward">--</div><div class="hero-stat-lbl">Total Rewards</div></div>
+        <div class="hero-stat"><div class="hero-stat-val" id="stat-projects">--</div><div class="hero-stat-lbl">Projects</div></div>
+    </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar" id="filter-bar">
+    <div class="filter-chip active" data-cat="all">ALL</div>
+    <div class="filter-chip" data-cat="ambassador">AMBASSADOR</div>
+    <div class="filter-chip" data-cat="dev">DEVELOPER</div>
+    <div class="filter-chip" data-cat="content">CONTENT</div>
+    <div class="filter-chip" data-cat="bounty">BOUNTY</div>
+    <div class="filter-chip" data-cat="campaign">CAMPAIGN</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container" id="main-container">
+    <div style="text-align:center;padding:80px 20px">
+        <p style="font-family:var(--font-mono);font-size:12px;color:var(--muted)">⟳ SYNCHRONIZING EXCLUSIVE DATA...</p>
+    </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div id="auth-modal" class="auth-overlay">
+    <div class="auth-card">
+        <button onclick="closeAuth()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;font-weight:900">✕</button>
+        <h2 style="font-size:28px;margin-bottom:8px">ACCESS <span style="-webkit-text-stroke:1.5px #000;color:transparent">PORTAL</span></h2>
+        <p style="font-family:var(--font-mono);font-size:11px;color:#666;margin-bottom:24px">AUTHENTICATION REQUIRED FOR EXCLUSIVE ACCESS.</p>
+        <button class="auth-btn auth-google" onclick="authGoogle()">✉ CONTINUE WITH GOOGLE</button>
+        <button class="auth-btn auth-x" onclick="authX()">𝕏 SIGN IN WITH X</button>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    <p>CREATORCHAIN © 2026 — <a href="/">RETURN TO HQ</a></p>
+</div>
+
+<script>
+const SUPA_URL = 'https://mwefmtmcljdsptcgowmb.supabase.co';
+const SUPA_KEY = 'sb_publishable_8530495f8776856038475c8f0';
+let db, currentUser = null, allOpps = [];
+
+// ─── INIT ─────────────────────────────────────────
+async function init() {
+    const { createClient } = supabase;
+    const key = localStorage.getItem('supabase_anon_key') || SUPA_KEY;
+    db = createClient(SUPA_URL, key);
+
+    const { data: { user } } = await db.auth.getUser();
+    currentUser = user;
+    if (user) renderUserNav(user);
+    else document.getElementById('auth-nav').innerHTML = '<button class="nav-btn nav-btn-dark" onclick="openAuth()">SIGN IN</button>';
+
+    await loadExclusiveData();
+    setupFilters();
+    lucide.createIcons();
+}
+
+// ─── AUTH ──────────────────────────────────────────
+function openAuth() { document.getElementById('auth-modal').style.display = 'flex'; }
+function closeAuth() { document.getElementById('auth-modal').style.display = 'none'; }
+async function authGoogle() { await db.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin + '/auth/callback' } }); }
+async function authX() { await db.auth.signInWithOAuth({ provider: 'x', options: { redirectTo: location.origin + '/auth/callback' } }); }
+async function logout() { await db.auth.signOut(); location.reload(); }
+
+function renderUserNav(user) {
+    const m = user.user_metadata;
+    const name = m.full_name || m.user_name || 'User';
+    const avatar = m.avatar_url || 'https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png';
+    document.getElementById('auth-nav').innerHTML = `
+        <div style="display:flex;align-items:center;gap:10px;background:#000;padding:4px 12px;border:2px solid #000">
+            <img src="${avatar}" style="width:22px;height:22px;border:1px solid #fff" onerror="this.src='https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png'">
+            <span style="font-family:var(--font-mono);font-size:10px;color:#fff">${name.toUpperCase()}</span>
+            <button onclick="logout()" style="background:none;border:none;color:var(--primary);font-family:var(--font-mono);font-size:10px;cursor:pointer;font-weight:900">[EXIT]</button>
+        </div>`;
+}
+
+// ─── DATA LOADING ─────────────────────────────────
+async function loadExclusiveData() {
+    try {
+        const [oppRes, listRes] = await Promise.all([
+            db.from('opportunities').select('*').in('status', ['live', 'closed']).order('created_at', { ascending: false }),
+            db.from('listings').select('*').eq('approval_status', 'approved').eq('is_exclusive', true).order('created_at', { ascending: false })
+        ]);
+
+        const opps = (oppRes.data || []).map(o => ({
+            ...o, project: o.project_name, section: mapType(o.type),
+            apply_url: o.external_link, logo: o.logo || '/logo.png',
+            urgency: 'HIGH', is_exclusive: true, source: 'opportunities'
+        }));
+
+        const listings = (listRes.data || []).map(l => ({
+            ...l, section: mapType(l.section), source: 'listings'
+        }));
+
+        allOpps = [...opps, ...listings];
+        updateStats(allOpps);
+        renderSections(allOpps);
+    } catch (err) {
+        console.error('Load Error:', err);
+        document.getElementById('main-container').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-msg">CONNECTION ERROR. PLEASE RETRY.</div></div>';
+    }
+}
+
+function mapType(t) {
+    if (!t) return 'default';
+    const s = t.toLowerCase();
+    if (s.includes('ambassador')) return 'ambassador';
+    if (s.includes('dev') || s.includes('developer') || s.includes('engineer')) return 'dev';
+    if (s.includes('content') || s.includes('writing') || s.includes('creator')) return 'content';
+    if (s.includes('bounty')) return 'bounty';
+    if (s.includes('campaign') || s.includes('marketing')) return 'campaign';
+    if (s === 'creatorchain') return 'dev';
+    return 'default';
+}
+
+function updateStats(data) {
+    const now = new Date();
+    const live = data.filter(d => { const dl = d.deadline ? new Date(d.deadline) : null; return d.status !== 'closed' && (!dl || dl > now); });
+    document.getElementById('stat-live').textContent = live.length.toString().padStart(2, '0');
+    const projects = new Set(data.map(d => d.project || d.project_name)).size;
+    document.getElementById('stat-projects').textContent = projects.toString().padStart(2, '0');
+    const total = data.reduce((a, d) => a + parseReward(d.reward), 0);
+    document.getElementById('stat-reward').textContent = total >= 1000 ? `$${(total/1000).toFixed(0)}K+` : `$${total}`;
+}
+
+function parseReward(r) {
+    if (!r) return 0;
+    const n = parseInt(String(r).replace(/[^0-9]/g, ''));
+    return isNaN(n) ? 0 : n;
+}
+
+// ─── RENDER ───────────────────────────────────────
+const SECTION_META = {
+    ambassador: { icon: '🤝', label: 'Ambassador Programs' },
+    dev: { icon: '⚡', label: 'Developer Bounties' },
+    content: { icon: '✍️', label: 'Content & Creative' },
+    bounty: { icon: '🎯', label: 'Task Bounties' },
+    campaign: { icon: '📢', label: 'Campaigns & Marketing' },
+    default: { icon: '◆', label: 'Other Opportunities' }
+};
+
+function renderSections(data, filter = 'all') {
+    const container = document.getElementById('main-container');
+    const filtered = filter === 'all' ? data : data.filter(d => d.section === filter);
+
+    if (filtered.length === 0) {
+        container.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-msg">NO EXCLUSIVE OPPORTUNITIES IN THIS CATEGORY YET.</div></div>';
+        return;
+    }
+
+    const groups = {};
+    filtered.forEach(item => {
+        const cat = item.section || 'default';
+        if (!groups[cat]) groups[cat] = [];
+        groups[cat].push(item);
+    });
+
+    let html = '';
+    const order = ['ambassador', 'dev', 'content', 'bounty', 'campaign', 'default'];
+    order.forEach(cat => {
+        if (!groups[cat] || groups[cat].length === 0) return;
+        const meta = SECTION_META[cat] || SECTION_META.default;
+        html += `<div class="section" id="section-${cat}">
+            <div class="section-header">
+                <div class="section-icon">${meta.icon}</div>
+                <div class="section-title">${meta.label}</div>
+                <div class="section-count">${groups[cat].length} LIVE</div>
+            </div>
+            <div class="grid">${groups[cat].map(buildCard).join('')}</div>
+        </div>`;
+    });
+    container.innerHTML = html;
+    lucide.createIcons();
+}
+
+function buildCard(item) {
+    const now = new Date();
+    const dl = item.deadline ? new Date(item.deadline) : null;
+    const isClosed = item.status === 'closed' || (dl && dl < now);
+    const dlLabel = getDaysLeft(item.deadline);
+    const badgeClass = 'badge-' + (item.section || 'default');
+    const logoSrc = item.logo && (item.logo.startsWith('http') || item.logo.startsWith('/')) ? item.logo : '/logo.png';
+
+    return `<div class="card" onclick="handleCardClick('${item.id}', '${item.source || 'opportunities'}')">
+        <div class="card-urgency ${item.urgency || 'MEDIUM'}"></div>
+        <div class="card-exclusive-tag">EXCLUSIVE</div>
+        <div class="card-body">
+            <div class="card-badge ${badgeClass}">${(item.type || item.section || 'OPPORTUNITY').replace('_',' ').toUpperCase()}</div>
+            <div class="card-top">
+                <div class="card-logo"><img src="${logoSrc}" onerror="this.src='/logo.png'"></div>
+                <div>
+                    <div class="card-project">${item.project || item.project_name || 'PROJECT'}</div>
+                    <div class="card-title">${item.title || 'Untitled'}</div>
+                </div>
+            </div>
+            <p class="card-desc">${item.description || 'Exclusive opportunity for verified Web3 builders.'}</p>
+            <div class="card-reward">${item.reward || 'TBA'}</div>
+        </div>
+        <div class="card-footer">
+            <div class="card-deadline">${isClosed ? '🔴 CLOSED' : '🟢 ' + dlLabel}</div>
+            ${isClosed
+                ? '<span class="card-cta closed">ENDED</span>'
+                : `<span class="card-cta" onclick="event.stopPropagation(); handleCardClick('${item.id}', '${item.source || 'opportunities'}')">VIEW & APPLY</span>`}
+        </div>
+    </div>`;
+}
+
+function getDaysLeft(d) {
+    if (!d || d === 'N/A' || d === 'OPEN') return 'OPEN';
+    const dt = new Date(d);
+    if (isNaN(dt.getTime())) return d;
+    const days = Math.ceil((dt - new Date()) / 86400000);
+    if (days < 0) return 'ENDED';
+    if (days === 0) return 'ENDS TODAY';
+    return days + ' DAYS LEFT';
+}
+
+function handleCardClick(id, source) {
+    if (!currentUser) { openAuth(); return; }
+    window.location.href = `/opportunity.html?id=${id}`;
+}
+
+// ─── FILTERS ──────────────────────────────────────
+function setupFilters() {
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            renderSections(allOpps, chip.dataset.cat);
+        });
+    });
+}
+
+// ─── BOOT ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
