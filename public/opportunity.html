@@ -784,7 +784,8 @@
                 about,
                 projectLink,
                 submitted_at: new Date().toISOString(),
-                user_handle: currentUser.user_metadata.user_name || currentUser.email
+                user_handle: currentUser.user_metadata.user_name || currentUser.email,
+                email: currentUser.email
             }),
             status: 'pending'
         };

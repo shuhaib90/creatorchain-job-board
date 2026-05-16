@@ -279,7 +279,7 @@
                 try {
                     const parsed = JSON.parse(app.message);
                     msgData = { ...msgData, ...parsed };
-                    displayMsg = msgData.full_name || msgData.user_handle || 'New Applicant';
+                    displayMsg = msgData.full_name || msgData.name || msgData.user_handle || 'New Applicant';
                 } catch (e) {
                     // Fallback for non-JSON messages
                 }
@@ -288,7 +288,7 @@
                 tr.innerHTML = `
                     <td style="font-family:'Space Mono', monospace; font-size:11px;">${new Date(app.created_at).toLocaleDateString()}</td>
                     <td style="font-weight:700;">
-                        <div style="font-size:12px;">${msgData.full_name || msgData.user_handle}</div>
+                        <div style="font-size:12px;">${msgData.full_name || msgData.name || msgData.user_handle}</div>
                         <div style="font-family:'Space Mono', monospace; font-size:10px; color:#666;">${(msgData.wallet_address || 'No Wallet').substring(0,6)}...${(msgData.wallet_address || '').slice(-4)}</div>
                     </td>
                     <td style="max-width:250px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
@@ -351,14 +351,18 @@
             const body = document.getElementById('modal-body');
 
             body.innerHTML = `
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:30px; background:#f0f0f0; padding:20px; border:2px solid #000;">
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; margin-bottom:30px; background:#f0f0f0; padding:20px; border:2px solid #000;">
                     <div>
                         <div class="info-label">Applicant Handle / Name</div>
-                        <div class="info-val" style="font-size:18px; color:var(--orange);">${msgData.full_name || msgData.user_handle}</div>
+                        <div class="info-val" style="font-size:18px; color:var(--orange);">${msgData.full_name || msgData.name || msgData.user_handle}</div>
                     </div>
                     <div>
                         <div class="info-label">Telegram</div>
                         <div class="info-val">${msgData.telegram !== 'N/A' && msgData.telegram ? `<a href="https://t.me/${msgData.telegram.replace('@', '')}" target="_blank" style="color:#000; text-decoration:underline;">@${msgData.telegram.replace('@', '')}</a>` : 'Not provided'}</div>
+                    </div>
+                    <div>
+                        <div class="info-label">Email Address</div>
+                        <div class="info-val">${msgData.email || 'Not provided'}</div>
                     </div>
                 </div>
 
@@ -380,17 +384,39 @@
                     <div class="info-val">${msgData.experience}</div>
                 </div>` : ''}
 
-                ${msgData.about_me ? `
+                ${msgData.about_me || msgData.about ? `
                 <div style="margin-bottom:20px;">
                     <div class="info-label">About Applicant</div>
-                    <div class="info-val" style="white-space: pre-wrap; font-size: 13px; line-height: 1.5;">${msgData.about_me}</div>
+                    <div class="info-val" style="white-space: pre-wrap; font-size: 13px; line-height: 1.5;">${msgData.about_me || msgData.about}</div>
                 </div>` : ''}
 
                 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:20px; margin-bottom:30px;">
-                    ${msgData.x_url ? `
+                    ${msgData.portfolio ? `
                     <div>
-                        <div class="info-label">X (Twitter) URL</div>
-                        <div class="info-val"><a href="${msgData.x_url}" target="_blank" style="color:var(--primary); font-weight:bold; word-break: break-all; font-size: 13px;">${msgData.x_url}</a></div>
+                        <div class="info-label">Portfolio URL</div>
+                        <div class="info-val"><a href="${msgData.portfolio}" target="_blank" style="color:var(--primary); font-weight:bold; word-break: break-all; font-size: 13px;">${msgData.portfolio}</a></div>
+                    </div>` : ''}
+
+                    ${msgData.projectLink ? `
+                    <div>
+                        <div class="info-label">Project / GitHub Link</div>
+                        <div class="info-val"><a href="${msgData.projectLink}" target="_blank" style="color:var(--primary); font-weight:bold; word-break: break-all; font-size: 13px;">${msgData.projectLink}</a></div>
+                    </div>` : ''}
+
+                    ${msgData.x_url || msgData.x_handle || msgData.user_handle ? `
+                    <div>
+                        <div class="info-label">X (Twitter)</div>
+                        <div class="info-val">
+                            <a href="${msgData.x_url || `https://x.com/${(msgData.x_handle || msgData.user_handle || '').replace('@', '')}`}" target="_blank" style="color:var(--primary); font-weight:bold; word-break: break-all; font-size: 13px;">
+                                @${(msgData.x_handle || msgData.user_handle || msgData.x_url || '').split('/').pop().replace('@', '')}
+                            </a>
+                        </div>
+                    </div>` : ''}
+
+                    ${msgData.discord ? `
+                    <div>
+                        <div class="info-label">Discord</div>
+                        <div class="info-val" style="font-weight:bold; font-size: 13px;">${msgData.discord}</div>
                     </div>` : ''}
                     
                     ${msgData.github_link ? `
