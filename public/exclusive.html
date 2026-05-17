@@ -47,7 +47,6 @@
         .container{max-width:1200px;margin:0 auto;padding:36px 20px 80px}
         .section{margin-bottom:48px}
         .section-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:10px;border-bottom:3px solid #000}
-        .section-icon{width:34px;height:34px;background:#000;color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900}
         .section-title{font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:-1px}
         .section-count{font-family:var(--font-mono);font-size:10px;background:var(--primary);color:#000;padding:3px 10px;border:2px solid #000;margin-left:auto;font-weight:700}
 
@@ -145,7 +144,7 @@
 
 <script>
 const SUPA_URL = 'https://mwefmtmcljdsptcgowmb.supabase.co';
-const SUPA_KEY = 'sb_publishable_8530495f8776856038475c8f0';
+const SUPA_KEY = 'sb_publishable_SdGsB-hhvxF2-rq_fBiM0A_y3_mQn2n';
 let db, allOpps = [];
 
 async function init() {
@@ -214,12 +213,12 @@ function parseReward(r) {
 }
 
 const SECTION_META = {
-    ambassador: { icon: '🤝', label: 'Ambassador Programs' },
-    dev: { icon: '⚡', label: 'Developer Bounties' },
-    content: { icon: '✍️', label: 'Content & Creative' },
-    bounty: { icon: '🎯', label: 'Task Bounties' },
-    campaign: { icon: '📢', label: 'Campaigns & Marketing' },
-    default: { icon: '◆', label: 'Other Opportunities' }
+    ambassador: { label: 'Ambassador Programs' },
+    dev: { label: 'Developer Bounties' },
+    content: { label: 'Content & Creative' },
+    bounty: { label: 'Task Bounties' },
+    campaign: { label: 'Campaigns & Marketing' },
+    default: { label: 'Other Opportunities' }
 };
 
 function renderSections(data, filter = 'all') {
@@ -244,7 +243,6 @@ function renderSections(data, filter = 'all') {
         const meta = SECTION_META[cat] || SECTION_META.default;
         html += `<div class="section">
             <div class="section-header">
-                <div class="section-icon">${meta.icon}</div>
                 <div class="section-title">${meta.label}</div>
                 <div class="section-count">${groups[cat].length} LIVE</div>
             </div>
@@ -279,7 +277,7 @@ function buildCard(item) {
             <div class="card-reward">${item.reward || 'TBA'}</div>
         </div>
         <div class="card-footer">
-            <div class="card-deadline">${isClosed ? '🔴 CLOSED' : '🟢 ' + dlLabel}</div>
+            <div class="card-deadline">${isClosed ? 'CLOSED' : dlLabel}</div>
             ${isClosed
                 ? '<span class="card-cta closed">ENDED</span>'
                 : `<a href="/opportunity.html?id=${item.id}" class="card-cta" onclick="event.stopPropagation()">VIEW & APPLY →</a>`}
