@@ -817,6 +817,7 @@
                     <a href="#" onclick="openStatusModal(); toggleExplore(); return false;" class="explore-item"><i data-lucide="clipboard-list" style="width:16px; height:16px;"></i> TRACK SUBMISSION</a>
                 </div>
             </div>
+            <a href="/exclusive.html" class="nav-link" style="color:var(--primary);">EXCLUSIVE</a>
             <a href="#ambassador-section" class="nav-link">AMBASSADORS</a>
             <a href="#discord-section" class="nav-link">DISCORD</a>
             <a href="#bounty-section" class="nav-link">BOUNTIES</a>
@@ -884,7 +885,36 @@
 
 <!-- CATEGORIES -->
 <div class="container">
-    <section class="cat-section" id="creatorchain-section"><div class="section-num">00</div><h2 class="section-title" style="color:var(--primary);">CreatorChain Exclusive</h2><div class="grid" id="creatorchain-cards"></div></section>
+    <section class="cat-section" id="creatorchain-section">
+        <div class="section-num">00</div>
+        <!-- EXCLUSIVE PROMO BANNER -->
+        <div onclick="window.location.href='/exclusive.html'" style="cursor:pointer; background:#000; border:4px solid var(--primary); box-shadow:8px 8px 0 var(--primary); padding:40px; margin-bottom:40px; position:relative; overflow:hidden; animation:exclusiveBannerPulse 4s ease-in-out infinite;">
+            <div style="position:absolute; inset:0; background:repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,245,160,0.04) 2px, rgba(0,245,160,0.04) 4px); pointer-events:none;"></div>
+            <div style="position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:linear-gradient(45deg, transparent 40%, rgba(0,245,160,0.08) 50%, transparent 60%); animation:exclusiveShine 4s linear infinite; pointer-events:none;"></div>
+            <div style="position:relative; z-index:2; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
+                <div>
+                    <div style="font-family:'Space Mono',monospace; font-size:10px; background:var(--primary); color:#000; padding:4px 12px; display:inline-block; font-weight:700; letter-spacing:1px; margin-bottom:12px;">◆ HAND-PICKED BY CREATORCHAIN</div>
+                    <h2 style="font-size:clamp(24px,4vw,42px); font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:-2px; line-height:1; margin-bottom:8px;">CHECK OUT <span style="color:var(--primary);">EXCLUSIVE</span> OPPORTUNITIES</h2>
+                    <p style="font-family:'Space Mono',monospace; font-size:12px; color:#666; max-width:500px;">Ambassador roles, developer bounties, content campaigns & more — curated for verified Web3 builders.</p>
+                </div>
+                <a href="/exclusive.html" class="btn btn-primary" style="padding:16px 32px; font-size:16px; box-shadow:8px 8px 0 rgba(0,245,160,0.3); white-space:nowrap;" onclick="event.stopPropagation();">VIEW ALL EXCLUSIVE →</a>
+            </div>
+        </div>
+        <style>
+            @keyframes exclusiveBannerPulse {
+                0%,100% { border-color: var(--primary); box-shadow: 8px 8px 0 var(--primary); }
+                50% { border-color: #00f2ff; box-shadow: 8px 8px 0 #00f2ff, 0 0 30px rgba(0,242,255,0.15); }
+            }
+            @keyframes exclusiveShine {
+                from { transform: translateX(-100%) rotate(45deg); }
+                to { transform: translateX(100%) rotate(45deg); }
+            }
+        </style>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px; flex-wrap:wrap; gap:15px;">
+            <h2 class="section-title" style="color:var(--primary); margin-bottom:0;">🔥 Live Exclusive Opportunities</h2>
+        </div>
+        <div class="grid" id="creatorchain-cards"></div>
+    </section>
     <section class="cat-section" id="ambassador-section"><div class="section-num">01</div><h2 class="section-title">Ambassadors</h2><div class="grid" id="ambassador-cards"></div></section>
     <section class="cat-section" id="discord-section"><div class="section-num">02</div><h2 class="section-title">Discord Roles</h2><div class="grid" id="discord-cards"></div></section>
     <section class="cat-section" id="bounty-section"><div class="section-num">03</div><h2 class="section-title">Content Bounties</h2><div class="grid" id="bounty-cards"></div></section>
@@ -1575,6 +1605,10 @@
             card.className = `card ${item.featured?'featured':''} ${status?'expired':''} ${item.is_exclusive?'exclusive-glow':''}`;
             card.style.cursor = 'pointer';
             card.onclick = () => {
+                if (item.section === 'creatorchain') {
+                    window.location.href = 'exclusive.html';
+                    return;
+                }
                 if (!currentUser) {
                     showToast('PLEASE_SIGN_IN: Accessing opportunity data requires ecosystem authentication.', 'warning');
                     openAuthModal();
@@ -1615,10 +1649,10 @@
                                 <div class="share-btn" onclick="toggleShareMenu(event, '${item.id}')" title="Share Project"><i data-lucide="share-2" style="width:14px; height:14px;"></i></div>
                             </div>
                             ${item.twitter_url ? `<a href="${item.twitter_url}" target="_blank" class="x-link-small" title="Follow on X" onclick="event.stopPropagation()">𝗫</a>` : ''}
-                            <a href="${item.is_exclusive ? `opportunity.html?id=${item.id}` : (item.apply_url||'#')}" 
+                            <a href="${item.is_exclusive ? `exclusive.html` : (item.apply_url||'#')}" 
                                ${item.is_exclusive ? '' : 'target="_blank"'} 
                                class="btn btn-primary btn-sm" 
-                               onclick="event.stopPropagation(); if(!currentUser){ openAuthModal(); return false; } window.va && window.va('track', 'Apply_Click', { project: '${item.project.replace(/'/g, "\\")}', title: '${item.title.replace(/'/g, "\\")}' })">
+                               onclick="event.stopPropagation(); if(!item.is_exclusive && !currentUser){ openAuthModal(); return false; } window.va && window.va('track', 'Apply_Click', { project: '${item.project.replace(/'/g, "\\")}', title: '${item.title.replace(/'/g, "\\")}' })">
                                APPLY
                             </a>
                         `}
