@@ -319,6 +319,11 @@
                 </div>
 
                 <div class="field">
+                    <label>EMAIL_ADDRESS <span style="color:var(--accent)">*</span></label>
+                    <input type="email" id="app-email" placeholder="you@example.com" required>
+                </div>
+
+                <div class="field">
                     <label>TELEGRAM_USERNAME <span style="color:var(--accent)">*</span></label>
                     <input type="text" id="app-telegram" placeholder="@username" required>
                 </div>
@@ -762,6 +767,8 @@
         const opportunity_id = document.getElementById('app-opportunity-id').value;
         const link = document.getElementById('app-link') ? document.getElementById('app-link').value : '';
         const telegram = document.getElementById('app-telegram').value;
+        const emailInput = document.getElementById('app-email');
+        const email = emailInput ? emailInput.value : currentUser.email;
         
         // Collect dynamic fields if they exist
         const wallet = document.getElementById('app-wallet') ? document.getElementById('app-wallet').value : undefined;
@@ -785,7 +792,7 @@
                 projectLink,
                 submitted_at: new Date().toISOString(),
                 user_handle: currentUser.user_metadata.user_name || currentUser.email,
-                email: currentUser.email
+                email: email
             }),
             status: 'pending'
         };

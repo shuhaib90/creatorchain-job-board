@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<!-- CreatorChain v5.3 — SOCIAL CACHE FIX — shuhaib90 -->
+﻿<!DOCTYPE html>
+<!-- CreatorChain v5.3 ΓÇö SOCIAL CACHE FIX ΓÇö shuhaib90 -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,7 +20,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
     <style>
         :root {
             --bg: #f5f0e8; --surface: #ffffff; --black: #0a0a0a;
@@ -564,7 +563,7 @@
         .detail-section p { font-size: 16px; line-height: 1.7; color: #444; }
         .detail-section ul { padding-left: 20px; margin-top: 12px; }
         .detail-section li { margin-bottom: 8px; font-size: 15px; color: #555; position: relative; list-style: none; padding-left: 15px; }
-        .detail-section li::before { content: '→'; position: absolute; left: -10px; color: var(--primary); font-weight: 900; }
+        .detail-section li::before { content: 'ΓåÆ'; position: absolute; left: -10px; color: var(--primary); font-weight: 900; }
 
         .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
         .skill-tag { padding: 6px 14px; background: #f0f0f0; border: 2px solid var(--black); font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; }
@@ -810,7 +809,7 @@
         </div>
         <div class="nav-links" style="margin-left: 60px;">
             <div class="explore-dropdown">
-                <button class="explore-btn" onclick="toggleExplore()">EXPLORE ▼</button>
+                <button class="explore-btn" onclick="toggleExplore()">EXPLORE Γû╝</button>
                 <div class="explore-menu" id="exploreMenu">
                     <a href="/talent.html" class="explore-item"><i data-lucide="sparkles" style="width:16px; height:16px;"></i> FIND TALENT</a>
                     <a href="/submit-community.html" class="explore-item"><i data-lucide="plus-circle" style="width:16px; height:16px;"></i> SUBMIT PROJECT (COMMUNITY)</a>
@@ -818,7 +817,6 @@
                     <a href="#" onclick="openStatusModal(); toggleExplore(); return false;" class="explore-item"><i data-lucide="clipboard-list" style="width:16px; height:16px;"></i> TRACK SUBMISSION</a>
                 </div>
             </div>
-            <a href="/exclusive.html" class="nav-link" style="color:var(--primary);">EXCLUSIVE</a>
             <a href="#ambassador-section" class="nav-link">AMBASSADORS</a>
             <a href="#discord-section" class="nav-link">DISCORD</a>
             <a href="#bounty-section" class="nav-link">BOUNTIES</a>
@@ -839,7 +837,7 @@
 <!-- TICKER -->
 <div class="ticker-wrap">
     <div class="ticker" id="ticker-target">
-        <span>◆ LOADING LIVE OPPORTUNITIES... ◆</span>
+        <span>Γùå LOADING LIVE OPPORTUNITIES... Γùå</span>
     </div>
 </div>
 
@@ -886,147 +884,7 @@
 
 <!-- CATEGORIES -->
 <div class="container">
-    <section class="cat-section" id="creatorchain-section">
-        <div class="section-num">00</div>
-        <!-- EXCLUSIVE PROMO BANNER WITH FOX MASCOT -->
-        <div id="exclusive-banner" onclick="window.location.href='/exclusive.html'" style="cursor:pointer; background:linear-gradient(135deg, #0a0a0a 0%, #0d1a12 40%, #0a0a0a 100%); border:4px solid var(--primary); box-shadow:8px 8px 0 var(--primary); padding:0; margin-bottom:40px; position:relative; overflow:hidden; border-radius:0;">
-            <!-- Scanline overlay -->
-            <div style="position:absolute; inset:0; background:repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,245,160,0.03) 2px, rgba(0,245,160,0.03) 4px); pointer-events:none; z-index:3;"></div>
-            <!-- Animated shine sweep -->
-            <div id="exc-shine" style="position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:linear-gradient(45deg, transparent 40%, rgba(0,245,160,0.1) 48%, rgba(0,242,255,0.06) 52%, transparent 60%); pointer-events:none; z-index:4;"></div>
-            <!-- Floating particles container -->
-            <div id="exc-particles" style="position:absolute; inset:0; pointer-events:none; z-index:2;"></div>
-            <!-- Corner glow accents -->
-            <div style="position:absolute; top:-40px; left:-40px; width:120px; height:120px; background:radial-gradient(circle, rgba(0,232,122,0.2) 0%, transparent 70%); pointer-events:none; z-index:1;"></div>
-            <div style="position:absolute; bottom:-40px; right:-40px; width:120px; height:120px; background:radial-gradient(circle, rgba(0,242,255,0.15) 0%, transparent 70%); pointer-events:none; z-index:1;"></div>
-
-            <div style="position:relative; z-index:5; display:flex; align-items:center; min-height:220px;">
-                <!-- Fox Mascot -->
-                <div id="fox-mascot-wrap" style="flex-shrink:0; width:220px; height:220px; position:relative; display:flex; align-items:center; justify-content:center;">
-                    <!-- Glow ring behind fox -->
-                    <div id="fox-glow" style="position:absolute; width:160px; height:160px; border-radius:50%; border:2px solid rgba(0,232,122,0.3); box-shadow:0 0 30px rgba(0,232,122,0.15), inset 0 0 30px rgba(0,232,122,0.05);"></div>
-                    <img id="fox-img" src="/foxpng/photo_2026-05-17_20-31-20.jpg" alt="CreatorChain Fox Mascot" style="width:170px; height:170px; object-fit:contain; position:relative; z-index:2; filter:drop-shadow(0 0 20px rgba(0,232,122,0.3));">
-                </div>
-
-                <!-- Text Content -->
-                <div style="flex:1; padding:32px 40px 32px 0;">
-                    <div id="exc-label" style="font-family:'Space Mono',monospace; font-size:10px; background:var(--primary); color:#000; padding:4px 14px; display:inline-block; font-weight:700; letter-spacing:1.5px; margin-bottom:14px; opacity:0; transform:translateY(-10px);">
-                        ◆ HAND-PICKED BY CREATORCHAIN
-                    </div>
-                    <h2 id="exc-title" style="font-size:clamp(22px,3.5vw,38px); font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:-1.5px; line-height:1.05; margin-bottom:10px; opacity:0; transform:translateX(-20px);">
-                        CHECK OUT <span style="color:var(--primary); text-shadow:0 0 20px rgba(0,232,122,0.4);">EXCLUSIVE</span> OPPORTUNITIES
-                    </h2>
-                    <p id="exc-desc" style="font-family:'Space Mono',monospace; font-size:11px; color:#666; max-width:460px; line-height:1.6; margin-bottom:20px; opacity:0;">
-                        Ambassador roles, developer bounties, content campaigns & more — curated for verified Web3 builders.
-                    </p>
-                    <a id="exc-cta" href="/exclusive.html" class="btn btn-primary" style="padding:14px 28px; font-size:14px; font-weight:700; box-shadow:6px 6px 0 rgba(0,245,160,0.3); white-space:nowrap; display:inline-block; opacity:0; transform:translateY(10px);" onclick="event.stopPropagation();">
-                        VIEW ALL EXCLUSIVE →
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <style>
-            #exclusive-banner { transition: box-shadow 0.3s, border-color 0.3s; }
-            #exclusive-banner:hover { border-color: #00f2ff; box-shadow: 12px 12px 0 #00f2ff, 0 0 40px rgba(0,242,255,0.12); }
-            #exclusive-banner:hover #fox-img { filter: drop-shadow(0 0 30px rgba(0,242,255,0.5)); }
-            #exclusive-banner:hover #fox-glow { border-color: rgba(0,242,255,0.5); box-shadow: 0 0 40px rgba(0,242,255,0.25), inset 0 0 40px rgba(0,242,255,0.08); }
-            .exc-particle { position:absolute; border-radius:50%; pointer-events:none; }
-            @media(max-width:768px) {
-                #exclusive-banner > div:last-child { flex-direction:column; text-align:center; }
-                #fox-mascot-wrap { width:140px !important; height:140px !important; }
-                #fox-img { width:120px !important; height:120px !important; }
-                #fox-glow { width:110px !important; height:110px !important; }
-                #exclusive-banner > div:last-child > div:last-child { padding:20px !important; }
-            }
-        </style>
-
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Wait for anime.js to load
-            if (typeof anime === 'undefined') return;
-
-            // Create floating particles
-            const particleContainer = document.getElementById('exc-particles');
-            if (particleContainer) {
-                for (let i = 0; i < 12; i++) {
-                    const p = document.createElement('div');
-                    p.className = 'exc-particle';
-                    const size = Math.random() * 4 + 2;
-                    p.style.width = size + 'px';
-                    p.style.height = size + 'px';
-                    p.style.background = Math.random() > 0.5 ? 'rgba(0,232,122,0.6)' : 'rgba(0,242,255,0.4)';
-                    p.style.left = Math.random() * 100 + '%';
-                    p.style.top = Math.random() * 100 + '%';
-                    p.style.opacity = '0';
-                    particleContainer.appendChild(p);
-                }
-
-                // Animate particles floating
-                anime({
-                    targets: '.exc-particle',
-                    translateY: function() { return anime.random(-40, 40); },
-                    translateX: function() { return anime.random(-30, 30); },
-                    opacity: [0, function() { return Math.random() * 0.7 + 0.2; }],
-                    scale: [0, function() { return Math.random() * 1.5 + 0.5; }],
-                    duration: function() { return anime.random(3000, 6000); },
-                    delay: function() { return anime.random(0, 2000); },
-                    direction: 'alternate',
-                    loop: true,
-                    easing: 'easeInOutSine'
-                });
-            }
-
-            // Shine sweep animation
-            anime({
-                targets: '#exc-shine',
-                translateX: ['-100%', '100%'],
-                duration: 5000,
-                easing: 'linear',
-                loop: true
-            });
-
-            // Fox mascot entrance + idle bob
-            anime.timeline({ easing: 'easeOutExpo' })
-                .add({ targets: '#fox-img', scale: [0.3, 1], opacity: [0, 1], rotate: [15, 0], duration: 1200 })
-                .add({ targets: '#fox-glow', scale: [0.5, 1], opacity: [0, 1], duration: 800 }, '-=800');
-
-            // Fox idle floating
-            anime({
-                targets: '#fox-img',
-                translateY: [-6, 6],
-                duration: 2800,
-                direction: 'alternate',
-                loop: true,
-                easing: 'easeInOutSine',
-                delay: 1500
-            });
-
-            // Fox glow pulse
-            anime({
-                targets: '#fox-glow',
-                scale: [1, 1.08],
-                opacity: [1, 0.6],
-                duration: 2200,
-                direction: 'alternate',
-                loop: true,
-                easing: 'easeInOutSine',
-                delay: 1500
-            });
-
-            // Text entrance stagger
-            anime.timeline({ easing: 'easeOutExpo', delay: 400 })
-                .add({ targets: '#exc-label', opacity: [0, 1], translateY: [-10, 0], duration: 800 })
-                .add({ targets: '#exc-title', opacity: [0, 1], translateX: [-20, 0], duration: 900 }, '-=500')
-                .add({ targets: '#exc-desc', opacity: [0, 1], translateY: [10, 0], duration: 800 }, '-=500')
-                .add({ targets: '#exc-cta', opacity: [0, 1], translateY: [10, 0], scale: [0.9, 1], duration: 700 }, '-=400');
-        });
-        </script>
-        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px; flex-wrap:wrap; gap:15px;">
-            <h2 class="section-title" style="color:var(--primary); margin-bottom:0;">🔥 Live Exclusive Opportunities</h2>
-        </div>
-        <div class="grid" id="creatorchain-cards"></div>
-    </section>
+    <section class="cat-section" id="creatorchain-section"><div class="section-num">00</div><h2 class="section-title" style="color:var(--primary);">CreatorChain Exclusive</h2><div class="grid" id="creatorchain-cards"></div></section>
     <section class="cat-section" id="ambassador-section"><div class="section-num">01</div><h2 class="section-title">Ambassadors</h2><div class="grid" id="ambassador-cards"></div></section>
     <section class="cat-section" id="discord-section"><div class="section-num">02</div><h2 class="section-title">Discord Roles</h2><div class="grid" id="discord-cards"></div></section>
     <section class="cat-section" id="bounty-section"><div class="section-num">03</div><h2 class="section-title">Content Bounties</h2><div class="grid" id="bounty-cards"></div></section>
@@ -1052,17 +910,17 @@
                 </div>
                 <p style="color:#888; font-size:14px; max-width:300px;">The Web3 opportunity board for creators, builders, and community leaders.</p>
                 <div style="margin-top:25px;">
-                    <a href="#ambassador-section" class="footer-link">→ Ambassador Programs</a>
-                    <a href="#discord-section" class="footer-link">→ Discord Moderation</a>
-                    <a href="#bounty-section" class="footer-link">→ Content Bounties</a>
-                    <a href="#" onclick="openStatusModal(); return false;" class="footer-link">→ Track Your Submission</a>
+                    <a href="#ambassador-section" class="footer-link">ΓåÆ Ambassador Programs</a>
+                    <a href="#discord-section" class="footer-link">ΓåÆ Discord Moderation</a>
+                    <a href="#bounty-section" class="footer-link">ΓåÆ Content Bounties</a>
+                    <a href="#" onclick="openStatusModal(); return false;" class="footer-link">ΓåÆ Track Your Submission</a>
                 </div>
                 <div style="margin-top:20px;">
                     <p style="color:var(--primary); font-family:'Space Mono',monospace; font-size:11px; margin-bottom:10px;">SOCIALS</p>
-                    <a href="https://x.com/ZenvicAlpha" target="_blank" class="footer-link" style="color:#fff; font-weight:700;">𝕏 @ZenvicAlpha</a>
-                    <a href="#" onclick="openStatusModal(); return false;" class="footer-link">🔍 Check your submission status →</a>
-                    <a href="#" onclick="return false;" class="footer-link">💬 Discord (Soon)</a>
-                    <a href="#" onclick="return false;" class="footer-link">✈️ Telegram (Soon)</a>
+                    <a href="https://x.com/ZenvicAlpha" target="_blank" class="footer-link" style="color:#fff; font-weight:700;">≡¥òÅ @ZenvicAlpha</a>
+                    <a href="#" onclick="openStatusModal(); return false;" class="footer-link">≡ƒöì Check your submission status ΓåÆ</a>
+                    <a href="#" onclick="return false;" class="footer-link">≡ƒÆ¼ Discord (Soon)</a>
+                    <a href="#" onclick="return false;" class="footer-link">Γ£ê∩╕Å Telegram (Soon)</a>
                 </div>
 
             </div>
@@ -1078,7 +936,7 @@
         </div>
         <div class="footer-divider">
             <div id="admin-link-wrapper" style="margin-top:15px; display:none;">
-                <span style="color:#444; font-size:11px;">&copy; 2026 CreatorChain. Decentralized Creator Economy Platform. • <a href="#" onclick="showLogin(); return false;" style="color:#222; text-decoration:none;">Admin Access</a></span>
+                <span style="color:#444; font-size:11px;">&copy; 2026 CreatorChain. Decentralized Creator Economy Platform. ΓÇó <a href="#" onclick="showLogin(); return false;" style="color:#222; text-decoration:none;">Admin Access</a></span>
             </div>
         </div>
 
@@ -1100,7 +958,7 @@
                     <h2 style="color:var(--black);">Your <span class="outline" style="-webkit-text-stroke: 1.5px var(--black);">Inbox</span></h2>
                     <p style="color:rgba(0,0,0,0.6);">Incoming hire requests and collaboration opportunities.</p>
                 </div>
-                <button onclick="closeInbox()" style="background:none; border:none; color:var(--black); font-size:24px; cursor:pointer;">✕</button>
+                <button onclick="closeInbox()" style="background:none; border:none; color:var(--black); font-size:24px; cursor:pointer;">Γ£ò</button>
             </div>
         </div>
         <div class="submit-body" id="inbox-content" style="max-height: 70vh; overflow-y: auto; background:#f5f5f5;">
@@ -1273,7 +1131,7 @@
                     <p style="font-size:13px; color:var(--muted); margin-bottom:10px;">Submitting as <span id="submitter-handle-badge" style="color:var(--primary); font-weight:700;">@LOADING...</span></p>
                     <div class="info-pill"><i data-lucide="search" style="width:12px; height:12px;"></i> All submissions manually reviewed</div>
                 </div>
-                <button onclick="closeSubmitModal()" style="background:none; border:none; color:#888; font-size:24px; cursor:pointer; margin-left:20px;">✕</button>
+                <button onclick="closeSubmitModal()" style="background:none; border:none; color:#888; font-size:24px; cursor:pointer; margin-left:20px;">Γ£ò</button>
             </div>
         </div>
         <div class="submit-body" id="submit-form-body">
@@ -1336,7 +1194,7 @@
                     <div class="field" style="position:relative;">
                         <label>Logo (Emoji, URL, or Upload)</label>
                         <div style="display:flex; gap:10px;">
-                            <input type="text" id="s-logo" placeholder="🔷 or https://..." style="flex:1;">
+                            <input type="text" id="s-logo" placeholder="≡ƒö╖ or https://..." style="flex:1;">
                             <input type="file" id="s-logo-file" accept="image/png, image/jpeg, image/gif, image/webp" style="display:none;" onchange="document.getElementById('s-logo').value = this.files[0] ? 'Image selected...' : ''; document.getElementById('s-logo-filename').textContent = this.files[0] ? this.files[0].name : ''; document.getElementById('s-logo-filename').style.display = this.files[0] ? 'block' : 'none';">
                             <button type="button" class="btn btn-secondary" onclick="document.getElementById('s-logo-file').click()" style="padding: 10px 14px; font-size:12px; margin:0; border-radius:0;"><i data-lucide="upload" style="width:16px; height:16px;"></i> UPLOAD</button>
                         </div>
@@ -1377,7 +1235,7 @@
                     <input type="text" id="s-banner" placeholder="https://...">
                 </div>
 
-                <div class="info-note" style="margin-top:5px;">⚡ Submissions go to admin review before going live. Usually approved within 24 hours.</div>
+                <div class="info-note" style="margin-top:5px;">ΓÜí Submissions go to admin review before going live. Usually approved within 24 hours.</div>
                 <div class="submit-error" id="submit-error">Something went wrong. Please try again.</div>
                 <button type="submit" id="submit-btn" class="btn btn-primary" style="width:100%; font-size:18px; padding:18px; margin-top:20px;">Submit for Review &rarr;</button>
             </form>
@@ -1390,7 +1248,7 @@
 <!-- ======================== STATUS CHECKER MODAL ======================== -->
 <div id="status-modal" onclick="if(event.target === this) closeStatusModal()" style="cursor:pointer;">
     <div class="status-checker-card" onclick="event.stopPropagation()" style="cursor:default;">
-        <button onclick="closeStatusModal()" style="position:absolute; top:20px; right:25px; background:none; border:none; font-size:24px; cursor:pointer; font-weight:900; color:var(--black); z-index:100;">✕</button>
+        <button onclick="closeStatusModal()" style="position:absolute; top:20px; right:25px; background:none; border:none; font-size:24px; cursor:pointer; font-weight:900; color:var(--black); z-index:100;">Γ£ò</button>
         <h2 style="font-size:28px; margin-bottom:8px;">Track Your Submission</h2>
         <p style="color:var(--muted); font-size:14px;">Enter your tracking code to see its current status.</p>
         
@@ -1407,7 +1265,7 @@
 <!-- ======================== PROJECT DETAIL MODAL ======================== -->
 <div id="project-modal" class="project-modal" onclick="if(event.target===this) closeProjectDetail()">
     <div class="project-detail-card" onclick="event.stopPropagation()">
-        <button onclick="closeProjectDetail()" style="position:absolute; top:20px; right:25px; background:none; border:none; font-size:24px; cursor:pointer; font-weight:900; color:var(--black); z-index:100;">✕</button>
+        <button onclick="closeProjectDetail()" style="position:absolute; top:20px; right:25px; background:none; border:none; font-size:24px; cursor:pointer; font-weight:900; color:var(--black); z-index:100;">Γ£ò</button>
         <div id="project-detail-content">
             <!-- Content Injected -->
         </div>
@@ -1421,14 +1279,14 @@
     const SUPABASE_KEY = 'sb_publishable_SdGsB-hhvxF2-rq_fBiM0A_y3_mQn2n';
     let db, currentUser = null, currentProfile = null;
 
-    // ─── Mobile Restriction ───────────────────────────────
+    // ΓöÇΓöÇΓöÇ Mobile Restriction ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
     (function() {
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         if (isMobile && !window.location.search.includes('bypass=true')) {
             const overlay = document.createElement('div');
             overlay.style = "position:fixed; inset:0; background:#0a0a0a; z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px; text-align:center; color:#fff;";
             overlay.innerHTML = `
-                <div style="font-size:60px; margin-bottom:20px;">💻</div>
+                <div style="font-size:60px; margin-bottom:20px;">≡ƒÆ╗</div>
                 <h1 style="font-size:32px; color:var(--primary); -webkit-text-stroke:0;">SWITCH TO DESKTOP</h1>
                 <p class="mono" style="font-size:14px; margin-top:20px; color:#888; max-width:300px;">CreatorChain terminal requires a full desktop view for optimal performance and security protocols.</p>
                 <div style="margin-top:40px; padding:20px; border:2px dashed #333;">
@@ -1477,13 +1335,13 @@
         `;
     }
 
-    // ─── Helpers ──────────────────────────────────────────
+    // ΓöÇΓöÇΓöÇ Helpers ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
     const parseReward = (s) => { if(!s) return 0; const m = s.replace(/,/g,'').match(/\d+/); return m ? parseInt(m[0]) : 0; };
     const isUrl = (s) => s && (s.startsWith('http')||s.startsWith('/'));
     const parseDeadline = (s) => { if(!s||s.toUpperCase()==='TBA'||s.trim()==='') return null; const d=new Date(s); return isNaN(d.getTime())?null:d; };
     const timeAgo = (ts) => { const d=new Date(ts),now=new Date(),diff=Math.floor((now-d)/1000); if(diff<60) return 'just now'; if(diff<3600) return `${Math.floor(diff/60)}m ago`; if(diff<86400) return `${Math.floor(diff/3600)}h ago`; return `${Math.floor(diff/86400)}d ago`; };
 
-    // ─── Supabase & Auth ──────────────────────────────────
+    // ΓöÇΓöÇΓöÇ Supabase & Auth ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
     async function initSupabase() {
         try { 
             db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); 
@@ -1620,7 +1478,7 @@
 
 
 
-    // ─── Public listings (APPROVED only) ──────────────────
+    // ΓöÇΓöÇΓöÇ Public listings (APPROVED only) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
     async function loadListings() {
         const { data: listings, error: lError } = await db.from('listings').select('*')
             .eq('approval_status','approved')
@@ -1670,9 +1528,9 @@
     }
 
     function updateTicker(listings) {
-        const items = listings.slice(0,10).map(l => `◆ ${l.project}: ${l.title} ◆`);
+        const items = listings.slice(0,10).map(l => `Γùå ${l.project}: ${l.title} Γùå`);
         const html = `<span>${items.join('  ')}</span>`.repeat(3);
-        document.getElementById('ticker-target').innerHTML = html || '<span>◆ NO LIVE LISTINGS YET ◆</span>';
+        document.getElementById('ticker-target').innerHTML = html || '<span>Γùå NO LIVE LISTINGS YET Γùå</span>';
     }
 
     function updateStats(listings) {
@@ -1717,10 +1575,6 @@
             card.className = `card ${item.featured?'featured':''} ${status?'expired':''} ${item.is_exclusive?'exclusive-glow':''}`;
             card.style.cursor = 'pointer';
             card.onclick = () => {
-                if (item.section === 'creatorchain') {
-                    window.location.href = 'exclusive.html';
-                    return;
-                }
                 if (!currentUser) {
                     showToast('PLEASE_SIGN_IN: Accessing opportunity data requires ecosystem authentication.', 'warning');
                     openAuthModal();
@@ -1760,11 +1614,11 @@
                                 </div>
                                 <div class="share-btn" onclick="toggleShareMenu(event, '${item.id}')" title="Share Project"><i data-lucide="share-2" style="width:14px; height:14px;"></i></div>
                             </div>
-                            ${item.twitter_url ? `<a href="${item.twitter_url}" target="_blank" class="x-link-small" title="Follow on X" onclick="event.stopPropagation()">𝗫</a>` : ''}
-                            <a href="${item.is_exclusive ? `exclusive.html` : (item.apply_url||'#')}" 
+                            ${item.twitter_url ? `<a href="${item.twitter_url}" target="_blank" class="x-link-small" title="Follow on X" onclick="event.stopPropagation()">≡¥ù½</a>` : ''}
+                            <a href="${item.is_exclusive ? `opportunity.html?id=${item.id}` : (item.apply_url||'#')}" 
                                ${item.is_exclusive ? '' : 'target="_blank"'} 
                                class="btn btn-primary btn-sm" 
-                               onclick="event.stopPropagation(); if(!item.is_exclusive && !currentUser){ openAuthModal(); return false; } window.va && window.va('track', 'Apply_Click', { project: '${item.project.replace(/'/g, "\\")}', title: '${item.title.replace(/'/g, "\\")}' })">
+                               onclick="event.stopPropagation(); if(!currentUser){ openAuthModal(); return false; } window.va && window.va('track', 'Apply_Click', { project: '${item.project.replace(/'/g, "\\")}', title: '${item.title.replace(/'/g, "\\")}' })">
                                APPLY
                             </a>
                         `}
@@ -1782,7 +1636,7 @@
         document.getElementById('submission-count').textContent = `Join ${count||0} total submissions from the community`;
     }
 
-    // ─── Submit Modal ──────────────────────────────────────
+    // ΓöÇΓöÇΓöÇ Submit Modal ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
     async function openSubmitModal() {
         const { data: { user } } = await db.auth.getUser();
         if (!user) {
@@ -1818,7 +1672,7 @@
         }
     }
 
-    // ─── Status Tracking ───────────────────────────────────
+    // ΓöÇΓöÇΓöÇ Status Tracking ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
     function closeStatusModal() { 
         document.getElementById('status-modal').style.display = 'none'; 
         document.getElementById('status-result').innerHTML = ''; 
@@ -1837,7 +1691,7 @@
         }
         
         const resEl = document.getElementById('status-result');
-        resEl.innerHTML = '<p class="mono" style="margin-top:20px; color:var(--muted); font-size:11px;">🔍 Checking status...</p>';
+        resEl.innerHTML = '<p class="mono" style="margin-top:20px; color:var(--muted); font-size:11px;">≡ƒöì Checking status...</p>';
 
         const { data, error } = await db.from('listings').select('project, title, approval_status, rejection_reason, created_at, reviewed_at, section, reward, description, apply_url, logo, twitter_url, submitted_by, submitter_email').eq('submission_token', token).single();
 
@@ -1861,7 +1715,7 @@
                     <div class="status-project">${data?.project || 'Your Project'}</div>
                     <div class="status-title">${data?.title || ''}</div>
                     <div class="status-meta">Submitted: ${date}</div>
-                    <p class="status-msg">Your submission is in the review queue. Usually reviewed within 24–48 hours. Check back soon!</p>
+                    <p class="status-msg">Your submission is in the review queue. Usually reviewed within 24ΓÇô48 hours. Check back soon!</p>
                     <button class="btn btn-white btn-sm" onclick="closeStatusModal()">Close Tracker</button>
                 </div>`,
             approved: `
@@ -1870,10 +1724,10 @@
                     <div class="status-badge badge-approved">APPROVED & LIVE</div>
                     <div class="status-project">${data?.project || 'Your Project'}</div>
                     <div class="status-title">${data?.title || ''}</div>
-                    <div class="status-meta">Submitted: ${date} ${reviewDate ? ' · Approved: ' + reviewDate : ''}</div>
+                    <div class="status-meta">Submitted: ${date} ${reviewDate ? ' ┬╖ Approved: ' + reviewDate : ''}</div>
                     <p class="status-msg">Your opportunity is now live on CreatorChain!</p>
                     <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-                        <a href="#${data?.section}-section" class="btn btn-primary btn-sm" onclick="closeStatusModal()">View Your Listing →</a>
+                        <a href="#${data?.section}-section" class="btn btn-primary btn-sm" onclick="closeStatusModal()">View Your Listing ΓåÆ</a>
                         <button class="btn btn-white btn-sm" onclick="closeStatusModal()">Close</button>
                     </div>
                 </div>`,
@@ -1883,7 +1737,7 @@
                     <div class="status-badge badge-rejected">NOT APPROVED</div>
                     <div class="status-project">${data?.project || 'Your Project'}</div>
                     <div class="status-title">${data?.title || ''}</div>
-                    <div class="status-meta">Submitted: ${date} ${reviewDate ? ' · Reviewed: ' + reviewDate : ''}</div>
+                    <div class="status-meta">Submitted: ${date} ${reviewDate ? ' ┬╖ Reviewed: ' + reviewDate : ''}</div>
                     <div class="rejection-reason">
                         <div class="reason-label">Reason from admin:</div>
                         <div class="reason-text">"${data?.rejection_reason || 'Does not meet our guidelines.'}"</div>
@@ -2011,25 +1865,25 @@
                 <div class="submit-success">
                     <div class="check"><i data-lucide="check-circle" style="width:80px; height:80px; color:var(--primary);"></i></div>
                     <h2 style="margin-bottom:8px;">Submitted Successfully!</h2>
-                    <p style="color:var(--muted); font-size:14px; margin-bottom:24px;">Your opportunity has been sent for review.<br>We'll check it within 24–48 hours.</p>
+                    <p style="color:var(--muted); font-size:14px; margin-bottom:24px;">Your opportunity has been sent for review.<br>We'll check it within 24ΓÇô48 hours.</p>
                     
                     <div class="tracking-code-box">
-                        <span style="font-family:'Space Mono',monospace; font-size:11px; color:var(--primary); background:var(--black); padding:2px 8px; text-transform:uppercase; letter-spacing:1px;">🔖 Your Tracking Code</span>
+                        <span style="font-family:'Space Mono',monospace; font-size:11px; color:var(--primary); background:var(--black); padding:2px 8px; text-transform:uppercase; letter-spacing:1px;">≡ƒöû Your Tracking Code</span>
                         <span class="tracking-code" id="final-token">${token}</span>
                         <p class="tracking-hint">Save this code to check your status at any time.</p>
                     </div>
 
                     <div style="display:flex; gap:12px; justify-content:center; margin-bottom:30px;">
-                        <button class="btn btn-black btn-sm" onclick="copyToken('${token}')" id="copy-btn">📋 Copy Code</button>
-                        <button class="btn btn-white btn-sm" onclick="closeSubmitModal(); openStatusModal();">🔍 Check Status</button>
+                        <button class="btn btn-black btn-sm" onclick="copyToken('${token}')" id="copy-btn">≡ƒôï Copy Code</button>
+                        <button class="btn btn-white btn-sm" onclick="closeSubmitModal(); openStatusModal();">≡ƒöì Check Status</button>
                     </div>
 
                     <div style="border-top:1px solid #eee; padding-top:24px; text-align:left;">
                         <p style="font-weight:700; font-size:13px; margin-bottom:12px;">What happens next:</p>
                         <div style="font-size:13px; color:var(--muted); display:flex; flex-direction:column; gap:8px;">
-                            <span>⏳ <strong>Under review</strong> (24–48 hrs)</span>
-                            <span>✅ <strong>Approved</strong> → goes live instantly</span>
-                            <span>❌ <strong>Rejected</strong> → reason provided in tracker</span>
+                            <span>ΓÅ│ <strong>Under review</strong> (24ΓÇô48 hrs)</span>
+                            <span>Γ£à <strong>Approved</strong> ΓåÆ goes live instantly</span>
+                            <span>Γ¥î <strong>Rejected</strong> ΓåÆ reason provided in tracker</span>
                         </div>
                     </div>
 
@@ -2054,11 +1908,11 @@
         navigator.clipboard.writeText(token);
         const btn = document.getElementById('copy-btn');
         const old = btn.textContent;
-        btn.textContent = '✅ Copied!';
+        btn.textContent = 'Γ£à Copied!';
         setTimeout(() => btn.textContent = old, 1500);
     }
 
-    // ─── Project Details & Sharing ─────────────────────────
+    // ΓöÇΓöÇΓöÇ Project Details & Sharing ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
     function toggleShareMenu(e, id) {
         if(e) e.stopPropagation();
         const menu = document.getElementById('share-menu-'+id);
@@ -2076,7 +1930,7 @@
         if(e) e.stopPropagation();
         // Use the SEO Proxy URL for social media cards
         const url = window.location.origin + '/api/share?id=' + id;
-        const text = `Check out this opportunity: ${project} - ${title} on CreatorChain! 🚀`;
+        const text = `Check out this opportunity: ${project} - ${title} on CreatorChain! ≡ƒÜÇ`;
         window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
         if (window.va) window.va('track', 'Project_Share_X', { id: id });
         document.querySelectorAll('.share-menu').forEach(m => m.classList.remove('active'));
@@ -2086,7 +1940,7 @@
         if(e) e.stopPropagation();
         const url = window.location.origin + window.location.pathname + '?id=' + id;
         navigator.clipboard.writeText(url);
-        showToast('✓ Link copied to clipboard!');
+        showToast('Γ£ô Link copied to clipboard!');
         if (window.va) window.va('track', 'Project_Share_Copy', { id: id });
         document.querySelectorAll('.share-menu').forEach(m => m.classList.remove('active'));
     }
@@ -2129,7 +1983,7 @@
 
                     <!-- X MENTION CHECK -->
                     <div class="form-group">
-                        <label style="display:block; font-weight:900; margin-bottom:8px; font-size:14px;">Have you tagged/mentioned the ${handle} official account in your post on X? ( 🚨 Mandatory ) <span style="color:var(--accent)">*</span></label>
+                        <label style="display:block; font-weight:900; margin-bottom:8px; font-size:14px;">Have you tagged/mentioned the ${handle} official account in your post on X? ( ≡ƒÜ¿ Mandatory ) <span style="color:var(--accent)">*</span></label>
                         <div style="display:flex; gap:15px;">
                             <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio" name="app-mention" value="yes" required> Yes</label>
                             <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio" name="app-mention" value="no"> No</label>
@@ -2138,7 +1992,7 @@
 
                     <!-- X FOLLOW CHECK -->
                     <div class="form-group">
-                        <label style="display:block; font-weight:900; margin-bottom:8px; font-size:14px;">Have you followed the project official account on X? <a href="${projectLink}" target="_blank" style="color:var(--primary); text-decoration:underline;">Follow Here</a> ( 🚨 Mandatory ) <span style="color:var(--accent)">*</span></label>
+                        <label style="display:block; font-weight:900; margin-bottom:8px; font-size:14px;">Have you followed the project official account on X? <a href="${projectLink}" target="_blank" style="color:var(--primary); text-decoration:underline;">Follow Here</a> ( ≡ƒÜ¿ Mandatory ) <span style="color:var(--accent)">*</span></label>
                         <div style="display:flex; gap:15px;">
                             <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio" name="app-follow" value="yes" required> Yes</label>
                             <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio" name="app-follow" value="no"> No, doing it now</label>
@@ -2147,7 +2001,7 @@
 
                     <!-- X RETWEET CHECK -->
                     <div class="form-group">
-                        <label style="display:block; font-weight:900; margin-bottom:8px; font-size:14px;">Have you retweeted this post: <a href="${retweetLink}" target="_blank" style="color:var(--primary); text-decoration:underline;">View Post</a> ( 🚨 Mandatory ) <span style="color:var(--accent)">*</span></label>
+                        <label style="display:block; font-weight:900; margin-bottom:8px; font-size:14px;">Have you retweeted this post: <a href="${retweetLink}" target="_blank" style="color:var(--primary); text-decoration:underline;">View Post</a> ( ≡ƒÜ¿ Mandatory ) <span style="color:var(--accent)">*</span></label>
                         <div style="display:flex; gap:15px;">
                             <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio" name="app-retweet" value="yes" required> Yes</label>
                             <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio" name="app-retweet" value="no"> No, doing it now</label>
@@ -2156,7 +2010,7 @@
 
                     <!-- RIGHTS AGREEMENT -->
                     <div class="form-group" style="background:rgba(0,0,0,0.05); padding:15px; border-left:4px solid var(--primary);">
-                        <label style="display:block; font-weight:900; margin-bottom:12px; font-size:13px; line-height:1.4;">Do you agree to grant ${projectName} permanent, worldwide commercial usage rights to your content — including the right to use, edit, redistribute, and sub-license it across all channels? <span style="color:var(--accent)">*</span></label>
+                        <label style="display:block; font-weight:900; margin-bottom:12px; font-size:13px; line-height:1.4;">Do you agree to grant ${projectName} permanent, worldwide commercial usage rights to your content ΓÇö including the right to use, edit, redistribute, and sub-license it across all channels? <span style="color:var(--accent)">*</span></label>
                         <div style="display:flex; flex-direction:column; gap:10px;">
                             <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio" name="app-rights" value="yes" required> Yes. I agree!</label>
                             <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="radio" name="app-rights" value="no"> No, I won't participate then.</label>
@@ -2264,7 +2118,7 @@
         const prizeNumeric = parseInt(prizeTotal.replace(/[^0-9]/g, '')) || 0;
         
         const content = `
-            <button class="project-modal-close" onclick="closeProjectDetail()">×</button>
+            <button class="project-modal-close" onclick="closeProjectDetail()">├ù</button>
             
             <div class="project-detail-header" style="${isEnded ? 'filter:grayscale(1);' : ''}">
                 <div class="project-detail-logo">${logoHtml}</div>
@@ -2394,7 +2248,7 @@
         history.pushState({}, '', cleanUrl);
     }
 
-    // ─── Subscription ─────────────────────────────────
+    // ΓöÇΓöÇΓöÇ Subscription ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
     async function handleSubscribe() {
         const input = document.getElementById('sub-email');
         const btn = document.getElementById('sub-btn');
@@ -2413,7 +2267,7 @@
                 if(error.code === '23505') showToast('Already subscribed!', 'success');
                 else throw error;
             } else {
-                showToast('📧 Subscription successful!');
+                showToast('≡ƒôº Subscription successful!');
                 if (window.va) window.va('track', 'Newsletter_Subscription', { email: email });
             }
             input.value = '';
@@ -2426,7 +2280,7 @@
     }
 
 
-    // ─── Admin Auth & Dashboard Access ─────────────────────
+    // ΓöÇΓöÇΓöÇ Admin Auth & Dashboard Access ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
     async function openStatusModal() {
         const { data: { user } } = await db.auth.getUser();
         if (!user) {
@@ -2443,7 +2297,7 @@
         window.location.href = '/admin.html';
     }
 
-    // ─── Inbox Functions ──────────────────────────────
+    // ΓöÇΓöÇΓöÇ Inbox Functions ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
     let currentUserProfileId = null;
     let selectedProfileSkills = [];
 
@@ -2671,7 +2525,7 @@
 
             if (error) throw error;
 
-            showToast('✓ Profile saved successfully!');
+            showToast('Γ£ô Profile saved successfully!');
             closeProfileModal();
             
             // Reload page or update local state
@@ -2696,7 +2550,7 @@
         const modal = document.getElementById('profile-card-modal');
         const content = document.getElementById('profile-card-content');
         modal.style.display = 'flex';
-        content.innerHTML = '<div style="padding:40px; text-align:center;"><p class="mono">🔍 FETCHING PROFILE...</p></div>';
+        content.innerHTML = '<div style="padding:40px; text-align:center;"><p class="mono">≡ƒöì FETCHING PROFILE...</p></div>';
 
         try {
             const { data, error } = await db.from('user_profiles').select('*').eq('user_id', user.id).single();
@@ -2726,7 +2580,7 @@
 
         content.innerHTML = `
             <div class="p-card ${isPro ? 'is-pro-card' : ''}">
-                <button class="p-card-close" onclick="closeProfileCard()">✕</button>
+                <button class="p-card-close" onclick="closeProfileCard()">Γ£ò</button>
                 
                 <div class="p-card-grid">
                     <!-- LEFT COLUMN: IDENTITY -->
@@ -2863,11 +2717,11 @@
             }).catch(console.error);
         } else {
             navigator.clipboard.writeText(url);
-            showToast('Profile link copied to clipboard! 📋');
+            showToast('Profile link copied to clipboard! ≡ƒôï');
         }
     }
 
-    // ─── Thumbnail Auto-Detection ────────────────────────
+    // ΓöÇΓöÇΓöÇ Thumbnail Auto-Detection ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
     const setupThumbDetection = (inputId, formId, statusParentId, hiddenId) => {
         const input = document.getElementById(inputId);
         if (!input) return;
@@ -2882,13 +2736,13 @@
             const statusEl = document.createElement('div');
             statusEl.id = `${hiddenId}-status`;
             statusEl.style = 'font-size:10px; color:var(--primary); margin-top:5px;';
-            statusEl.textContent = '🔍 Detecting post thumbnail...';
+            statusEl.textContent = '≡ƒöì Detecting post thumbnail...';
             
             const existing = document.getElementById(statusEl.id);
             try {
                 const tweetIdMatch = url.match(/status\/(\d+)/);
                 if (!tweetIdMatch) {
-                    statusEl.textContent = '⚠️ Invalid Tweet URL';
+                    statusEl.textContent = 'ΓÜá∩╕Å Invalid Tweet URL';
                     return;
                 }
                 const tweetId = tweetIdMatch[1];
@@ -2913,7 +2767,7 @@
                 }
 
                 if (thumbnailUrl) {
-                    statusEl.innerHTML = `✅ Post thumbnail detected! <img src="${thumbnailUrl}" style="height:20px; vertical-align:middle; margin-left:5px; border:1px solid var(--primary);">`;
+                    statusEl.innerHTML = `Γ£à Post thumbnail detected! <img src="${thumbnailUrl}" style="height:20px; vertical-align:middle; margin-left:5px; border:1px solid var(--primary);">`;
                     
                     let hidden = document.getElementById(hiddenId);
                     if (!hidden) {
@@ -2924,11 +2778,11 @@
                     }
                     hidden.value = thumbnailUrl;
                 } else {
-                    statusEl.textContent = 'ℹ️ No image found in this post.';
+                    statusEl.textContent = 'Γä╣∩╕Å No image found in this post.';
                 }
             } catch (err) {
                 console.error('Detection Error:', err);
-                statusEl.textContent = '⚠️ Detection failed (Check Console).';
+                statusEl.textContent = 'ΓÜá∩╕Å Detection failed (Check Console).';
             }
         };
 
@@ -2936,7 +2790,7 @@
         input.addEventListener('change', runDetection);
     };
 
-    // ─── Unified Skill System ────────────────────────────
+    // ΓöÇΓöÇΓöÇ Unified Skill System ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
     const GLOBAL_SKILLS = [
         'Frontend', 'Backend', 'Fullstack', 'Blockchain', 'Solidity', 'Rust', 'Cairo', 'Python', 'Javascript',
         'Graphic Design', 'Video Editing', 'Content Creation', 'Writing', 'Research', 'Strategy',
@@ -2978,7 +2832,7 @@
         } catch (e) { console.error(e); }
     }
 
-    // ─── Boot ──────────────────────────────────────────────
+    // ΓöÇΓöÇΓöÇ Boot ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
     document.addEventListener('DOMContentLoaded', async () => {
         if(!initSupabase()) return;
         await loadListings();
@@ -3003,7 +2857,7 @@
             } catch (e) { console.error('Profile deep link error:', e); }
         }
     });
-    // ─── Dropdowns ─────────────────────────────────────────
+    // ΓöÇΓöÇΓöÇ Dropdowns ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
     function toggleExplore() {
         document.getElementById('exploreMenu').classList.toggle('show');
     }
@@ -3027,7 +2881,7 @@
 
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
-        content.innerHTML = '<div style="padding:60px; text-align:center;"><p class="mono">🔍 SCANNING INBOX...</p></div>';
+        content.innerHTML = '<div style="padding:60px; text-align:center;"><p class="mono">≡ƒöì SCANNING INBOX...</p></div>';
         
         const { data: { user } } = await db.auth.getUser();
         if (!user) return;
@@ -3043,7 +2897,7 @@
             }
             
             if (!currentProfile) {
-                content.innerHTML = '<div style="padding:60px; text-align:center;"><p class="mono">⚠️ PROFILE_NOT_FOUND. PLEASE COMPLETE SETUP.</p></div>';
+                content.innerHTML = '<div style="padding:60px; text-align:center;"><p class="mono">ΓÜá∩╕Å PROFILE_NOT_FOUND. PLEASE COMPLETE SETUP.</p></div>';
                 return;
             }
 
@@ -3100,7 +2954,7 @@
     <!-- AUTH MODAL -->
     <div id="auth-modal" class="auth-modal">
         <div class="auth-card">
-            <button class="auth-close" onclick="closeAuthModal()">✕</button>
+            <button class="auth-close" onclick="closeAuthModal()">Γ£ò</button>
             <h2>ACCESS <span class="outline">PORTAL</span></h2>
             <p class="mono" style="font-size:12px; color:#666; margin-bottom:30px;">Choose your authentication method to enter the ecosystem.</p>
             <div class="auth-btn-list">
@@ -3108,7 +2962,7 @@
                     <i data-lucide="mail" style="width:20px; height:20px;"></i> CONTINUE WITH GOOGLE
                 </button>
                 <button class="auth-social-btn x" onclick="signInWithX()">
-                    <i>𝕏</i> SIGN IN WITH X
+                    <i>≡¥òÅ</i> SIGN IN WITH X
                 </button>
             </div>
             <div style="margin-top:30px; padding-top:20px; border-top:2px dashed #eee;">
@@ -3126,7 +2980,7 @@
                         <h2 style="color:var(--black); margin:0; font-size: 32px;">Your <span class="outline" style="-webkit-text-stroke: 1.5px var(--black); color: transparent;">Inbox</span></h2>
                         <p style="color:rgba(0,0,0,0.6); margin: 5px 0 0 0;">Incoming hire requests and collaboration opportunities.</p>
                     </div>
-                    <button onclick="closeInbox()" style="background:none; border:none; color:var(--black); font-size:24px; cursor:pointer; font-weight: 900;">✕</button>
+                    <button onclick="closeInbox()" style="background:none; border:none; color:var(--black); font-size:24px; cursor:pointer; font-weight: 900;">Γ£ò</button>
                 </div>
             </div>
             <div class="submit-body" id="inbox-content" style="max-height: 70vh; overflow-y: auto; background:#f5f5f5; padding: 30px;">

@@ -508,13 +508,28 @@
         };
 
         window.exportToExcel = () => {
-            const data = filteredApps.map(a => ({
-                'Date': new Date(a.created_at).toLocaleString(),
-                'Wallet Address': a.user_id,
-                'Message': a.message,
-                'Portfolio Links': a.portfolio_links,
-                'Status': a.status
-            }));
+            const data = filteredApps.map(a => {
+                let msgData = {};
+                try {
+                    msgData = JSON.parse(a.message);
+                } catch(e) {}
+                
+                return {
+                    'Name': msgData.full_name || msgData.name || msgData.user_handle || 'Anonymous',
+                    'Email Address': msgData.email || 'N/A',
+                    'Telegram': msgData.telegram || 'N/A',
+                    'X (Twitter)': msgData.x_url || msgData.x_handle || msgData.user_handle || 'N/A',
+                    'Discord': msgData.discord || 'N/A',
+                    'Wallet Address': msgData.wallet_address || a.user_id || 'N/A',
+                    'Experience': msgData.experience ? msgData.experience.replace(/,/g, ';').replace(/\n/g, ' ') : 'N/A',
+                    'About': msgData.about_me || msgData.about ? (msgData.about_me || msgData.about).replace(/,/g, ';').replace(/\n/g, ' ') : 'N/A',
+                    'Portfolio': msgData.portfolio || msgData.portfolio_url || 'N/A',
+                    'Project / GitHub Link': msgData.projectLink || msgData.github_link || msgData.live_link || msgData.submission_link || 'N/A',
+                    'Original Portfolio Links': a.portfolio_links || 'N/A',
+                    'Status': a.status || 'pending',
+                    'Date': new Date(a.created_at).toLocaleString()
+                };
+            });
 
             const ws = XLSX.utils.json_to_sheet(data);
             const wb = XLSX.utils.book_new();

@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<!-- CreatorChain v5.3 ΓÇö SOCIAL CACHE FIX ΓÇö shuhaib90 -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreatorChain | Web3 Aggregator</title>
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="apple-touch-icon" href="/logo.png">
+    <meta name="description" content="The unfiltered aggregator for the best roles in the decentralized economy. Built for creators, community leads, and devs.">
+    <meta property="og:title" content="CreatorChain | Web3 Aggregator">
+    <meta property="og:description" content="Find bounties, jobs, and paid campaigns in Web3.">
+    <meta property="og:image" content="https://creatorchain.site/social-preview-v2.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CreatorChain | Web3 Aggregator">
+    <meta name="twitter:description" content="Find bounties, jobs, and paid campaigns in Web3.">
+    <meta name="twitter:image" content="https://creatorchain.site/social-preview-v2.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
