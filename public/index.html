@@ -222,27 +222,22 @@
 
         /* EXCLUSIVE EFFECTS */
         .exclusive-glow {
-            border-color: #00f2ff !important;
-            animation: exclusivePulse 3s infinite ease-in-out !important;
+            border: 3px solid #00e87a !important;
+            background-color: var(--black) !important;
+            box-shadow: 8px 8px 0 #00e87a !important;
+            transition: transform 0.2s, box-shadow 0.2s !important;
         }
-        @keyframes exclusivePulse {
-            0% { box-shadow: 0 0 10px rgba(0, 242, 255, 0.2), 6px 6px 0 var(--black); }
-            50% { box-shadow: 0 0 25px rgba(0, 242, 255, 0.5), 8px 8px 0 var(--black); border-color: #7000ff !important; }
-            100% { box-shadow: 0 0 10px rgba(0, 242, 255, 0.2), 6px 6px 0 var(--black); }
+        .exclusive-glow:hover {
+            transform: translate(-4px, -4px) !important;
+            box-shadow: 12px 12px 0 #00e87a !important;
         }
         .exclusive-text {
-            background: linear-gradient(90deg, #7000ff, #00f2ff, #7000ff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 3s linear infinite;
+            color: #00e87a;
             font-weight: 900;
-        }
-        @keyframes shine {
-            to { background-position: 200% center; }
+            text-transform: uppercase;
         }
         .exclusive-stamp {
-            background: #00f2ff !important;
+            background: #00e87a !important;
             color: var(--black) !important;
             border-color: var(--black) !important;
             font-weight: 900 !important;
@@ -252,24 +247,11 @@
         .exclusive-inner-bg {
             position: absolute;
             inset: 0;
-            background: linear-gradient(45deg, rgba(0, 242, 255, 0.03) 0%, rgba(112, 0, 255, 0.03) 100%);
+            background: url('/exclusive-card-bg.png') center/cover no-repeat;
             z-index: 0;
+            opacity: 0.15;
             pointer-events: none;
-            overflow: hidden;
-        }
-        .exclusive-inner-bg::after {
-            content: "";
-            position: absolute;
-            top: -100%;
-            left: -100%;
-            width: 300%;
-            height: 300%;
-            background: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0, 242, 255, 0.05) 1px, rgba(0, 242, 255, 0.05) 2px);
-            animation: scanline 10s linear infinite;
-        }
-        @keyframes scanline {
-            from { transform: translateY(0); }
-            to { transform: translateY(33.33%); }
+            mix-blend-mode: luminosity;
         }
 
         /* ADMIN */
