@@ -104,6 +104,33 @@
         .nf h2{font-size:22px;font-weight:900;margin-top:-18px;margin-bottom:12px}
 
         @media(max-width:900px){.page{grid-template-columns:1fr}.panel{position:static}}
+
+        /* TABS */
+        .profile-tabs{display:flex;gap:12px;margin-bottom:20px}
+        .profile-tab{font-family:var(--mono);font-size:11px;font-weight:900;padding:12px 20px;background:#fff;border:3px solid var(--border);color:var(--text);cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:4px 4px 0 var(--border);transition:all .15s;text-transform:uppercase}
+        .profile-tab:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--border);background:var(--primary)}
+        .profile-tab.active{background:var(--primary);transform:none;box-shadow:none}
+
+        /* PULSE CARD */
+        .pcard{background:#fff;border:4px solid var(--border);box-shadow:6px 6px 0 var(--border);padding:24px;position:relative;display:flex;flex-direction:column;gap:14px}
+        .pcard-header{display:flex;justify-content:space-between;align-items:center}
+        .pcard-time{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:700}
+        .pcard-actions{display:flex;gap:8px}
+        .pcard-btn{font-family:var(--mono);font-size:10px;font-weight:900;padding:6px 12px;border:2px solid var(--border);background:#fff;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:2px 2px 0 var(--border);transition:all .1s;text-transform:uppercase;color:var(--text)}
+        .pcard-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--border)}
+        .pcard-btn.edit:hover{background:var(--primary)}
+        .pcard-btn.delete:hover{background:var(--accent);color:#fff}
+        .pcard-body{font-size:14px;line-height:1.6;color:var(--text);word-break:break-word}
+        .pcard-img-wrap{border:3px solid var(--border);box-shadow:3px 3px 0 var(--border);overflow:hidden;background:#eee;max-height:300px;margin-top:8px}
+        .pcard-img{width:100%;height:100%;object-fit:cover;cursor:pointer}
+        .pcard-footer{display:flex;gap:16px;border-top:2px solid #eee;padding-top:12px;font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:700}
+        .pcard-stat{display:flex;align-items:center;gap:6px}
+
+        /* TOAST */
+        #toast{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+        .toast-item{background:#fff;border:3px solid var(--border);box-shadow:4px 4px 0 var(--border);padding:12px 20px;font-family:var(--mono);font-size:12px;font-weight:700;display:flex;align-items:center;gap:10px;pointer-events:auto;animation:toastSlide .3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;transition:all .3s}
+        .toast-item.error{border-color:var(--accent);box-shadow:4px 4px 0 var(--accent)}
+        @keyframes toastSlide{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
     </style>
 </head>
 <body>
@@ -114,11 +141,16 @@
 </nav>
 
 <div id="root"></div>
+<div id="toast"></div>
 
 <script>
 const SB_URL='https://mwefmtmcljdsptcgowmb.supabase.co';
 const SB_KEY='sb_publishable_SdGsB-hhvxF2-rq_fBiM0A_y3_mQn2n';
 const db=supabase.createClient(SB_URL,SB_KEY);
+
+let currentUser = null;
+let currentProfile = null;
+let userPosts = [];
 
 function badge(p){
     if(!p)return'';
@@ -160,6 +192,142 @@ function oppCard(l,sk){
     </a>`;
 }
 
+function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.profile-tab').forEach(el => el.classList.remove('active'));
+    
+    if (tabId === 'opps') {
+        document.getElementById('tab-opps').style.display = 'flex';
+        document.getElementById('btn-tab-opps').classList.add('active');
+    } else if (tabId === 'pulses') {
+        document.getElementById('tab-pulses').style.display = 'flex';
+        document.getElementById('btn-tab-pulses').classList.add('active');
+    }
+}
+
+function formatPulseContent(text) {
+    if (!text) return '';
+    let s = escHtml(text);
+    s = s.replace(/#(\w+)/g, '<span style="color:var(--accent);font-weight:700">#$1</span>');
+    s = s.replace(/@(\w+)/g, '<span style="color:var(--primary);font-weight:700">@$1</span>');
+    return s.replace(/\n/g, '<br>');
+}
+
+function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function timeAgo(ts) {
+    const d = new Date(ts), now = new Date(), diff = Math.floor((now - d) / 1000);
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+    if (diff < 604800) return Math.floor(diff / 86400) + 'd ago';
+    return d.toLocaleDateString();
+}
+
+function renderUserPulses(posts, profile) {
+    if (!posts || posts.length === 0) {
+        return `<div class="empty"><h3>NO PULSES FOUND</h3><p>You haven't posted any pulses yet. Visit CreatorPulse to share your first update!</p><a href="/creatorpulse.html" class="oapply" style="margin-top:14px;text-decoration:none;display:inline-flex;align-items:center;gap:6px">GO TO CREATORPULSE <i data-lucide="arrow-right" style="width:12px;height:12px"></i></a></div>`;
+    }
+    return posts.map(post => {
+        const content = formatPulseContent(post.content);
+        const imageHtml = post.image_url ? `
+            <div class="pcard-img-wrap">
+                <img class="pcard-img" src="${post.image_url}" alt="Post image" onclick="window.open(this.src)">
+            </div>
+        ` : '';
+        const edited = post.is_edited ? '<span style="font-size:10px;color:var(--muted);margin-left:4px">(edited)</span>' : '';
+        return `
+        <div class="pcard" id="pulse-${post.id}">
+            <div class="pcard-header">
+                <span class="pcard-time">${timeAgo(post.created_at)}</span>
+                <div class="pcard-actions">
+                    <button class="pcard-btn edit" onclick="editPulse('${post.id}')"><i data-lucide="edit-3" style="width:12px;height:12px"></i> EDIT</button>
+                    <button class="pcard-btn delete" onclick="deletePulse('${post.id}')"><i data-lucide="trash-2" style="width:12px;height:12px"></i> DELETE</button>
+                </div>
+            </div>
+            <div class="pcard-body">
+                <div>${content}${edited}</div>
+                ${imageHtml}
+            </div>
+            <div class="pcard-footer">
+                <span class="pcard-stat"><i data-lucide="heart" style="width:14px;height:14px;color:var(--accent);fill:var(--accent)"></i> ${post.like_count || 0}</span>
+                <span class="pcard-stat"><i data-lucide="message-square" style="width:14px;height:14px"></i> ${post.comment_count || 0}</span>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+async function refreshPulses() {
+    const listEl = document.getElementById('pulses-list');
+    if (!listEl) return;
+    listEl.innerHTML = '<div class="loading"><p>⬡ LOADING PULSES...</p></div>';
+    
+    try {
+        const { data: posts, error } = await db.from('creatorpulse_posts')
+            .select('*')
+            .eq('user_id', currentUser.id)
+            .order('created_at', { ascending: false });
+            
+        if (error) throw error;
+        userPosts = posts || [];
+        listEl.innerHTML = renderUserPulses(userPosts, currentProfile);
+        lucide.createIcons();
+    } catch(e) {
+        listEl.innerHTML = `<div class="empty"><h3>ERROR LOADING PULSES</h3><p>${e.message}</p></div>`;
+    }
+}
+
+async function editPulse(postId) {
+    const post = userPosts.find(p => p.id === postId);
+    if (!post) return;
+    const newContent = prompt('Edit your pulse:', post.content);
+    if (newContent === null || !newContent.trim()) return;
+    try {
+        const { error } = await db.from('creatorpulse_posts')
+            .update({ content: newContent.trim(), is_edited: true, updated_at: new Date().toISOString() })
+            .eq('id', postId);
+        if (error) throw error;
+        showToast('Pulse updated ✏️');
+        await refreshPulses();
+    } catch(e) {
+        showToast('Edit failed: ' + e.message, 'error');
+    }
+}
+
+async function deletePulse(postId) {
+    if (!confirm('Delete this pulse? This cannot be undone.')) return;
+    try {
+        const { error } = await db.from('creatorpulse_posts')
+            .delete()
+            .eq('id', postId);
+        if (error) throw error;
+        showToast('Pulse deleted 🗑️');
+        await refreshPulses();
+    } catch(e) {
+        showToast('Delete failed: ' + e.message, 'error');
+    }
+}
+
+function showToast(msg, type = 'success') {
+    const container = document.getElementById('toast');
+    if (!container) return;
+    const el = document.createElement('div');
+    el.className = `toast-item ${type === 'error' ? 'error' : ''}`;
+    
+    let icon = `<svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
+    if (type === 'error') {
+        icon = `<svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+    }
+    
+    el.innerHTML = `${icon} <span>${escHtml(msg)}</span>`;
+    container.appendChild(el);
+    setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateX(20px)';
+        setTimeout(() => el.remove(), 300);
+    }, 3500);
+}
+
 async function init(){
     const root=document.getElementById('root');
     root.innerHTML='<div class="loading"><p>⬡ AUTHENTICATING...</p></div>';
@@ -175,6 +343,9 @@ async function init(){
         root.innerHTML=`<div class="nf"><h1>⚠</h1><h2>Profile Not Found</h2><p style="color:var(--muted);margin-bottom:20px">Complete your profile setup to access this page.</p><a href="/?profile=true" class="nav-back">← SETUP PROFILE</a></div>`;
         lucide.createIcons();return;
     }
+
+    currentUser = user;
+    currentProfile = p;
 
     const sk=p.skills||[];
     const av=p.avatar_url||`https://unavatar.io/twitter/${p.username}`;
@@ -244,20 +415,46 @@ async function init(){
         </aside>
 
         <main class="right">
-            <div class="oheader">
-                <h2>Your <span style="-webkit-text-stroke:1.5px var(--primary);color:transparent;">Opportunities</span></h2>
-                <p>Curated based on your skills and expertise.</p>
-                ${sk.length?`<div class="mtag">⬡ MATCHING: ${sk.slice(0,4).join(' · ')}</div>`:''}
+            <div class="profile-tabs">
+                <button id="btn-tab-opps" class="profile-tab active" onclick="switchTab('opps')">
+                    <i data-lucide="briefcase" style="width:15px;height:15px"></i>
+                    <span>Matched Jobs</span>
+                </button>
+                <button id="btn-tab-pulses" class="profile-tab" onclick="switchTab('pulses')">
+                    <i data-lucide="activity" style="width:15px;height:15px"></i>
+                    <span>Your Pulses</span>
+                </button>
             </div>
-            ${oppsHtml}
-            <a href="/" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--muted);text-decoration:none;margin-top:8px">
-                <i data-lucide="grid" style="width:13px;height:13px"></i> VIEW ALL OPPORTUNITIES →
-            </a>
+
+            <div id="tab-opps" class="tab-content" style="display:flex;flex-direction:column;gap:24px">
+                <div class="oheader">
+                    <h2>Your <span style="-webkit-text-stroke:1.5px var(--primary);color:transparent;">Opportunities</span></h2>
+                    <p>Curated based on your skills and expertise.</p>
+                    ${sk.length?`<div class="mtag">⬡ MATCHING: ${sk.slice(0,4).join(' · ')}</div>`:''}
+                </div>
+                <div class="opps-list" style="display:flex;flex-direction:column;gap:24px">
+                    ${oppsHtml}
+                </div>
+                <a href="/" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--muted);text-decoration:none;margin-top:8px">
+                    <i data-lucide="grid" style="width:13px;height:13px"></i> VIEW ALL OPPORTUNITIES →
+                </a>
+            </div>
+
+            <div id="tab-pulses" class="tab-content" style="display:none;flex-direction:column;gap:24px">
+                <div class="oheader">
+                    <h2>Your <span style="-webkit-text-stroke:1.5px var(--primary);color:transparent;">Pulses</span></h2>
+                    <p>Manage, edit, or delete updates you've shared on CreatorPulse.</p>
+                </div>
+                <div id="pulses-list" style="display:flex;flex-direction:column;gap:24px">
+                    <!-- Pulses will be rendered here dynamically -->
+                </div>
+            </div>
         </main>
     </div>`;
 
     document.title=`${p.name||handle} | My Profile · CreatorChain`;
     lucide.createIcons();
+    await refreshPulses();
 }
 
 function shareProfile(){
