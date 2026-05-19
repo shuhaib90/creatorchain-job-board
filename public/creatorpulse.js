@@ -213,7 +213,7 @@ function renderPostCard(post) {
 
     return `<div class="post-card" id="post-${post.id}">
         <div class="post-card-header">
-            <div class="post-card-author-info">
+            <a href="/profile?u=${escHtml(handle)}" class="post-card-author-info" style="text-decoration: none; color: inherit;">
                 <img class="post-card-avatar" src="${avatar}" onerror="this.src='/logo.png'">
                 <div class="author-meta-block">
                     <div class="author-name-row">
@@ -223,7 +223,7 @@ function renderPostCard(post) {
                     </div>
                     <span class="post-time-ago">${timeAgo(post.created_at)}</span>
                 </div>
-            </div>
+            </a>
             ${isOwn ? `<div class="post-dropdown">
                 <button class="post-card-menu-btn" onclick="togglePostMenu('${post.id}')">${menuIcon}</button>
                 <div class="post-dropdown-menu" id="menu-${post.id}">
@@ -409,14 +409,16 @@ async function loadComments(postId) {
             const cp = pm[c.user_id] || {};
             const isOwn = currentUser && currentUser.id === c.user_id;
             return `<div class="reply-item">
-                <img class="reply-avatar" src="${cp.avatar_url || '/logo.png'}" onerror="this.src='/logo.png'">
-                <div class="reply-body">
-                    <div class="reply-author-meta">
-                        <span class="reply-author-name">${escHtml(cp.name || 'User')}</span>
-                        <span class="reply-time">${timeAgo(c.created_at)}</span>
+                <a href="/profile?u=${escHtml(cp.username || 'user')}" style="display: flex; gap: 12px; flex: 1; text-decoration: none; color: inherit;">
+                    <img class="reply-avatar" src="${cp.avatar_url || '/logo.png'}" onerror="this.src='/logo.png'">
+                    <div class="reply-body">
+                        <div class="reply-author-meta">
+                            <span class="reply-author-name">${escHtml(cp.name || 'User')}</span>
+                            <span class="reply-time">${timeAgo(c.created_at)}</span>
+                        </div>
+                        <div class="reply-content-text">${escHtml(c.content)}</div>
                     </div>
-                    <div class="reply-content-text">${escHtml(c.content)}</div>
-                </div>
+                </a>
                 ${isOwn ? `<button class="reply-delete-btn" onclick="deleteComment('${c.id}','${postId}')">✕</button>` : ''}
             </div>`;
         }).join('');
@@ -654,7 +656,7 @@ function updateStats(posts) {
         const rank = index + 1;
         
         return `
-            <div class="contributor-item">
+            <a href="/profile?u=${escHtml(handle)}" class="contributor-item" style="text-decoration: none; color: inherit;">
                 <div class="contributor-left">
                     <div class="contributor-avatar-wrap">
                         <img class="contributor-avatar" src="${escHtml(avatar)}" onerror="this.src='/logo.png'">
@@ -669,7 +671,7 @@ function updateStats(posts) {
                     <span class="contributor-score">${u.score}</span>
                     <span class="contributor-label">Score</span>
                 </div>
-            </div>
+            </a>
         `;
     }).join('');
 }

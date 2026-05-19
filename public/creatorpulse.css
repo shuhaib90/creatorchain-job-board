@@ -1022,6 +1022,16 @@ body::before {
     display: flex;
     align-items: center;
     gap: 12px;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.post-card-author-info:hover {
+    opacity: 0.85;
+}
+
+.post-card-author-info:hover .author-display-name {
+    text-decoration: underline;
 }
 
 .post-card-avatar {
@@ -1266,6 +1276,18 @@ body::before {
     border-radius: var(--radius-md);
     border: 1px solid rgba(30, 34, 43, 0.5);
     position: relative;
+}
+
+.reply-item a {
+    transition: opacity 0.2s ease;
+}
+
+.reply-item a:hover {
+    opacity: 0.85;
+}
+
+.reply-item a:hover .reply-author-name {
+    text-decoration: underline;
 }
 
 .reply-avatar {
