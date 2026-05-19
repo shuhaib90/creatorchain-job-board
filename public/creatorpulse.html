@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreatorPulse | CreatorChain</title>
+    <meta name="description" content="CreatorChain community pulse - share opportunities, connect with builders.">
+    <link rel="icon" href="/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/creatorpulse.css">
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- BASE LAYOUT -->
+<div class="app-container">
+    
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar-left">
+        <div>
+            <!-- LOGO BRANDING -->
+            <a href="/" class="logo-container">
+                <img src="/logo.png" alt="CreatorChain Logo" style="width: 36px; height: 36px; object-fit: contain;">
+                <div class="logo-text">CREATOR<span>CHAIN</span></div>
+            </a>
+            
+            <!-- MENU -->
+            <nav class="nav-menu">
+                <a href="/creatorpulse.html" class="nav-item active">
+                    <i data-lucide="rss"></i>
+                    <span>CreatorPulse</span>
+                </a>
+                <a href="https://creatorchain.site" class="nav-item">
+                    <i data-lucide="briefcase"></i>
+                    <span>Opportunities</span>
+                </a>
+                <a href="https://creatorchain.site/#bounties" class="nav-item">
+                    <i data-lucide="award"></i>
+                    <span>Bounties</span>
+                </a>
+                <a href="https://creatorchain.site/#ambassador-section" class="nav-item">
+                    <i data-lucide="users"></i>
+                    <span>Ambassadors</span>
+                </a>
+                <a href="/leaderboard.html" class="nav-item">
+                    <i data-lucide="trophy"></i>
+                    <span>Leaderboard</span>
+                </a>
+                <a href="/exclusive.html" class="nav-item">
+                    <i data-lucide="sparkles"></i>
+                    <span>Exclusive Opportunity</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- TOP CONTRIBUTORS WIDGET -->
+        <div class="contributors-card">
+            <div class="contributors-header">
+                <h4 class="contributors-title">Top Contributors</h4>
+                <span class="contributors-subtitle">This Week</span>
+            </div>
+            <div class="contributors-list" id="top-contributors-list">
+                <!-- Loaded dynamically via JS -->
+            </div>
+            <a href="/leaderboard.html" class="contributors-btn">
+                <span>View Leaderboard</span>
+                <i data-lucide="chevron-right" style="width: 14px; height: 14px;"></i>
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN AREA -->
+    <div class="main-wrapper">
+        
+        <!-- TOP HEADER BAR -->
+        <header class="top-header">
+            <!-- MOBILE LOGO -->
+            <a href="/" class="mobile-logo-trigger">
+                <img src="/logo.png" alt="CreatorChain Logo" style="width: 32px; height: 32px; border-radius: 4px; border: 1.5px solid var(--primary); box-shadow: var(--shadow-glow);">
+                <div class="logo-text">CREATOR<span>CHAIN</span></div>
+            </a>
+
+            <!-- SEARCH -->
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-input" placeholder="Search Pulse...">
+                <span class="search-shortcut">/</span>
+                <button class="search-icon-btn">
+                    <i data-lucide="search"></i>
+                </button>
+            </div>
+
+            <!-- HEADER ACTIONS -->
+            <div class="header-actions">
+                <button class="notification-btn">
+                    <i data-lucide="bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+                <div id="auth-nav-box">
+                    <button class="post-submit-btn" onclick="openAuthModal()">SIGN IN</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- DASHBOARD GRID -->
+        <div class="dashboard-grid">
+            
+            <!-- FEED CONTENT COLUMN -->
+            <div class="feed-content">
+                <!-- Page Header -->
+                <div class="feed-header">
+                    <div class="title-badge-row">
+                        <h1 class="page-title">Creator<span>Pulse</span></h1>
+                        <span class="soon-badge">CreatorPulse</span>
+                    </div>
+                    <p class="page-subtitle">Interact, share opportunities, and keep up with web3 builder updates.</p>
+                </div>
+
+                <!-- Post Composer Card -->
+                <div class="composer-card" id="composer">
+                    <div class="composer-avatar-wrap">
+                        <div class="composer-avatar-circle" id="composer-avatar">?</div>
+                    </div>
+                    <div class="composer-main">
+                        <textarea id="post-input" class="composer-textarea" placeholder="What's happening in Web3? Share an opportunity, announce a hire..." maxlength="500" rows="3"></textarea>
+                        
+                        <!-- Image Attachment Preview Frame -->
+                        <div class="image-preview-frame" id="image-preview-frame">
+                            <img src="" id="image-preview-img" alt="Post attachment preview">
+                            <button class="remove-preview-btn" id="remove-preview-btn" onclick="removeSelectedImage(event)">✕</button>
+                        </div>
+
+                        <div class="composer-divider"></div>
+
+                        <div class="composer-footer">
+                            <div class="composer-actions-left">
+                                
+                                <label for="post-image-file" class="composer-action-btn" style="margin-bottom: 0; cursor: pointer;" title="Attach Image">
+                                    <i data-lucide="image"></i>
+                                </label>
+                                <input type="file" id="post-image-file" accept="image/*" style="display: none;" onchange="handleImageSelect(event)">
+
+                                <span class="char-counter"><span id="char-current">0</span>/500</span>
+                            </div>
+                            
+                            <button class="post-submit-btn" id="post-btn" onclick="createPost()">
+                                <span>Post</span>
+                                <i data-lucide="send"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feed Tabs Filter -->
+                <div class="tabs-row">
+                    <div class="tabs-left">
+                        <button class="tab-btn active" data-filter="all">All Pulses</button>
+                        <button class="tab-btn" data-filter="hiring">Hiring</button>
+                        <button class="tab-btn" data-filter="recent">Recent</button>
+                        <button class="tab-btn" data-filter="popular">Popular</button>
+                    </div>
+                </div>
+
+                <!-- POSTS FEED CONTAINER -->
+                <div id="pulse-container">
+                    <!-- Skeletons load by default -->
+                    <div class="skeleton-card">
+                        <div style="display:flex;gap:12px;align-items:center;">
+                            <div class="sk-circle"></div>
+                            <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+                                <div class="sk-line" style="width:120px"></div>
+                                <div class="sk-line short"></div>
+                            </div>
+                        </div>
+                        <div class="sk-line" style="margin-top:8px"></div>
+                        <div class="sk-line medium"></div>
+                    </div>
+                    <div class="skeleton-card">
+                        <div style="display:flex;gap:12px;align-items:center;">
+                            <div class="sk-circle"></div>
+                            <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+                                <div class="sk-line" style="width:140px"></div>
+                                <div class="sk-line short"></div>
+                            </div>
+                        </div>
+                        <div class="sk-line" style="margin-top:8px"></div>
+                    </div>
+                </div>
+
+                <!-- EMPTY STATE VIEW -->
+                <div id="feed-empty" class="empty-view-box" style="display:none">
+                    <div class="empty-view-icon"><i data-lucide="radio" style="width: 48px; height: 48px;"></i></div>
+                    <h3 class="empty-view-title">NO PULSE POSTS YET</h3>
+                    <p class="empty-view-text">Be the first to share something with the community.</p>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR WIDGETS -->
+            <aside class="sidebar-right">
+                
+                <!-- WIDGET: LIVE BOUNTIES -->
+                <div class="widget-container">
+                    <div class="widget-header-row">
+                        <h3 class="widget-title">Live <span>Opportunities</span></h3>
+                        <a href="https://creatorchain.site" class="widget-view-all-link">View All</a>
+                    </div>
+                    <div class="widget-items-list" id="live-bounties-list">
+                        <!-- Loaded dynamically or mock fallback -->
+                    </div>
+                </div>
+
+                <!-- WIDGET: ACTIVE CAMPAIGNS -->
+                <div class="widget-container">
+                    <div class="widget-header-row">
+                        <h3 class="widget-title">Active <span>Campaigns</span></h3>
+                        <a href="https://creatorchain.site/#bounties" class="widget-view-all-link">View All</a>
+                    </div>
+                    <div class="widget-items-list" id="active-campaigns-list">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- PROMO CARD -->
+                <div class="promo-card" style="margin-top: 24px;">
+                    <div class="promo-card-content">
+                        <h4 class="promo-title">Build.<br>Contribute.<br><span>Earn.</span></h4>
+                        <div class="promo-footer">
+                            <img src="/foxpng/Picsart_26-05-17_21-14-32-495.png" alt="Mascot" class="promo-mascot" onerror="this.src='/logo.png'">
+                            <a href="/exclusive.html" class="promo-btn">
+                                <i data-lucide="arrow-up-right" style="width: 18px; height: 18px;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div id="auth-modal" class="auth-overlay" onclick="if(event.target===this)closeAuthModal()">
+    <div class="auth-box">
+        <button class="auth-close" onclick="closeAuthModal()">✕</button>
+        <h2>ACCESS <span>PORTAL</span></h2>
+        <p class="mono" style="font-size:11px;color:var(--text-muted);margin-bottom:24px">Sign in to post on CreatorPulse.</p>
+        <button class="auth-social google" onclick="signInWithGoogle()">Continue with Google</button>
+        <button class="auth-social xbtn" onclick="signInWithX()">𝕏 Sign in with X</button>
+    </div>
+</div>
+
+<script src="/creatorpulse.js"></script>
+</body>
+</html>
