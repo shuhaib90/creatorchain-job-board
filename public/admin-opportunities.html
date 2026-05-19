@@ -7,116 +7,218 @@
     <link rel="stylesheet" href="index.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --orange: #FF4D00;
-            --black: #000000;
-            --white: #FFFFFF;
+            --primary: #00ffa3;
+            --accent: #ff3d00;
+            --secondary: #ffea00;
+            --black: #0a0a0a;
+            --white: #ffffff;
+            --muted: #888888;
+            --bg: #050505;
+            --surface: rgba(15, 15, 15, 0.7);
+            --border: 1px solid rgba(255, 255, 255, 0.08);
+            --shadow: 4px 4px 0 var(--black);
+            --font-main: 'Plus Jakarta Sans', sans-serif;
             --font-mono: 'Space Mono', monospace;
         }
 
-        body { background: #fafafa; font-family: 'Inter', sans-serif; margin: 0; padding-bottom: 100px; }
+        body { font-family: var(--font-main); background: var(--bg); color: var(--white); line-height: 1.6; padding-bottom: 100px; margin: 0; }
         
-        .admin-nav { background: #000; color: #fff; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; }
-        .admin-nav h1 { font-size: 18px; font-weight: 900; text-transform: uppercase; margin: 0; }
+        .admin-nav { background: var(--surface); border-bottom: var(--border); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(16px); }
+        .admin-nav h1 { font-size: 18px; font-weight: 900; text-transform: uppercase; margin: 0; color: var(--primary); }
 
         .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
 
         .dashboard-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
-        .dashboard-header h2 { font-size: 40px; font-weight: 900; text-transform: uppercase; margin: 0; }
+        .dashboard-header h2 { font-size: 40px; font-weight: 900; text-transform: uppercase; margin: 0; color: var(--white); }
 
-        .tabs { display: flex; gap: 10px; margin-bottom: 30px; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: var(--border); padding-bottom: 10px; }
         .tab-btn {
-            background: #fff;
-            border: 3px solid #000;
-            padding: 10px 20px;
-            font-weight: 900;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 24px;
+            font-weight: 800;
             text-transform: uppercase;
             cursor: pointer;
             font-size: 12px;
+            color: var(--white);
+            font-family: var(--font-mono);
+            border-radius: 4px;
+            transition: 0.2s;
         }
-        .tab-btn.active { background: #000; color: #fff; box-shadow: 4px 4px 0 var(--orange); }
+        .tab-btn:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
+        .tab-btn.active { background: var(--primary); color: var(--black); box-shadow: 0 0 15px rgba(0, 255, 163, 0.4); transform: translateY(-2px); border-color: var(--primary); }
 
         .admin-section { display: none; }
         .admin-section.active { display: block; }
 
         /* OPPORTUNITY TABLE */
-        .brutal-table { width: 100%; border-collapse: collapse; border: 4px solid #000; background: #fff; box-shadow: 10px 10px 0 #000; }
-        .brutal-table th { background: #f0f0f0; border-bottom: 4px solid #000; padding: 15px; text-align: left; font-weight: 900; text-transform: uppercase; font-size: 11px; }
-        .brutal-table td { border-bottom: 1px solid #eee; padding: 15px; font-size: 13px; }
+        .brutal-table { width: 100%; border-collapse: separate; border-spacing: 0; background: var(--surface); border: var(--border); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); backdrop-filter: blur(16px); border-radius: 8px; overflow: hidden; }
+        .brutal-table th { background: rgba(0, 0, 0, 0.4); color: var(--white); text-align: left; padding: 15px; font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .brutal-table td { padding: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: var(--white); font-size: 13px; }
         .brutal-table tr:last-child td { border-bottom: none; }
 
         .status-badge {
-            padding: 4px 8px;
+            padding: 4px 10px;
             font-size: 10px;
-            font-weight: 900;
+            font-weight: 800;
             text-transform: uppercase;
-            border: 1px solid #000;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 4px;
+            font-family: var(--font-mono);
         }
-        .status-pending { background: #FFF9C4; }
-        .status-live { background: #C8E6C9; }
-        .status-rejected { background: #FFCDD2; }
-        .status-closed { background: #E0E0E0; color: #757575; }
+        .status-pending { background: rgba(255,234,0,0.1); color: var(--secondary); border-color: var(--secondary); }
+        .status-live { background: rgba(0,255,163,0.1); color: var(--primary); border-color: var(--primary); }
+        .status-rejected { background: rgba(255,61,0,0.1); color: var(--accent); border-color: var(--accent); }
+        .status-closed { background: rgba(255,255,255,0.1); color: var(--muted); border-color: rgba(255,255,255,0.2); }
 
         .action-btn {
-            padding: 6px 12px;
-            border: 2px solid #000;
-            font-weight: 900;
-            font-size: 10px;
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-weight: 800;
+            font-size: 11px;
             text-transform: uppercase;
             cursor: pointer;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
             margin-right: 5px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        .btn-approve { background: #00E676; }
-        .btn-reject { background: #FF5252; color: #fff; }
-        .btn-view { background: #000; color: #fff; }
+        .action-btn:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
+        .btn-approve { background: var(--primary) !important; color: var(--black) !important; border-color: var(--primary) !important; }
+        .btn-approve:hover { background: #00e592 !important; box-shadow: 0 0 15px rgba(0, 255, 163, 0.4) !important; }
+        .btn-reject { background: rgba(255, 61, 0, 0.1) !important; color: var(--accent) !important; border-color: var(--accent) !important; }
+        .btn-reject:hover { background: rgba(255, 61, 0, 0.2) !important; }
+        .btn-view { background: rgba(0, 0, 0, 0.6) !important; color: var(--white) !important; border-color: rgba(255, 255, 255, 0.1) !important; }
+        .btn-view:hover { background: rgba(0, 0, 0, 0.8) !important; }
 
         /* APPLICANT CARDS */
         .applicant-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
         .applicant-card {
-            background: #fff;
-            border: 3px solid #000;
+            background: var(--surface);
+            border: var(--border);
             padding: 25px;
-            box-shadow: 8px 8px 0 #000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
             gap: 15px;
+            backdrop-filter: blur(16px);
+            border-radius: 8px;
+            transition: 0.2s;
         }
-        .applicant-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; }
-        .applicant-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; background: #f9f9f9; padding: 15px; border: 1px solid #eee; }
+        .applicant-card:hover { transform: translateY(-4px); border-color: rgba(255, 255, 255, 0.15); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5); }
+        .applicant-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 15px; }
+        .applicant-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; background: rgba(0,0,0,0.3); padding: 15px; border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; }
         .meta-item { display: flex; flex-direction: column; }
-        .meta-label { font-size: 9px; font-weight: 900; color: #888; text-transform: uppercase; }
-        .meta-val { font-size: 12px; font-weight: 700; color: #000; word-break: break-all; }
+        .meta-label { font-size: 9px; font-weight: 800; color: var(--primary); text-transform: uppercase; font-family: var(--font-mono); }
+        .meta-val { font-size: 12px; font-weight: 700; color: var(--white); word-break: break-all; margin-top: 4px; }
 
         .hire-actions { display: flex; gap: 10px; margin-top: 10px; }
         .contact-btn {
             flex: 1;
-            padding: 10px;
-            border: 2px solid #000;
-            font-weight: 900;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-weight: 800;
             font-size: 11px;
             text-transform: uppercase;
             text-align: center;
             text-decoration: none;
-            color: #000;
-            background: #fff;
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+            font-family: var(--font-mono);
+            border-radius: 4px;
+            transition: 0.2s;
         }
-        .contact-btn:hover { background: #f0f0f0; }
-        .contact-btn.x { background: #000; color: #fff; }
+        .contact-btn:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
+        .contact-btn.x { background: rgba(0, 0, 0, 0.6); }
 
         @media (max-width: 800px) {
             .brutal-table { display: block; overflow-x: auto; }
         }
 
         .broadcast-badge {
-            background: #FFD700;
-            color: #000;
+            background: rgba(255, 234, 0, 0.1);
+            color: var(--secondary);
             padding: 2px 6px;
             font-size: 9px;
-            font-weight: 900;
-            border: 1px solid #000;
+            font-weight: 800;
+            border: 1px solid var(--secondary);
             margin-left: 5px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+        }
+
+        /* MODALS & OVERRIDES */
+        .modal-overlay {
+            backdrop-filter: blur(10px);
+        }
+        .modal-content, #key-modal > div {
+            background: var(--surface) !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.6) !important;
+            border-radius: 12px !important;
+            color: var(--white) !important;
+            backdrop-filter: blur(24px) !important;
+        }
+        
+        .modal-content h2, #key-modal h3 {
+            border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+            color: var(--primary) !important;
+        }
+        .modal-content label { color: var(--primary) !important; }
+
+        .modal-content input, .modal-content textarea, 
+        #announce-sec input, #announce-sec textarea {
+            background: rgba(0,0,0,0.3) !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            color: var(--white) !important;
+            border-radius: 6px !important;
+            font-family: inherit !important;
+        }
+        
+        .modal-content input:focus, .modal-content textarea:focus,
+        #announce-sec input:focus, #announce-sec textarea:focus {
+            border-color: var(--primary) !important;
+            outline: none !important;
+            box-shadow: 0 0 0 1px var(--primary) !important;
+        }
+        
+        #announce-sec > div {
+            background: var(--surface) !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4) !important;
+            backdrop-filter: blur(16px) !important;
+            border-radius: 12px !important;
+            color: var(--white) !important;
+        }
+        
+        #key-gen-zone {
+            border-top: 1px solid rgba(255,255,255,0.1) !important;
+        }
+        #key-gen-zone > div {
+            background: rgba(0,0,0,0.3) !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            border-radius: 6px !important;
+        }
+        
+        #keys-list > div {
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            background: rgba(255,255,255,0.02) !important;
+            border-radius: 6px !important;
+        }
+        
+        #key-modal button[onclick="closeKeyModal()"] {
+            color: var(--white) !important;
         }
     </style>
 </head>
@@ -141,25 +243,25 @@
             <button class="tab-btn" onclick="showSection('announce-sec')">Announcements</button>
         </div>
 
-        <div id="edit-modal" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:2000; align-items:center; justify-content:center; padding:20px;">
-            <div class="modal-content" style="background:#fff; border:5px solid #000; width:100%; max-width:600px; padding:40px; box-shadow:15px 15px 0 var(--orange); max-height:90vh; overflow-y:auto;">
-                <h2 style="text-transform:uppercase; font-weight:900; border-bottom:4px solid #000; padding-bottom:10px; margin-bottom:20px;">Edit Opportunity</h2>
+        <div id="edit-modal" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:2000; align-items:center; justify-content:center; padding:20px;">
+            <div class="modal-content" style="width:100%; max-width:600px; padding:40px; max-height:90vh; overflow-y:auto;">
+                <h2 style="text-transform:uppercase; font-weight:900; padding-bottom:10px; margin-bottom:20px;">Edit Opportunity</h2>
                 <div id="edit-form">
                     <div style="margin-bottom:15px;">
                         <label style="display:block; font-weight:900; font-size:11px; text-transform:uppercase;">Project Name</label>
-                        <input type="text" id="edit-project-name" style="width:100%; padding:10px; border:2px solid #000;">
+                        <input type="text" id="edit-project-name" style="width:100%; padding:10px;">
                     </div>
                     <div style="margin-bottom:15px;">
                         <label style="display:block; font-weight:900; font-size:11px; text-transform:uppercase;">Title</label>
-                        <input type="text" id="edit-title" style="width:100%; padding:10px; border:2px solid #000;">
+                        <input type="text" id="edit-title" style="width:100%; padding:10px;">
                     </div>
                     <div style="margin-bottom:15px;">
                         <label style="display:block; font-weight:900; font-size:11px; text-transform:uppercase;">Reward</label>
-                        <input type="text" id="edit-reward" style="width:100%; padding:10px; border:2px solid #000;">
+                        <input type="text" id="edit-reward" style="width:100%; padding:10px;">
                     </div>
                     <div style="margin-bottom:15px;">
                         <label style="display:block; font-weight:900; font-size:11px; text-transform:uppercase;">Description</label>
-                        <textarea id="edit-description" style="width:100%; padding:10px; border:2px solid #000; height:100px;"></textarea>
+                        <textarea id="edit-description" style="width:100%; padding:10px; height:100px;"></textarea>
                     </div>
                     <div style="display:flex; gap:10px;">
                         <button class="action-btn btn-approve" onclick="saveEdit()" style="flex:1;">Save Changes</button>
@@ -208,19 +310,19 @@
         </div>
 
         <!-- KEY MANAGEMENT MODAL -->
-        <div id="key-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); z-index:2000; align-items:center; justify-content:center;">
-            <div style="background:#fff; border:4px solid #000; padding:40px; width:100%; max-width:500px; box-shadow:20px 20px 0 var(--orange);">
+        <div id="key-modal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:2000; align-items:center; justify-content:center; padding:20px;">
+            <div style="padding:40px; width:100%; max-width:500px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
                     <h3 style="margin:0; text-transform:uppercase; font-weight:900;">Project Access Keys</h3>
-                    <button onclick="closeKeyModal()" style="background:none; border:none; font-size:24px; cursor:pointer;">✕</button>
+                    <button onclick="closeKeyModal()" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--white);">✕</button>
                 </div>
                 
                 <div id="keys-loading" style="text-align:center; padding:20px;">LOADING...</div>
                 <div id="keys-list" style="display:flex; flex-direction:column; gap:15px; margin-bottom:30px; max-height:300px; overflow-y:auto;"></div>
 
-                <div id="key-gen-zone" style="border-top:2px solid #eee; padding-top:20px;">
-                    <p style="font-size:11px; font-weight:900; color:#888; text-transform:uppercase; margin-bottom:15px;">Project Dashboard Access</p>
-                    <div style="background:#f0f0f0; padding:12px; border:2px solid #000; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;">
+                <div id="key-gen-zone" style="border-top:1px solid rgba(255,255,255,0.1); padding-top:20px;">
+                    <p style="font-size:11px; font-weight:900; color:var(--muted); text-transform:uppercase; margin-bottom:15px;">Project Dashboard Access</p>
+                    <div style="padding:12px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;">
                         <div style="font-size:10px; font-family:var(--font-mono); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-right:10px;" id="login-url-display">...</div>
                         <button class="action-btn" onclick="copyLoginLink()" style="margin:0; padding:4px 8px;">COPY LINK</button>
                     </div>
@@ -238,16 +340,16 @@
 
         <!-- ANNOUNCEMENTS SECTION -->
         <div id="announce-sec" class="admin-section">
-            <div style="background:#fff; border:4px solid #000; padding:30px; box-shadow:10px 10px 0 #000; max-width:800px;">
-                <h3 style="margin-top:0; font-weight:900; text-transform:uppercase;">Global Announcement System</h3>
-                <p style="font-size:14px; margin-bottom:20px;">Send a mass email to all opted-in users (Batch processing).</p>
+            <div style="padding:30px; max-width:800px;">
+                <h3 style="margin-top:0; font-weight:900; text-transform:uppercase; color: var(--primary);">Global Announcement System</h3>
+                <p style="font-size:14px; margin-bottom:20px; color: var(--muted);">Send a mass email to all opted-in users (Batch processing).</p>
                 <div style="margin-bottom:15px;">
                     <label style="display:block; font-weight:900; font-size:11px; text-transform:uppercase;">Subject Line</label>
-                    <input type="text" id="announce-subject" style="width:100%; padding:10px; border:2px solid #000;" placeholder="New Opportunity on CreatorChain 🚀">
+                    <input type="text" id="announce-subject" style="width:100%; padding:10px;" placeholder="New Opportunity on CreatorChain 🚀">
                 </div>
                 <div style="margin-bottom:15px;">
                     <label style="display:block; font-weight:900; font-size:11px; text-transform:uppercase;">Email HTML Content</label>
-                    <textarea id="announce-html" style="width:100%; padding:10px; border:2px solid #000; height:200px;" placeholder="<div>Hello...</div>"></textarea>
+                    <textarea id="announce-html" style="width:100%; padding:10px; height:200px;" placeholder="<div>Hello...</div>"></textarea>
                 </div>
                 <button class="action-btn btn-view" onclick="sendGlobalAnnouncement()" id="btn-announce" style="padding:15px 30px; font-size:14px; cursor:pointer;">SEND GLOBAL BROADCAST</button>
             </div>
@@ -284,7 +386,7 @@
             
             data.forEach(opp => {
                 const tr = document.createElement('tr');
-                const logoHtml = opp.logo ? `<img src="${opp.logo}" style="height:30px; width:30px; object-fit:contain; border:1px solid #000; padding:2px;">` : `<div style="height:30px; width:30px; background:#eee; display:flex; align-items:center; justify-content:center; border:1px solid #000; font-size:10px;">NA</div>`;
+                const logoHtml = opp.logo ? `<img src="${opp.logo}" style="height:30px; width:30px; object-fit:contain; border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:2px;">` : `<div style="height:30px; width:30px; background:rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.1); border-radius:4px; font-size:10px; color:var(--white);">NA</div>`;
                 tr.innerHTML = `
                     <td style="font-weight:900; display:flex; align-items:center; gap:10px;">
                         ${logoHtml}
@@ -314,7 +416,7 @@
             data.forEach(opp => {
                 const isLive = opp.status === 'live';
                 const tr = document.createElement('tr');
-                const logoHtml = opp.logo ? `<img src="${opp.logo}" style="height:30px; width:30px; object-fit:contain; border:1px solid #000; padding:2px;">` : `<div style="height:30px; width:30px; background:#eee; display:flex; align-items:center; justify-content:center; border:1px solid #000; font-size:10px;">NA</div>`;
+                const logoHtml = opp.logo ? `<img src="${opp.logo}" style="height:30px; width:30px; object-fit:contain; border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:2px;">` : `<div style="height:30px; width:30px; background:rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.1); border-radius:4px; font-size:10px; color:var(--white);">NA</div>`;
                 tr.innerHTML = `
                     <td style="font-weight:900; display:flex; align-items:center; gap:10px;">
                         ${logoHtml}
@@ -325,7 +427,7 @@
                     <td style="font-weight:900;">${opp.applications ? opp.applications.length : 0}</td>
                     <td><span class="status-badge ${isLive ? 'status-live' : 'status-closed'}">${opp.status}</span></td>
                     <td>
-                        <button class="action-btn" onclick="openKeyModal('${opp.id}')" style="background:#f0f0f0;">🔑 Manage Access</button>
+                        <button class="action-btn" onclick="openKeyModal('${opp.id}')">🔑 Manage Access</button>
                     </td>
                     <td>
                         <div style="display:flex; gap:5px; flex-wrap:wrap;">
