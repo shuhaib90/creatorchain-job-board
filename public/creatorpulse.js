@@ -187,9 +187,9 @@ function renderPostCard(post) {
     const isOwn = currentUser && currentUser.id === post.user_id;
     const likedClass = post.liked ? 'liked' : '';
     
-    const heartIcon = `<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
-    const commentIcon = `<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`;
-    const shareIcon = `<svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>`;
+    const heartIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+    const commentIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`;
+    const shareIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>`;
     const menuIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>`;
 
     const imageHtml = post.image_url ? `
@@ -614,7 +614,64 @@ function insertEmoji(e) {
 }
 
 function updateStats(posts) {
-    // Stats elements removed from main 3-column layout
+    const list = document.getElementById('top-contributors-list');
+    if (!list) return;
+    
+    // Calculate score based on: Posts * 10 + Likes * 5 + Comments * 3
+    const userStats = {};
+    
+    posts.forEach(p => {
+        if (!p.user_id || !p.profile) return;
+        if (!userStats[p.user_id]) {
+            userStats[p.user_id] = {
+                profile: p.profile,
+                postCount: 0,
+                likeCount: 0,
+                commentCount: 0,
+                score: 0
+            };
+        }
+        userStats[p.user_id].postCount += 1;
+        userStats[p.user_id].likeCount += (p.like_count || 0);
+        userStats[p.user_id].commentCount += (p.comment_count || 0);
+    });
+    
+    Object.values(userStats).forEach(u => {
+        u.score = (u.postCount * 10) + (u.likeCount * 5) + (u.commentCount * 3);
+    });
+    
+    const sorted = Object.values(userStats).sort((a, b) => b.score - a.score).slice(0, 5);
+    
+    if (sorted.length === 0) {
+        list.innerHTML = '<div style="font-size: 11px; color: var(--text-dim); text-align: center; padding: 12px 0;">No contributors yet</div>';
+        return;
+    }
+    
+    list.innerHTML = sorted.map((u, index) => {
+        const name = u.profile.name || 'User';
+        const handle = u.profile.username || 'user';
+        const avatar = u.profile.avatar_url || '/logo.png';
+        const rank = index + 1;
+        
+        return `
+            <div class="contributor-item">
+                <div class="contributor-left">
+                    <div class="contributor-avatar-wrap">
+                        <img class="contributor-avatar" src="${escHtml(avatar)}" onerror="this.src='/logo.png'">
+                        <div class="contributor-rank-badge">${rank}</div>
+                    </div>
+                    <div class="contributor-info">
+                        <span class="contributor-name">${escHtml(name)}</span>
+                        <span class="contributor-handle">@${escHtml(handle)}</span>
+                    </div>
+                </div>
+                <div class="contributor-score-wrap">
+                    <span class="contributor-score">${u.score}</span>
+                    <span class="contributor-label">Score</span>
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 function showToast(msg, type = 'success') {
