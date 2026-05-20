@@ -27,6 +27,12 @@
             --border: 4px solid #000;
             --shadow: 8px 8px 0px #000;
         }
+        body.dark-theme {
+            --bg: #121212; --white: #1e1e1e; --black: #ffffff;
+            --primary: #00e87a; --secondary: #ffe600; --accent: #ff3b00;
+            --border: 4px solid #fff;
+            --shadow: 8px 8px 0px #fff;
+        }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -68,8 +74,16 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            animation: logoPulse 6s infinite;
         }
-        .logo span { -webkit-text-stroke: 1.5px var(--black); color: transparent; }
+        @keyframes logoPulse {
+            0% { color: var(--black); }
+            25% { color: var(--primary); }
+            50% { color: var(--accent); }
+            75% { color: #5865F2; }
+            100% { color: var(--black); }
+        }
+        .logo span, .outline { -webkit-text-stroke: 1.5px var(--black); color: transparent; }
         .nav-links { display: flex; gap: 30px; }
         .nav-link {
             text-decoration: none;
@@ -372,11 +386,28 @@
 
     <nav>
         <div class="nav-inner">
-            <a href="/" class="logo">CREATOR<span>CHAIN</span></a>
+            <a href="/" class="logo">CREATOR<span class="outline">CHAIN</span></a>
             <div class="nav-links">
                 <a href="https://creatorchain.site" class="nav-link">OPPORTUNITIES</a>
                 <a href="/talent" class="nav-link">FIND TALENT</a>
                 <a href="/leaderboard" class="nav-link">LEADERBOARD</a>
+                <div id="auth-nav-box" style="display:flex; align-items:center; gap:10px;">
+                    
+                    <div class="notification-container" style="position:relative;">
+                        <button class="btn btn-sm bell-btn ringing" onclick="toggleNotificationMenu()" title="Notifications" style="background:var(--black); color:var(--white); border:2px solid var(--black); border-radius:50%; width:36px; height:36px; padding:0; display:flex; align-items:center; justify-content:center; position:relative; cursor:pointer;">
+                            <i data-lucide="bell" style="width:14px; height:14px;"></i>
+                            <span class="notification-badge" id="notifBadge" style="position:absolute; top:-2px; right:-2px; background:var(--accent); color:#fff; font-size:10px; font-weight:900; padding:2px 4px; border-radius:10px; border:2px solid var(--black);">1</span>
+                        </button>
+                        <div class="notification-menu" id="notificationMenu" style="position:absolute; top:100%; right:0; margin-top:10px; width:280px; background:var(--white); border:3px solid var(--black); box-shadow:8px 8px 0 var(--black); display:none; flex-direction:column; z-index:10006;">
+                            <div style="background:var(--black); color:var(--primary); padding:10px 15px; font-family:'Space Mono', monospace; font-size:11px; font-weight:900; text-transform:uppercase;">NOTIFICATIONS</div>
+                            <a href="#" style="padding:15px; text-decoration:none; color:var(--black); border-bottom:1px solid #eee; transition:background 0.2s;" onclick="this.style.background='var(--bg)'; return false;">
+                                <div style="font-weight:900; font-size:13px; margin-bottom:4px;">New Opportunity Added</div>
+                                <div style="font-size:12px; color:#888; line-height:1.4;">A new Exclusive Web3 Bounty is available.</div>
+                                <div style="font-family:'Space Mono', monospace; font-size:10px; color:var(--primary); margin-top:6px; font-weight:700;">2 minutes ago</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
@@ -748,7 +779,28 @@
             set('twitter:description', desc);
         }
 
-        document.addEventListener('DOMContentLoaded', init);
+        }
+        
+        function toggleNotificationMenu() {
+            const menu = document.getElementById('notificationMenu');
+            if (menu) {
+                menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+                const bellBtn = document.querySelector('.bell-btn');
+                if (bellBtn) bellBtn.classList.remove('ringing');
+                const badge = document.getElementById('notifBadge');
+                if (badge) badge.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if(savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                const icon = document.getElementById('theme-icon');
+                if(icon) icon.setAttribute('data-lucide', 'sun');
+            }
+            init();
+        });
     </script>
 </body>
 </html>

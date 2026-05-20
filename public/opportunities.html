@@ -137,21 +137,7 @@
             .opportunity-grid { grid-template-columns: 1fr; }
         }
 
-        /* ─── Mobile Restriction ─────────────────────────────── */
-        (function() {
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            if (isMobile && !window.location.search.includes('bypass=true')) {
-                const overlay = document.createElement('div');
-                overlay.style = "position:fixed; inset:0; background:#0a0a0a; z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px; text-align:center; color:#fff;";
-                overlay.innerHTML = `
-                    <div style="font-size:60px; margin-bottom:20px;">💻</div>
-                    <h1 style="font-size:32px; color:#FF4D00; -webkit-text-stroke:0;">SWITCH TO DESKTOP</h1>
-                    <p style="font-family: 'Space Mono', monospace; font-size:14px; margin-top:20px; color:#888; max-width:300px;">CreatorChain terminal requires a full desktop view for optimal performance and security protocols.</p>
-                `;
-                document.documentElement.appendChild(overlay);
-                document.body.style.display = 'none';
-            }
-        })();
+
     </style>
 </head>
 <body>
