@@ -1585,6 +1585,7 @@
                         <label>Telegram Username (Optional)</label>
                         <input type="text" id="s-telegram" placeholder="@username">
                     </div>
+                </div>
 
                 <div class="form-section-title">02 // LAUNCH OPPORTUNITY DETAILS (Optional)</div>
                 <div class="field">
@@ -1610,8 +1611,6 @@
             </form>
         </div>
     </div>
-</div>
-
 </div>
 
 <!-- ======================== STATUS CHECKER MODAL ======================== -->
@@ -1648,16 +1647,10 @@
     const SUPABASE_KEY = 'sb_publishable_SdGsB-hhvxF2-rq_fBiM0A_y3_mQn2n';
     let db, currentUser = null, currentProfile = null;
     
-    // Theme logic
-    }
+    // Theme logic removed
     
     document.addEventListener('DOMContentLoaded', () => {
-        const savedTheme = localStorage.getItem('theme');
-        if(savedTheme === 'dark') {
-            document.body.classList.add('dark-theme');
-            const icon = document.getElementById('theme-icon');
-            if(icon) icon.setAttribute('data-lucide', 'sun');
-        }
+        
     });
 
     // BADGE LOGIC & SVG GENERATOR
@@ -3251,8 +3244,6 @@
     // ─── Dropdowns ─────────────────────────────────────────
     function toggleExplore() {
         document.getElementById('exploreMenu').classList.toggle('show');
-    }
-
     function toggleNotificationMenu() {
         const menu = document.getElementById('notificationMenu');
         menu.classList.toggle('show');

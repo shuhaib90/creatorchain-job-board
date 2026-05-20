@@ -779,8 +779,6 @@
             set('twitter:description', desc);
         }
 
-        }
-        
         function toggleNotificationMenu() {
             const menu = document.getElementById('notificationMenu');
             if (menu) {
@@ -793,12 +791,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if(savedTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-                const icon = document.getElementById('theme-icon');
-                if(icon) icon.setAttribute('data-lucide', 'sun');
-            }
+            
             init();
         });
     </script>
