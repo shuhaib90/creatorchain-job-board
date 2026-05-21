@@ -513,26 +513,17 @@
 
         .hero-section { 
             padding: 100px 0; 
-            background-color: var(--black); 
+            background-image: url('/landing-hero.png'); 
+            background-size: cover; 
+            background-position: center; 
             position: relative; 
             border-bottom: 4px solid var(--black); 
-            overflow: hidden;
-        }
-        .hero-video-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-            opacity: 0.8;
         }
         .hero-section::before { 
             content: ''; 
             position: absolute; 
             inset: 0; 
-            background: linear-gradient(180deg, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.3) 100%); 
+            background: rgba(255, 255, 255, 0.4); 
             z-index: 1; 
         }
         .hero-section .container { position: relative; z-index: 2; }
@@ -1100,9 +1091,6 @@
 
 <!-- HERO -->
 <section class="hero-section hero-sa">
-    <video autoplay loop muted playsinline class="hero-video-bg">
-        <source src="/hero-bg.mp4" type="video/mp4">
-    </video>
     <div class="container hero">
         <div>
             <h1>EARN FROM <span class="outline">WEB3</span>:<br><span class="green" style="font-size: 0.8em; display:inline-block; margin-top:8px;">FIND BOUNTIES, JOBS & PAID CAMPAIGNS</span></h1>
