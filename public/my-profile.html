@@ -175,6 +175,37 @@
         .pcard-footer { display: flex; gap: 16px; border-top: 2px solid rgba(0,0,0,0.05); body.dark-theme & { border-top-color: rgba(255,255,255,0.05); } padding-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--muted); font-weight: 700; }
         .pcard-stat { display: flex; align-items: center; gap: 6px; }
 
+        /* INLINE PULSE EDIT MODE */
+        .pcard.editing { border-color: var(--primary); box-shadow: 6px 6px 0 var(--primary); }
+        .pcard.editing .pcard-body { display: none; }
+        .pcard.editing .pcard-footer { display: none; }
+        .pcard.editing .pcard-actions { display: none; }
+        .pulse-edit-zone { display: none; flex-direction: column; gap: 12px; }
+        .pcard.editing .pulse-edit-zone { display: flex; }
+        .pulse-edit-textarea {
+            width: 100%; min-height: 120px; padding: 16px; border: 3px solid var(--border);
+            font-family: var(--sans); font-size: 15px; line-height: 1.6; color: var(--text);
+            background: var(--bg); resize: vertical; outline: none; box-shadow: inset 3px 3px 0 rgba(0,0,0,0.04);
+        }
+        .pulse-edit-textarea:focus { border-color: var(--primary); background: #f0fff8; }
+        body.dark-theme .pulse-edit-textarea:focus { background: #0a1a12; }
+        .pulse-edit-bar {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .pulse-char-count { font-family: var(--mono); font-size: 11px; color: var(--muted); font-weight: 700; }
+        .pulse-char-count.over { color: var(--accent); }
+        .pulse-edit-btns { display: flex; gap: 10px; }
+        .pulse-edit-btns button {
+            font-family: var(--mono); font-size: 11px; font-weight: 900; padding: 10px 20px;
+            border: 3px solid var(--border); cursor: pointer; text-transform: uppercase;
+            transition: all .1s; display: flex; align-items: center; gap: 6px;
+        }
+        .pulse-save-btn { background: var(--primary); color: #000; box-shadow: 4px 4px 0 var(--border); }
+        .pulse-save-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--border); }
+        .pulse-save-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: 4px 4px 0 var(--border); }
+        .pulse-cancel-btn { background: var(--card); color: var(--text); box-shadow: 4px 4px 0 var(--border); }
+        .pulse-cancel-btn:hover { background: #f5f5f5; }
+
         /* TOAST */
         #toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
         .toast-item { background: var(--card); border: 3px solid var(--border); box-shadow: 4px 4px 0 var(--border); padding: 12px 20px; font-family: var(--mono); font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 10px; pointer-events: auto; animation: toastSlide .3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; transition: all .3s; }
@@ -317,6 +348,16 @@ function renderUserPulses(posts, profile) {
                 <div>${content}${edited}</div>
                 ${imageHtml}
             </div>
+            <div class="pulse-edit-zone">
+                <textarea class="pulse-edit-textarea" id="edit-ta-${post.id}" maxlength="1000" oninput="updateCharCount('${post.id}')">${escHtml(post.content)}</textarea>
+                <div class="pulse-edit-bar">
+                    <span class="pulse-char-count" id="edit-cc-${post.id}">0/1000</span>
+                    <div class="pulse-edit-btns">
+                        <button class="pulse-cancel-btn" onclick="cancelEdit('${post.id}')">CANCEL</button>
+                        <button class="pulse-save-btn" id="edit-save-${post.id}" onclick="saveEdit('${post.id}')">SAVE</button>
+                    </div>
+                </div>
+            </div>
             <div class="pcard-footer">
                 <span class="pcard-stat"><i data-lucide="heart" style="width:14px;height:14px;color:var(--accent);fill:var(--accent)"></i> ${post.like_count || 0}</span>
                 <span class="pcard-stat"><i data-lucide="message-square" style="width:14px;height:14px"></i> ${post.comment_count || 0}</span>
@@ -346,19 +387,58 @@ async function refreshPulses() {
 }
 
 async function editPulse(postId) {
+    const card = document.getElementById('pulse-' + postId);
+    if (!card) return;
+    // Enter edit mode
+    card.classList.add('editing');
+    const ta = document.getElementById('edit-ta-' + postId);
+    if (ta) {
+        ta.focus();
+        ta.setSelectionRange(ta.value.length, ta.value.length);
+        updateCharCount(postId);
+    }
+}
+
+function updateCharCount(postId) {
+    const ta = document.getElementById('edit-ta-' + postId);
+    const cc = document.getElementById('edit-cc-' + postId);
+    const saveBtn = document.getElementById('edit-save-' + postId);
+    if (!ta || !cc) return;
+    const len = ta.value.trim().length;
+    cc.textContent = len + '/1000';
+    cc.classList.toggle('over', len > 1000);
+    if (saveBtn) saveBtn.disabled = len === 0 || len > 1000;
+}
+
+function cancelEdit(postId) {
+    const card = document.getElementById('pulse-' + postId);
+    if (!card) return;
+    card.classList.remove('editing');
+    // Restore original text
     const post = userPosts.find(p => p.id === postId);
-    if (!post) return;
-    const newContent = prompt('Edit your pulse:', post.content);
-    if (newContent === null || !newContent.trim()) return;
+    const ta = document.getElementById('edit-ta-' + postId);
+    if (post && ta) ta.value = post.content;
+}
+
+async function saveEdit(postId) {
+    const ta = document.getElementById('edit-ta-' + postId);
+    const saveBtn = document.getElementById('edit-save-' + postId);
+    if (!ta) return;
+    const newContent = ta.value.trim();
+    if (!newContent) return;
+    if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'SAVING...'; }
     try {
         const { error } = await db.from('creatorpulse_posts')
-            .update({ content: newContent.trim(), is_edited: true, updated_at: new Date().toISOString() })
+            .update({ content: newContent, is_edited: true, updated_at: new Date().toISOString() })
             .eq('id', postId);
         if (error) throw error;
         showToast('Pulse updated ✏️');
         await refreshPulses();
     } catch(e) {
         showToast('Edit failed: ' + e.message, 'error');
+        if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'SAVE'; }
+        const card = document.getElementById('pulse-' + postId);
+        if (card) card.classList.remove('editing');
     }
 }
 
