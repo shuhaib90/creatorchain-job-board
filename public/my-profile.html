@@ -423,7 +423,7 @@ async function init(){
     const sk=p.skills||[];
     const av=p.avatar_url||`https://unavatar.io/twitter/${p.username}`;
     const isPro=p.badge_level==='pro'||(p.approved_submissions||0)>5;
-    const rep=p.reputation_score||p.score||0;
+    const rep=p.score||0;
     const handle=p.username||'builder';
 
     // Fetch opportunities
@@ -463,7 +463,7 @@ async function init(){
                 <div>
                     <div class="sec-label">REPUTATION</div>
                     <div class="stats">
-                        <div class="stat"><b>${rep}</b><small>TRUST</small></div>
+                        <div class="stat"><b>${rep}</b><small>SCORE</small></div>
                         <div class="stat"><b>${p.approved_submissions||0}</b><small>APPROVED</small></div>
                         <div class="stat"><b>${p.total_submissions||0}</b><small>TOTAL</small></div>
                     </div>

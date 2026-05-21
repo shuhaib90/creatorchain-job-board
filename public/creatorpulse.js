@@ -168,6 +168,31 @@ function renderPosts(posts) {
     
     container.innerHTML = posts.map(renderPostCard).join('');
     if (window.lucide) lucide.createIcons();
+    
+    setupViewTracking();
+}
+
+let viewObserver = null;
+function setupViewTracking() {
+    if (viewObserver) viewObserver.disconnect();
+    
+    viewObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const postId = entry.target.id.replace('post-', '');
+                viewObserver.unobserve(entry.target);
+                
+                // Call RPC to increment view count
+                db.rpc('increment_post_view', { p_post_id: postId }).catch(e => {
+                    console.warn('Failed to increment view:', e);
+                });
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    document.querySelectorAll('.post-card').forEach(card => {
+        viewObserver.observe(card);
+    });
 }
 
 function renderEmpty() {
@@ -615,44 +640,31 @@ function insertEmoji(e) {
     if (counter) counter.textContent = input.value.length;
 }
 
+// ─── Score & Stats ────────────────────────────────────
 function updateStats(posts) {
     const list = document.getElementById('top-contributors-list');
     if (!list) return;
     
-    // Calculate score based on: Posts * 10 + Likes * 5 + Comments * 3
-    const userStats = {};
-    
+    // Group users to find unique profiles
+    const userMap = {};
     posts.forEach(p => {
         if (!p.user_id || !p.profile) return;
-        if (!userStats[p.user_id]) {
-            userStats[p.user_id] = {
-                profile: p.profile,
-                postCount: 0,
-                likeCount: 0,
-                commentCount: 0,
-                score: 0
-            };
-        }
-        userStats[p.user_id].postCount += 1;
-        userStats[p.user_id].likeCount += (p.like_count || 0);
-        userStats[p.user_id].commentCount += (p.comment_count || 0);
+        userMap[p.user_id] = p.profile;
     });
     
-    Object.values(userStats).forEach(u => {
-        u.score = (u.postCount * 10) + (u.likeCount * 5) + (u.commentCount * 3);
-    });
-    
-    const sorted = Object.values(userStats).sort((a, b) => b.score - a.score).slice(0, 5);
+    // Sort by unified backend score
+    const sorted = Object.values(userMap).sort((a, b) => (b.score || 0) - (a.score || 0)).slice(0, 5);
     
     if (sorted.length === 0) {
         list.innerHTML = '<div style="font-size: 11px; color: var(--text-dim); text-align: center; padding: 12px 0;">No contributors yet</div>';
         return;
     }
     
-    list.innerHTML = sorted.map((u, index) => {
-        const name = u.profile.name || 'User';
-        const handle = u.profile.username || 'user';
-        const avatar = u.profile.avatar_url || '/logo.png';
+    list.innerHTML = sorted.map((profile, index) => {
+        const name = profile.name || 'User';
+        const handle = profile.username || 'user';
+        const avatar = profile.avatar_url || '/logo.png';
+        const score = profile.score || 0;
         const rank = index + 1;
         
         return `
@@ -668,7 +680,7 @@ function updateStats(posts) {
                     </div>
                 </div>
                 <div class="contributor-score-wrap">
-                    <span class="contributor-score">${u.score}</span>
+                    <span class="contributor-score">${score}</span>
                     <span class="contributor-label">Score</span>
                 </div>
             </a>

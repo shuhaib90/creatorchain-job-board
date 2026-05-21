@@ -425,11 +425,11 @@
 
                 if (pErr) throw pErr;
 
-                // Sort by approved_submissions desc, then reputation_score desc
+                // Sort strictly by unified score desc, then approved_submissions desc
                 profiles.sort((a, b) => {
-                    const aDiff = (b.approved_submissions || 0) - (a.approved_submissions || 0);
-                    if (aDiff !== 0) return aDiff;
-                    return (b.reputation_score || b.score || 0) - (a.reputation_score || a.score || 0);
+                    const scoreDiff = (b.score || b.reputation_score || 0) - (a.score || a.reputation_score || 0);
+                    if (scoreDiff !== 0) return scoreDiff;
+                    return (b.approved_submissions || 0) - (a.approved_submissions || 0);
                 });
 
                 // Show users who have any activity: approved_submissions > 0 OR reputation_score > 0 OR total_submissions > 0
@@ -509,16 +509,16 @@
                     <div class="u-points">
                         <div class="stat-row">
                             <div class="stat-box">
+                                <span class="stat-val" style="color:var(--primary); text-shadow:2px 2px 0 #000;">${u.score}</span>
+                                <span class="stat-lbl">SCORE</span>
+                            </div>
+                            <div class="stat-box">
                                 <span class="stat-val">${u.count}</span>
                                 <span class="stat-lbl">OPS</span>
                             </div>
                             <div class="stat-box">
                                 <span class="stat-val">${u.success}%</span>
                                 <span class="stat-lbl">SUCCESS</span>
-                            </div>
-                            <div class="stat-box">
-                                <span class="stat-val">${u.location.substring(0,6).toUpperCase()}</span>
-                                <span class="stat-lbl">SECTOR</span>
                             </div>
                         </div>
                     </div>

@@ -40,10 +40,10 @@ BEGIN
     IF v_profile_id IS NOT NULL THEN
         UPDATE user_profiles
         SET 
-            total_submissions = COALESCE(total_submissions, 0) + 1,
-            reputation_score = COALESCE(reputation_score, 0) + 1,
-            score = COALESCE(score, 0) + 1
+            total_submissions = COALESCE(total_submissions, 0) + 1
         WHERE id = v_profile_id;
+        
+        PERFORM calculate_user_score(v_profile_id);
         
         RETURN jsonb_build_object('success', true, 'matched_by', v_match_strategy, 'profile_id', v_profile_id);
     ELSE
@@ -89,10 +89,10 @@ BEGIN
     IF v_profile_id IS NOT NULL THEN
         UPDATE user_profiles
         SET 
-            approved_submissions = COALESCE(approved_submissions, 0) + 1,
-            reputation_score = ((COALESCE(approved_submissions, 0) + 1) * 10) + COALESCE(total_submissions, 0),
-            score = ((COALESCE(approved_submissions, 0) + 1) * 10) + COALESCE(total_submissions, 0)
+            approved_submissions = COALESCE(approved_submissions, 0) + 1
         WHERE id = v_profile_id;
+        
+        PERFORM calculate_user_score(v_profile_id);
         
         RETURN jsonb_build_object('success', true, 'matched_by', v_match_strategy, 'profile_id', v_profile_id);
     ELSE

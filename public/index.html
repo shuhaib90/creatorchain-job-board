@@ -2958,9 +2958,9 @@
         const skills = profile.skills || [];
         const handle = profile.username || profile.twitter?.replace('@', '') || 'anonymous';
         const isPro = profile.badge_level === 'pro' || (profile.approved_submissions || 0) > 5;
-        const score = profile.reputation_score || Math.floor(Math.random() * 20) + 70;
+        const score = profile.score || 0;
         const approved = profile.approved_submissions || 0;
-        const total = profile.total_submissions || approved + Math.floor(Math.random() * 3);
+        const total = profile.total_submissions || approved || 0;
         
         const avatarToUse = profile.avatar_url || avatar || 'https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png';
 
