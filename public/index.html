@@ -152,6 +152,20 @@
         section.cat-section { padding: 80px 0; position: relative; }
         .section-num { position: absolute; top: 20px; left: -10px; font-size: 130px; font-weight: 900; color: var(--black); opacity: 0.05; z-index: -1; line-height: 1; }
         .section-title { font-size: 56px; margin-bottom: 40px; }
+
+        /* SCROLL ANIMATION INITIAL STATES */
+        .sa-hidden { opacity: 0; }
+        .sa-up { transform: translateY(40px); }
+        .sa-left { transform: translateX(-40px); }
+        .sa-right { transform: translateX(40px); }
+        .sa-scale { transform: scale(0.92); }
+        .hero-sa h1, .hero-sa p, .hero-sa .subscribe-group,
+        .hero-sa .hero-stats-card { opacity: 0; }
+        @media (prefers-reduced-motion: reduce) {
+            .sa-hidden, .sa-up, .sa-left, .sa-right, .sa-scale,
+            .hero-sa h1, .hero-sa p, .hero-sa .subscribe-group,
+            .hero-sa .hero-stats-card { opacity: 1 !important; transform: none !important; }
+        }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 35px; }
 
         /* NOTIFICATIONS */
@@ -1067,7 +1081,7 @@
 </div>
 
 <!-- HERO -->
-<section class="hero-section">
+<section class="hero-section hero-sa">
     <div class="container hero">
         <div>
             <h1>EARN FROM <span class="outline">WEB3</span>:<br><span class="green" style="font-size: 0.8em; display:inline-block; margin-top:8px;">FIND BOUNTIES, JOBS & PAID CAMPAIGNS</span></h1>
@@ -3212,6 +3226,9 @@
         await loadListings();
         lucide.createIcons();
 
+        // Initialize scroll animations after content is loaded
+        if (typeof anime !== 'undefined') initScrollAnimations();
+
         // Deep Link: Profiles (?u=@handle)
         const urlParams = new URLSearchParams(window.location.search);
         
@@ -3345,6 +3362,179 @@
     function closeInbox() {
         document.getElementById('inbox-modal').style.display = 'none';
         document.body.style.overflow = 'auto';
+    }
+
+    // ─── Scroll Animations (anime.js + IntersectionObserver) ─────
+    function initScrollAnimations() {
+        // ── 1. Hero entrance (immediate on load) ──
+        const heroSection = document.querySelector('.hero-sa');
+        if (heroSection) {
+            const tl = anime.timeline({ easing: 'easeOutExpo' });
+            tl.add({
+                targets: '.hero-sa h1',
+                opacity: [0, 1],
+                translateY: [50, 0],
+                duration: 1000,
+            })
+            .add({
+                targets: '.hero-sa p',
+                opacity: [0, 1],
+                translateY: [30, 0],
+                duration: 800,
+            }, '-=600')
+            .add({
+                targets: '.hero-sa .subscribe-group',
+                opacity: [0, 1],
+                translateY: [25, 0],
+                duration: 800,
+            }, '-=500')
+            .add({
+                targets: '.hero-sa .btn',
+                opacity: [0, 1],
+                translateY: [20, 0],
+                duration: 600,
+                delay: anime.stagger(80),
+            }, '-=500')
+            .add({
+                targets: '.hero-sa .hero-stats-card',
+                opacity: [0, 1],
+                translateX: [60, 0],
+                scale: [0.9, 1],
+                duration: 1000,
+                easing: 'easeOutBack',
+            }, '-=800');
+        }
+
+        // ── 2. Section titles — slide in from left on scroll ──
+        const sectionTitles = document.querySelectorAll('.section-title');
+        sectionTitles.forEach(el => {
+            el.classList.add('sa-hidden', 'sa-left');
+        });
+
+        // ── 3. Section numbers — fade in ──
+        const sectionNums = document.querySelectorAll('.section-num');
+        sectionNums.forEach(el => {
+            el.style.opacity = '0';
+        });
+
+        // ── 4. Cards — staggered fade up ──
+        const allCards = document.querySelectorAll('.card');
+        allCards.forEach(card => {
+            card.classList.add('sa-hidden', 'sa-up');
+        });
+
+        // ── 5. Footer — fade up ──
+        const footer = document.querySelector('footer');
+        if (footer) {
+            footer.classList.add('sa-hidden', 'sa-up');
+        }
+
+        // ── 6. AI Search card ──
+        const aiCard = document.querySelector('.ai-search-card');
+        if (aiCard) {
+            aiCard.classList.add('sa-hidden', 'sa-scale');
+        }
+
+        // ── IntersectionObserver for scroll-triggered reveals ──
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+
+                const el = entry.target;
+                observer.unobserve(el);
+
+                // Section title
+                if (el.classList.contains('section-title')) {
+                    anime({
+                        targets: el,
+                        opacity: [0, 1],
+                        translateX: [-40, 0],
+                        duration: 900,
+                        easing: 'easeOutExpo',
+                    });
+                    // Also animate the sibling section-num
+                    const num = el.closest('.cat-section')?.querySelector('.section-num');
+                    if (num) {
+                        anime({
+                            targets: num,
+                            opacity: [0, 0.05],
+                            translateY: [30, 0],
+                            duration: 1200,
+                            easing: 'easeOutExpo',
+                        });
+                    }
+                }
+
+                // Cards (observe the .grid container)
+                if (el.classList.contains('grid')) {
+                    const cards = el.querySelectorAll('.card');
+                    anime({
+                        targets: cards,
+                        opacity: [0, 1],
+                        translateY: [40, 0],
+                        duration: 700,
+                        easing: 'easeOutCubic',
+                        delay: anime.stagger(100, { start: 0 }),
+                    });
+                }
+
+                // Footer
+                if (el.tagName === 'FOOTER') {
+                    anime({
+                        targets: el,
+                        opacity: [0, 1],
+                        translateY: [40, 0],
+                        duration: 1000,
+                        easing: 'easeOutExpo',
+                    });
+                }
+
+                // AI search card
+                if (el.classList.contains('ai-search-card')) {
+                    anime({
+                        targets: el,
+                        opacity: [0, 1],
+                        scale: [0.92, 1],
+                        duration: 900,
+                        easing: 'easeOutBack',
+                    });
+                }
+
+                // Generic sa-hidden elements
+                if (el.classList.contains('sa-hidden') && !el.classList.contains('section-title')
+                    && el.tagName !== 'FOOTER' && !el.classList.contains('ai-search-card')
+                    && !el.classList.contains('card')) {
+                    anime({
+                        targets: el,
+                        opacity: [0, 1],
+                        translateY: el.classList.contains('sa-up') ? [40, 0] : undefined,
+                        translateX: el.classList.contains('sa-left') ? [-40, 0] :
+                                    el.classList.contains('sa-right') ? [40, 0] : undefined,
+                        scale: el.classList.contains('sa-scale') ? [0.92, 1] : undefined,
+                        duration: 800,
+                        easing: 'easeOutExpo',
+                    });
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px',
+        });
+
+        // Observe all animated elements
+        sectionTitles.forEach(el => observer.observe(el));
+        document.querySelectorAll('.grid').forEach(el => observer.observe(el));
+        if (footer) observer.observe(footer);
+        if (aiCard) observer.observe(aiCard);
+
+        // Observe ended section title separately (has inline style)
+        const endedTitle = document.querySelector('#ended-section .section-title');
+        if (endedTitle && !endedTitle.classList.contains('sa-hidden')) {
+            endedTitle.classList.add('sa-hidden', 'sa-left');
+            observer.observe(endedTitle);
+        }
     }
 
     </script>
