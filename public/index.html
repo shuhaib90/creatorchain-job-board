@@ -18,9 +18,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer></script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" defer></script>
     <style>
         :root {
             --bg: #f5f0e8; --surface: #ffffff; --black: #0a0a0a;
@@ -161,10 +161,21 @@
         .sa-scale { transform: scale(0.92); }
         .hero-sa h1, .hero-sa p, .hero-sa .subscribe-group,
         .hero-sa .hero-stats-card { opacity: 0; }
+        /* CSS SAFETY NET: reveal content if JS/anime hasn't kicked in after 1.5s */
+        @keyframes safeReveal {
+            to { opacity: 1; transform: none; }
+        }
+        .sa-hidden, .hero-sa h1, .hero-sa p, .hero-sa .subscribe-group,
+        .hero-sa .hero-stats-card {
+            animation: safeReveal 0.6s ease forwards;
+            animation-delay: 1.5s;
+        }
+        /* Cancel the fallback once JS has taken over */
+        .sa-animated { animation: none !important; }
         @media (prefers-reduced-motion: reduce) {
             .sa-hidden, .sa-up, .sa-left, .sa-right, .sa-scale,
             .hero-sa h1, .hero-sa p, .hero-sa .subscribe-group,
-            .hero-sa .hero-stats-card { opacity: 1 !important; transform: none !important; }
+            .hero-sa .hero-stats-card { opacity: 1 !important; transform: none !important; animation: none !important; }
         }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 35px; }
 
@@ -3217,11 +3228,14 @@
     // ─── Boot ──────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', async () => {
         if(!initSupabase()) return;
-        await loadListings();
-        lucide.createIcons();
 
-        // Initialize scroll animations after content is loaded
+        // Fire hero animations immediately — don't wait for data
+        if (typeof lucide !== 'undefined') lucide.createIcons();
         if (typeof anime !== 'undefined') initScrollAnimations();
+
+        // Load data in background, then re-render icons for dynamic cards
+        await loadListings();
+        if (typeof lucide !== 'undefined') lucide.createIcons();
 
         // Deep Link: Profiles (?u=@handle)
         const urlParams = new URLSearchParams(window.location.search);
@@ -3354,6 +3368,8 @@
         // ── 1. Hero entrance (immediate on load) ──
         const heroSection = document.querySelector('.hero-sa');
         if (heroSection) {
+            // Cancel CSS fallback on hero children — anime.js is taking over
+            heroSection.querySelectorAll('h1, p, .subscribe-group, .hero-stats-card, .btn').forEach(el => el.classList.add('sa-animated'));
             const tl = anime.timeline({ easing: 'easeOutExpo' });
             tl.add({
                 targets: '.hero-sa h1',
@@ -3427,6 +3443,7 @@
 
                 const el = entry.target;
                 observer.unobserve(el);
+                el.classList.add('sa-animated'); // Cancel CSS fallback
 
                 // Section title
                 if (el.classList.contains('section-title')) {
