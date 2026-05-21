@@ -1007,17 +1007,12 @@
         <div class="nav-secondary">
             
             <div class="notification-container">
-                <button class="btn btn-sm btn-black bell-btn ringing" onclick="toggleNotificationMenu()" title="Notifications">
+                <button class="btn btn-sm btn-black bell-btn" onclick="toggleNotificationMenu()" title="Notifications">
                     <i data-lucide="bell" style="width:14px; height:14px;"></i>
-                    <span class="notification-badge" id="notifBadge">1</span>
+                    <span class="notification-badge" id="notifBadge" style="display:none;">0</span>
                 </button>
                 <div class="notification-menu" id="notificationMenu">
                     <div class="notification-header">NOTIFICATIONS</div>
-                    <a href="#" class="notification-item unread" onclick="this.classList.remove('unread'); return false;">
-                        <div class="notif-title">New Opportunity Added</div>
-                        <div class="notif-desc">A new Exclusive Web3 Bounty is available.</div>
-                        <div class="notif-time">2 minutes ago</div>
-                    </a>
                 </div>
             </div>
             <a href="https://t.me/creatorchainbot" target="_blank" class="btn btn-sm btn-primary" title="Telegram Bot">
@@ -1702,6 +1697,7 @@
     async function initSupabase() {
         try { 
             db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); 
+            window.db = db;
             checkUser(); // Check initial user state
             return true; 
         }
@@ -3250,16 +3246,7 @@
     function toggleExplore() {
         document.getElementById('exploreMenu').classList.toggle('show');
     }
-    function toggleNotificationMenu() {
-        const menu = document.getElementById('notificationMenu');
-        menu.classList.toggle('show');
-        
-        const bellBtn = document.querySelector('.bell-btn');
-        if (bellBtn) bellBtn.classList.remove('ringing');
-        
-        const badge = document.getElementById('notifBadge');
-        if (badge) badge.style.display = 'none';
-    }
+
 
     function toggleMobileMenu() {
         const overlay = document.getElementById('mobile-nav-overlay');
@@ -3574,5 +3561,6 @@
         </div>
     </div>
 
+    <script src="/notifications.js"></script>
 </body>
 </html>
