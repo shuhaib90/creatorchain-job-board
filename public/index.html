@@ -1107,20 +1107,11 @@
 
 <!-- CATEGORIES -->
 <div class="container">
-    <section class="cat-section" id="creatorchain-section">
+    <section class="cat-section" id="creatorchain-section" style="padding-top:0;">
         <div class="section-num">00</div>
         <!-- EXCLUSIVE PROMO BANNER WITH FOX MASCOT -->
-        <div id="exclusive-banner" onclick="window.location.href='/exclusive.html'" style="cursor:pointer; background:#000; border:2px solid #00e87a; padding:0; margin-bottom:0; position:relative; overflow:visible; width:100vw; margin-left:calc(-50vw + 50%);">
-            <!-- Corner bracket decorations -->
-            <div style="position:absolute; top:-1px; left:-1px; width:14px; height:14px; border-top:3px solid #00e87a; border-left:3px solid #00e87a; pointer-events:none; z-index:10;"></div>
-            <div style="position:absolute; top:-1px; right:-1px; width:14px; height:14px; border-top:3px solid #00e87a; border-right:3px solid #00e87a; pointer-events:none; z-index:10;"></div>
-            <div style="position:absolute; bottom:-1px; left:-1px; width:14px; height:14px; border-bottom:3px solid #00e87a; border-left:3px solid #00e87a; pointer-events:none; z-index:10;"></div>
-            <div style="position:absolute; bottom:-1px; right:-1px; width:14px; height:14px; border-bottom:3px solid #00e87a; border-right:3px solid #00e87a; pointer-events:none; z-index:10;"></div>
-            <!-- Mid-edge small squares -->
-            <div style="position:absolute; top:-3px; left:50%; width:6px; height:6px; background:#00e87a; transform:translateX(-50%); pointer-events:none; z-index:10;"></div>
-            <div style="position:absolute; bottom:-3px; left:50%; width:6px; height:6px; background:#00e87a; transform:translateX(-50%); pointer-events:none; z-index:10;"></div>
-            <div style="position:absolute; left:-3px; top:50%; width:6px; height:6px; background:#00e87a; transform:translateY(-50%); pointer-events:none; z-index:10;"></div>
-            <div style="position:absolute; right:-3px; top:50%; width:6px; height:6px; background:#00e87a; transform:translateY(-50%); pointer-events:none; z-index:10;"></div>
+        <div id="exclusive-banner" onclick="window.location.href='/exclusive.html'" style="cursor:pointer; background:#000; border-top:4px solid #0a0a0a; border-bottom:4px solid #0a0a0a; border-left:none; border-right:none; padding:0; margin-bottom:0; position:relative; overflow:visible; width:100vw; margin-left:calc(-50vw + 50%);">
+            <!-- Corner/edge decorations removed for clean full-width look -->
 
             <!-- Green dot pattern (left side) -->
             <div id="exc-dots" style="position:absolute; top:20px; left:200px; z-index:6; pointer-events:none;">
@@ -1171,12 +1162,11 @@
                 </div>
             </div>
         </div>
-        <!-- Black line under banner -->
-        <div style="height: 4px; background: #000; margin-bottom: 40px; margin-top: 10px; width: 100vw; margin-left: calc(-50vw + 50%);"></div><!-- trigger build -->
+        <!-- Black line merged into banner border for cleaner look -->
 
         <style>
-            #exclusive-banner { transition: border-color 0.3s, box-shadow 0.3s; box-shadow: none; }
-            #exclusive-banner:hover { border-color: #00f2ff; box-shadow: 0 0 30px rgba(0,242,255,0.1); }
+            #exclusive-banner { transition: box-shadow 0.3s; box-shadow: none; }
+            #exclusive-banner:hover { box-shadow: 0 0 30px rgba(0,242,255,0.1); }
             #exc-scanlines { animation: scanlines 20s linear infinite; }
             @keyframes scanlines {
                 0% { background-position: 0 0; }
