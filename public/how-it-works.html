@@ -178,6 +178,89 @@
             padding-left: 25px !important;
             transition: all 0.2s;
         }
+
+        /* FAQ SECTION */
+        .faq-section {
+            padding: 100px 0;
+            background: #fff;
+            border-top: 4px solid var(--black);
+            border-bottom: 4px solid var(--black);
+            position: relative;
+        }
+        .faq-section::after {
+            content: ''; position: absolute; inset: 0; opacity: 0.05;
+            background-image: radial-gradient(var(--black) 1.5px, transparent 0);
+            background-size: 10px 10px;
+            pointer-events: none;
+        }
+        .faq-section h2 {
+            font-size: 56px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 50px;
+            letter-spacing: -2px;
+            position: relative;
+            z-index: 2;
+        }
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            position: relative;
+            z-index: 2;
+        }
+        .faq-item {
+            background: var(--white);
+            border: 4px solid var(--black);
+            box-shadow: 6px 6px 0 var(--black);
+            transition: all 0.2s;
+        }
+        .faq-item:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0 var(--black);
+        }
+        .faq-item[open] {
+            box-shadow: 8px 8px 0 var(--primary);
+        }
+        .faq-item summary {
+            padding: 24px;
+            font-size: 20px;
+            font-weight: 800;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-main);
+            user-select: none;
+        }
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-item summary::after {
+            content: '▼';
+            font-size: 16px;
+            transition: transform 0.2s;
+            color: var(--black);
+            font-weight: 900;
+        }
+        .faq-item[open] summary::after {
+            transform: rotate(180deg);
+        }
+        .faq-content {
+            padding: 0 24px 24px;
+            font-size: 16px;
+            color: var(--muted);
+            border-top: 3px dashed var(--black);
+            margin-top: -5px;
+            padding-top: 20px;
+            background: var(--bg);
+        }
+        .faq-content strong {
+            color: var(--black);
+        }
     </style>
 </head>
 <body>
@@ -214,6 +297,9 @@
     <div class="container">
         <h1>HOW IT <span class="outline">WORKS</span></h1>
         <p>A step-by-step guide to navigating the decentralized economy and building your legacy on CreatorChain.</p>
+        <div class="reveal" style="margin-top: 40px; border: 4px solid var(--black); box-shadow: 12px 12px 0 var(--primary); max-width: 800px; margin-left: auto; margin-right: auto; overflow: hidden; background: #fff; transform: translateY(20px);">
+            <img src="/nano-banner.png" alt="CreatorChain Ecosystem Banner" style="width: 100%; height: auto; display: block; border: none;">
+        </div>
     </div>
 </header>
 
@@ -338,21 +424,106 @@
         <div class="step-row reveal">
             <div class="step-visual reveal" style="box-shadow: 20px 20px 0 var(--primary);">
                 <div class="step-num" style="color:var(--secondary);">07</div>
-                <div style="background: #eee; height: 250px; display:flex; align-items:center; justify-content:center; border: 2px solid #000;">
-                    <i data-lucide="award" style="width:100px; height:100px; color:var(--black);"></i>
-                </div>
+                <img src="/reputation-feature.png" alt="Leaderboard & Reputation" style="width: 100%; height: 250px; object-fit: cover; display: block; border: 2px solid #000;">
             </div>
             <div class="step-content reveal">
-                <h2>REPUTATION & <span class="outline">BADGES</span></h2>
-                <p>Stand out with automated trust signals. Our system rewards transparency and consistency. Complete your profile and contribute high-quality work to unlock exclusive badges that signal your status to project leads.</p>
+                <h2>LEADERBOARD & <span class="outline">REPUTATION</span></h2>
+                <p>Climb the global builder leaderboard by earning reputation points from your contributions. Successful opportunity submissions earn 100 points, social posts on CreatorPulse earn 10 points, and every post view adds 1 point. Unlock the <strong>PRO Badge</strong> to receive a massive <strong>2x multiplier</strong> on all points!</p>
                 <div>
-                    <span class="feature-pill"><i data-lucide="award" style="color:#00E676;"></i> VERIFIED (90% COMPLETE)</span>
-                    <span class="feature-pill"><i data-lucide="award" style="color:#FFD600;"></i> PRO (5+ PROJECTS)</span>
+                    <span class="feature-pill"><i data-lucide="zap" style="color:var(--accent);"></i> 2X PRO MULTIPLIER</span>
+                    <span class="feature-pill"><i data-lucide="award" style="color:#FFD600;"></i> LEADERBOARD BOOST</span>
                     <span class="feature-pill"><i data-lucide="check"></i> TRUST SIGNALS</span>
                 </div>
             </div>
         </div>
 
+        <!-- STEP 8 -->
+        <div class="step-row reveal">
+            <div class="step-visual reveal" style="box-shadow: 20px 20px 0 var(--secondary);">
+                <div class="step-num" style="color:var(--primary);">08</div>
+                <img src="/creatorpulse-feature.png" alt="CreatorPulse Social Feed" style="width: 100%; height: 250px; object-fit: cover; display: block; border: 2px solid #000;">
+            </div>
+            <div class="step-content reveal">
+                <h2>BUILD IN PUBLIC <span class="outline">CREATORPULSE</span></h2>
+                <p>Share your daily progress, product launches, or thoughts with the community. CreatorPulse is the social pulse of the ecosystem where builders showcase their journey, earn views, and spark engagement that directly boosts their overall reputation ranking.</p>
+                <div>
+                    <span class="feature-pill"><i data-lucide="message-square" style="color:var(--accent);"></i> SOCIAL PULSE</span>
+                    <span class="feature-pill"><i data-lucide="eye" style="color:var(--primary);"></i> VIEW COUNTING</span>
+                    <span class="feature-pill"><i data-lucide="trending-up" style="color:var(--secondary);"></i> VIRAL SCORE</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 9 -->
+        <div class="step-row reveal">
+            <div class="step-visual reveal" style="box-shadow: 20px 20px 0 var(--black);">
+                <div class="step-num" style="color:var(--secondary);">09</div>
+                <img src="/how-it-works-banner.png" alt="Real-time Alerts" style="width: 100%; height: 250px; object-fit: cover; display: block; border: 2px solid #000;">
+            </div>
+            <div class="step-content reveal">
+                <h2>REAL-TIME <span class="outline">OPPORTUNITY ALERTS</span></h2>
+                <p>Never miss out on high-value roles or bounties. When a new opportunity is launched, our real-time notification engine triggers an instant notification bell alert in the header. Click the notification to navigate directly to the application page and apply before anyone else.</p>
+                <div>
+                    <span class="feature-pill"><i data-lucide="bell" style="color:var(--primary);"></i> LIVE BELL NOTIFICATIONS</span>
+                    <span class="feature-pill"><i data-lucide="zap" style="color:var(--secondary);"></i> INSTANT NAVIGATION</span>
+                    <span class="feature-pill"><i data-lucide="navigation"></i> 1-CLICK ACTION</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- FAQ SECTION -->
+<section class="faq-section">
+    <div class="container">
+        <h2>FREQUENTLY ASKED <span class="outline">QUESTIONS</span></h2>
+        <div class="faq-container">
+            <details class="faq-item reveal">
+                <summary>How is the Builder Reputation score calculated?</summary>
+                <div class="faq-content">
+                    <p>Reputation is dynamically calculated based on ecosystem contributions:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+                        <li><strong>+100 Points</strong> for every successfully approved Opportunity/Bounty submission.</li>
+                        <li><strong>+10 Points</strong> for posting updates or building in public on the CreatorPulse feed.</li>
+                        <li><strong>+1 Point</strong> for every single view received on your CreatorPulse posts.</li>
+                        <li><strong>2x Multiplier:</strong> Builders who unlock the elite PRO Badge receive a 2x multiplier on all reputation points generated!</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details class="faq-item reveal">
+                <summary>What are Builder Badges and how do I unlock them?</summary>
+                <div class="faq-content">
+                    <p>We feature two primary trust and experience credentials:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+                        <li><strong>VERIFIED Badge:</strong> Automatically unlocked when your profile completeness reaches 90% or more (including bios, skills, experience tags, and validated social links).</li>
+                        <li><strong>PRO Badge:</strong> Awarded to top-tier builders who have successfully submitted, contributed to, or completed 5 or more distinct opportunities on CreatorChain.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details class="faq-item reveal">
+                <summary>How do the real-time notifications work?</summary>
+                <div class="faq-content">
+                    <p>Whenever a new opportunity, bounty, or role goes live on CreatorChain, an alert is dispatched instantly across the ecosystem. The notification bell in your header will update dynamically with a neon badge, showing your unread alerts. Clicking any alert inside the dropdown takes you straight to the corresponding opportunity details page instantly.</p>
+                </div>
+            </details>
+
+            <details class="faq-item reveal">
+                <summary>How does CreatorPulse help me secure gigs?</summary>
+                <div class="faq-content">
+                    <p>CreatorPulse is designed for the "Build in Public" ethos. Hiring teams and protocols browse the feed to identify active, self-driven contributors. Showing off real-time updates of your projects, prototypes, or thoughts gets you noticed much faster than a static resume ever could. Additionally, the views and likes you accumulate directly increase your ranking on the global leaderboard.</p>
+                </div>
+            </details>
+
+            <details class="faq-item reveal">
+                <summary>Are there any fees to list opportunities or apply?</summary>
+                <div class="faq-content">
+                    <p>None! CreatorChain is a decentralized ecosystem built to connect builders directly with opportunities without rent-seeking middle-men. Listing roles (both community projects and dedicated team bounties) and applying to opportunities is 100% free of charge.</p>
+                </div>
+            </details>
+        </div>
     </div>
 </section>
 
