@@ -262,6 +262,16 @@ function renderPostCard(post) {
             ${imageHtml}
             ${tagsHtml}
         </div>
+        <div class="pulse-edit-zone">
+            <textarea class="pulse-edit-textarea" id="edit-ta-${post.id}" maxlength="1000" oninput="updateEditCharCount('${post.id}')">${escHtml(post.content)}</textarea>
+            <div class="pulse-edit-bar">
+                <span class="pulse-char-count" id="edit-cc-${post.id}">0/1000</span>
+                <div class="pulse-edit-btns">
+                    <button class="pulse-cancel-btn" onclick="cancelPostEdit('${post.id}')">Cancel</button>
+                    <button class="pulse-save-btn" id="edit-save-${post.id}" onclick="savePostEdit('${post.id}')">Save</button>
+                </div>
+            </div>
+        </div>
         <div class="post-card-actions">
             <button class="action-trigger ${likedClass}" onclick="toggleLike('${post.id}')">
                 ${heartIcon} <span id="likes-${post.id}">${post.like_count || 0}</span>
@@ -503,15 +513,59 @@ async function deletePost(postId) {
 }
 
 async function editPost(postId) {
+    const card = document.getElementById('post-' + postId);
+    if (!card) return;
+    // Close the dropdown menu
+    const menu = document.getElementById('menu-' + postId);
+    if (menu) menu.classList.remove('show');
+    // Enter inline edit mode
+    card.classList.add('editing');
+    const ta = document.getElementById('edit-ta-' + postId);
+    if (ta) {
+        ta.focus();
+        ta.setSelectionRange(ta.value.length, ta.value.length);
+        updateEditCharCount(postId);
+    }
+}
+
+function updateEditCharCount(postId) {
+    const ta = document.getElementById('edit-ta-' + postId);
+    const cc = document.getElementById('edit-cc-' + postId);
+    const saveBtn = document.getElementById('edit-save-' + postId);
+    if (!ta || !cc) return;
+    const len = ta.value.trim().length;
+    cc.textContent = len + '/1000';
+    cc.classList.toggle('over', len > 1000);
+    if (saveBtn) saveBtn.disabled = len === 0 || len > 1000;
+}
+
+function cancelPostEdit(postId) {
+    const card = document.getElementById('post-' + postId);
+    if (!card) return;
+    card.classList.remove('editing');
+    // Restore original content
     const post = allPosts.find(p => p.id === postId);
-    if (!post) return;
-    const newContent = prompt('Edit your post:', post.content);
-    if (newContent === null || !newContent.trim()) return;
+    const ta = document.getElementById('edit-ta-' + postId);
+    if (post && ta) ta.value = post.content;
+}
+
+async function savePostEdit(postId) {
+    const ta = document.getElementById('edit-ta-' + postId);
+    const saveBtn = document.getElementById('edit-save-' + postId);
+    if (!ta) return;
+    const newContent = ta.value.trim();
+    if (!newContent) return;
+    if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving...'; }
     try {
-        await db.from('creatorpulse_posts').update({ content: newContent.trim(), is_edited: true, updated_at: new Date().toISOString() }).eq('id', postId);
+        await db.from('creatorpulse_posts').update({ content: newContent, is_edited: true, updated_at: new Date().toISOString() }).eq('id', postId);
         showToast('Post updated ✏️');
         await loadPosts();
-    } catch(e) { showToast('Edit failed', 'error'); }
+    } catch(e) {
+        showToast('Edit failed', 'error');
+        if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save'; }
+        const card = document.getElementById('post-' + postId);
+        if (card) card.classList.remove('editing');
+    }
 }
 
 function sharePost(postId) {
