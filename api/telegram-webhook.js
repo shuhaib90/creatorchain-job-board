@@ -188,13 +188,15 @@ async function handleAIChat(chatId, userMessage) {
             'Authorization': `Bearer ${SUPABASE_KEY}`
         };
 
-        const [oppsResp, listingsResp] = await Promise.all([
+        const [oppsResp, listingsResp, profileResp] = await Promise.all([
             axios.get(`${SUPABASE_URL}/rest/v1/opportunities?status=eq.open&select=*`, { headers }),
-            axios.get(`${SUPABASE_URL}/rest/v1/listings?approval_status=eq.approved&status=eq.Open&select=*`, { headers })
+            axios.get(`${SUPABASE_URL}/rest/v1/listings?approval_status=eq.approved&status=eq.Open&select=*`, { headers }),
+            axios.get(`${SUPABASE_URL}/rest/v1/user_profiles?telegram_id=eq.${chatId}`, { headers })
         ]);
 
         const opportunities = oppsResp.data || [];
         const listings = listingsResp.data || [];
+        const profile = profileResp.data && profileResp.data.length > 0 ? profileResp.data[0] : null;
         
         let allItems = [
             ...opportunities.map(o => ({...o, item_type: 'opp', is_exclusive: (o.project_name || '').toLowerCase().includes('creatorchain')})), 
@@ -211,15 +213,28 @@ async function handleAIChat(chatId, userMessage) {
             contextText += `- [${project}] ${title} | Reward: ${reward} | Link: ${url}\n`;
         });
 
+        let userContext = profile 
+            ? `The user you are talking to is named ${profile.name || 'Anonymous'}. Their Web3 role/title is ${profile.title || 'Creator'}. Their current CreatorChain Reputation Score is ${profile.reputation || 0}.` 
+            : `The user has not linked their CreatorChain profile to this Telegram account yet. They can do so by making sure their Telegram Handle is saved on their CreatorChain web profile and typing /start here.`;
+
+        const systemInstruction = `You are the CreatorChain Web3 Job Assistant Telegram Bot. 
+A user has sent you a message. 
+
+Here is what you know about CreatorChain:
+CreatorChain is a decentralized platform connecting Web3 projects with skilled creators, developers, and ambassadors. Users apply for bounties, gigs, and full-time roles. When they successfully complete tasks and get approved by the project, their on-chain Reputation Score increases. Higher reputation unlocks exclusive, higher-paying opportunities and builds trust in the Web3 ecosystem.
+
+${userContext}
+
+Here are the current active Web3 job opportunities and bounties:
+${contextText}
+
+Answer the user's question concisely and accurately based on the data provided. If they ask about their reputation, give them their real score based on the context above. If they ask about opportunities, mention the ones that fit best and provide the link. 
+Format your response using ONLY Telegram-compatible HTML tags: <b>, <i>, <u>, <s>, <a>, <code>, <pre>. Do not use markdown like **bold** or *italic* or markdown links [text](url). Use <b>bold</b> and <a href="url">text</a> instead. Keep the tone helpful, engaging, and professional.`;
+
         const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
         const model = genAI.getGenerativeModel({ 
             model: "gemini-3.5-flash",
-            systemInstruction: `You are the CreatorChain Web3 Job Assistant Telegram Bot. 
-A user has sent you a message. Here are the current active Web3 job opportunities and bounties:
-${contextText}
-
-Answer the user's question concisely based primarily on these active opportunities. If they ask about specific skills, mention the jobs that fit best and provide the link. 
-Format your response using ONLY Telegram-compatible HTML tags: <b>, <i>, <u>, <s>, <a>, <code>, <pre>. Do not use markdown like **bold** or *italic* or markdown links [text](url). Use <b>bold</b> and <a href="url">text</a> instead. Keep the tone helpful and professional.`
+            systemInstruction: systemInstruction
         });
 
         const result = await model.generateContent(userMessage);
