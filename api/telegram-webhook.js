@@ -176,13 +176,106 @@ export default async (req, res) => {
     }
   } else if (command === '/chatid') {
     await sendSimpleMessage(chatId, `🆔 <b>YOUR_TELEGRAM_CHAT_ID:</b> <code>${chatId}</code>\n\nUse this to configure manual alerts if needed.`);
+  } else if (command === '/new_opportunity' || command === '/new_opportunities') {
+    try {
+        if (!SUPABASE_KEY) throw new Error('SUPABASE_KEY is missing');
+        const headers = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` };
+        let allItems = await getCachedOpportunities(headers);
+        allItems.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+
+        if (allItems.length === 0) {
+            await sendSimpleMessage(chatId, `📭 <b>No opportunities found.</b>`);
+            return res.status(200).send('OK');
+        }
+
+        let responseText = `✨ <b>NEW OPPORTUNITIES</b>\n\n`;
+        allItems.slice(0, 5).forEach((item, index) => {
+            const title = item.title || item.project_name || 'Untitled';
+            const project = item.project_name || item.project || 'Web3 Project';
+            const reward = item.reward || 'TBA';
+            const url = `https://creatorchain.site/opportunity.html?id=${item.id}`;
+            responseText += `${index + 1}. <b>${project}</b> | ${title}\n💰 <b>Reward:</b> ${reward}\n🔗 <a href="${url}">VIEW & APPLY</a>\n\n`;
+        });
+        await sendSimpleMessage(chatId, responseText);
+    } catch (err) {
+        console.error('Error in /new_opportunities:', err);
+        await sendSimpleMessage(chatId, `❌ <b>Error:</b> Could not fetch new opportunities.`);
+    }
+  } else if (command === '/my_opportunities' || command === '/my_opportunities_by_skills') {
+    try {
+        if (!SUPABASE_KEY) throw new Error('SUPABASE_KEY is missing');
+        const headers = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` };
+        const profileResp = await axios.get(`${SUPABASE_URL}/rest/v1/user_profiles?telegram_id=eq.${chatId}`, { headers });
+        const profile = profileResp.data && profileResp.data.length > 0 ? profileResp.data[0] : null;
+
+        if (!profile) {
+            await sendSimpleMessage(chatId, `🚫 <b>Account Not Linked</b>\n\nPlease link your Telegram account on your CreatorChain profile and run /start to see matching opportunities!`);
+            return res.status(200).send('OK');
+        }
+
+        let allItems = await getCachedOpportunities(headers);
+        const userSkills = (profile.skills || []).map(s => s.toLowerCase());
+
+        let matched = allItems.filter(item => {
+            const textToSearch = `${item.title || ''} ${item.project_name || ''} ${item.description || ''}`.toLowerCase();
+            return userSkills.some(skill => textToSearch.includes(skill));
+        });
+
+        if (matched.length === 0) {
+            matched = allItems.slice(0, 5);
+        }
+
+        let responseText = `🎯 <b>RECOMMENDED FOR YOU</b>\nBased on your skills: <i>${profile.skills ? profile.skills.join(', ') : 'Creator'}</i>\n\n`;
+        matched.slice(0, 5).forEach((item, index) => {
+            const title = item.title || item.project_name || 'Untitled';
+            const project = item.project_name || item.project || 'Web3 Project';
+            const reward = item.reward || 'TBA';
+            const url = `https://creatorchain.site/opportunity.html?id=${item.id}`;
+            responseText += `${index + 1}. <b>${project}</b> | ${title}\n💰 <b>Reward:</b> ${reward}\n🔗 <a href="${url}">VIEW & APPLY</a>\n\n`;
+        });
+        await sendSimpleMessage(chatId, responseText);
+    } catch (err) {
+        console.error('Error in /my_opportunities:', err);
+        await sendSimpleMessage(chatId, `❌ <b>Error:</b> Could not fetch matching opportunities.`);
+    }
+  } else if (command === '/my_score' || command === '/myscore') {
+    try {
+        if (!SUPABASE_KEY) throw new Error('SUPABASE_KEY is missing');
+        const headers = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` };
+        const profileResp = await axios.get(`${SUPABASE_URL}/rest/v1/user_profiles?telegram_id=eq.${chatId}`, { headers });
+        const profile = profileResp.data && profileResp.data.length > 0 ? profileResp.data[0] : null;
+
+        if (!profile) {
+            await sendSimpleMessage(chatId, `🚫 <b>Account Not Linked</b>\n\nPlease connect your Telegram handle in your CreatorChain settings page and run /start first.`);
+            return res.status(200).send('OK');
+        }
+
+        const score = profile.reputation_score || profile.score || 0;
+        await sendSimpleMessage(chatId, `📊 <b>YOUR CREATORCHAIN PROFILE</b>\n\n👤 <b>Name:</b> ${profile.name || 'User'}\n🌟 <b>Reputation Score:</b> <code>${score}</code>\n🛠 <b>Skills:</b> ${profile.skills ? profile.skills.join(', ') : 'None listed'}\n\nKeep contributing to Web3 projects to grow your on-chain reputation score!`);
+    } catch (err) {
+        console.error('Error in /my_score:', err);
+        await sendSimpleMessage(chatId, `❌ <b>Error:</b> Could not retrieve profile score.`);
+    }
+  } else if (command === '/how_it_works' || command === '/how_it_work') {
+    const textExplanation = `ℹ️ <b>HOW CREATORCHAIN WORKS</b>\n\n` +
+        `CreatorChain is a decentralized platform connecting Web3 projects with skilled creators, developers, and ambassadors.\n\n` +
+        `1️⃣ <b>Apply for Opportunities:</b> Find bounties, design gigs, developer tasks, or community roles using /opportunities.\n` +
+        `2️⃣ <b>Complete Tasks:</b> Submit your work on the platform. Once approved by the project team, you get your rewards!\n` +
+        `3️⃣ <b>Earn Reputation Score:</b> Each approved contribution increases your on-chain <b>Reputation Score</b>.\n` +
+        `4️⃣ <b>Unlock Premium Perks:</b> Higher reputation scores build trust, unlock higher-paying exclusive gigs, and double your chances of winning bounties!\n\n` +
+        `🔗 Visit <a href="https://creatorchain.site/">CreatorChain Web Platform</a> to manage your profile and view full details.`;
+    await sendSimpleMessage(chatId, textExplanation);
   } else if (command === '/help') {
      const helpText = `🛠 <b>CREATORCHAIN BOT HELP</b>\n\n` +
                       `Available commands:\n` +
-                      `/opportunities - View all live Web3 opportunities\n` +
+                      `/opportunities - View all active opportunities\n` +
+                      `/new_opportunities - View the newest Web3 opportunities\n` +
+                      `/my_opportunities - Match opportunities specifically to your profile skills\n` +
+                      `/my_score - View your reputation score and linked status\n` +
+                      `/how_it_works - Learn how CreatorChain reputation and gigs work\n` +
                       `/chatid - Get your Telegram Chat ID\n` +
                       `/help - Show this help message\n\n` +
-                      `Visit <a href="https://creatorchain.site/">CreatorChain</a> for the full experience.`;
+                      `💬 You can also chat with me by asking any custom question in plain text!`;
      await sendSimpleMessage(chatId, helpText);
   } else {
       if (text.startsWith('/')) {
