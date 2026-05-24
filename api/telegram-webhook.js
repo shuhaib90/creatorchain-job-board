@@ -214,7 +214,7 @@ async function handleAIChat(chatId, userMessage) {
         });
 
         let userContext = profile 
-            ? `The user you are talking to is named ${profile.name || 'Anonymous'}. Their Web3 role/title is ${profile.title || 'Creator'}. Their current CreatorChain Reputation Score is ${profile.reputation || 0}.` 
+            ? `The user you are talking to is named ${profile.name || 'Anonymous'}. Their Web3 skills are ${profile.skills ? profile.skills.join(', ') : 'Creator'}. Their current CreatorChain Reputation Score is ${profile.reputation_score || profile.score || 0}.` 
             : `The user has not linked their CreatorChain profile to this Telegram account yet. They can do so by making sure their Telegram Handle is saved on their CreatorChain web profile and typing /start here.`;
 
         const systemInstruction = `You are the CreatorChain Web3 Job Assistant Telegram Bot. 
