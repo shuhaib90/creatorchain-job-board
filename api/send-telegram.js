@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Initialize with provided token
-const TG_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8299168473:AAF0yDJtR0B34y_Xc3_TbmzkMzFN7I1-eh8';
+const TG_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 
 export default async (req, res) => {
   // Enable CORS
@@ -26,7 +26,7 @@ export default async (req, res) => {
 
   // Global Settings Logic
   const SUPABASE_URL = process.env.SUPABASE_URL || 'https://mwefmtmcljdsptcgowmb.supabase.co';
-  const SUPABASE_KEY = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im13ZWZtdG1jbGpkc3B0Y2dvd21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4MDM1MTIsImV4cCI6MjA5MDM3OTUxMn0.MWkosFtcKB5UAQGvNTB6fABEIMfkgzXgnwb_17pJabU';
+  const SUPABASE_KEY = process.env.SUPABASE_KEY;
 
   try {
     const { data: settings } = await axios.get(`${SUPABASE_URL}/rest/v1/system_settings?select=*`, {
