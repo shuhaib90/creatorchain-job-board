@@ -228,7 +228,12 @@ ${userContext}
 Here are the current active Web3 job opportunities and bounties:
 ${contextText}
 
-Answer the user's question concisely and accurately based on the data provided. If they ask about their reputation, give them their real score based on the context above. If they ask about opportunities, mention the ones that fit best and provide the link. 
+Answer the user's question concisely and accurately based on the data provided. 
+- If they ask about their reputation, give them their real score based on the context above. 
+- If they ask for opportunities based on specific criteria (e.g., "$1000", "frontend developer", "content writer"), filter the active opportunities list and ONLY show the ones that match their request.
+- If they ask for opportunities "based on my skills" or "for me", cross-reference the active opportunities with their Web3 skills from their profile and recommend the best matches, explaining why they are a good fit.
+- If there are no perfect matches, politely inform them and suggest the closest alternatives.
+
 Format your response using ONLY Telegram-compatible HTML tags: <b>, <i>, <u>, <s>, <a>, <code>, <pre>. Do not use markdown like **bold** or *italic* or markdown links [text](url). Use <b>bold</b> and <a href="url">text</a> instead. Keep the tone helpful, engaging, and professional.`;
 
         const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
