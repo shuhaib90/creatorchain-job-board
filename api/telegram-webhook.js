@@ -213,7 +213,7 @@ async function handleAIChat(chatId, userMessage) {
 
         const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
         const model = genAI.getGenerativeModel({ 
-            model: "gemini-1.5-flash",
+            model: "gemini-3.5-flash",
             systemInstruction: `You are the CreatorChain Web3 Job Assistant Telegram Bot. 
 A user has sent you a message. Here are the current active Web3 job opportunities and bounties:
 ${contextText}
