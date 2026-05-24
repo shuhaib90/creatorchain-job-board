@@ -199,13 +199,12 @@ export default async (req, res) => {
 
 async function handleAIChat(chatId, userMessage) {
     try {
-        await sendSimpleMessage(chatId, `🤖 <i>Thinking... Let me check the latest opportunities for you.</i>`);
-        
         const headers = { 
             'apikey': SUPABASE_KEY, 
             'Authorization': `Bearer ${SUPABASE_KEY}`
         };
 
+        // 1. Verify User Profile exists (AI is exclusive to signed-in users)
         const profileResp = await axios.get(`${SUPABASE_URL}/rest/v1/user_profiles?telegram_id=eq.${chatId}`, { headers });
         const profile = profileResp.data && profileResp.data.length > 0 ? profileResp.data[0] : null;
 
@@ -213,6 +212,29 @@ async function handleAIChat(chatId, userMessage) {
             await sendSimpleMessage(chatId, `🚫 <b>Account Not Linked</b>\n\nThe AI Assistant is an exclusive feature for registered CreatorChain users.\n\nPlease log in to <a href="https://creatorchain.site/">CreatorChain</a>, save your Telegram Handle in your profile, and type /start here to link your account!`);
             return;
         }
+
+        // 2. Check Q&A Cache for general questions
+        const cacheable = isCacheableQuery(userMessage);
+        if (cacheable) {
+            try {
+                const cacheResp = await axios.post(
+                    `${SUPABASE_URL}/rest/v1/rpc/match_qna_cache`, 
+                    { user_query: userMessage },
+                    { headers }
+                );
+                const cachedResult = cacheResp.data;
+                if (cachedResult && cachedResult.length > 0) {
+                    console.log(`[Q&A Cache Hit] Match found: "${cachedResult[0].question}"`);
+                    await sendSimpleMessage(chatId, cachedResult[0].answer);
+                    return;
+                }
+            } catch (cacheErr) {
+                console.error('Q&A Cache lookup error:', cacheErr.response?.data || cacheErr.message);
+            }
+        }
+
+        // 3. Cache Miss / Non-cacheable: Proceed to Gemini
+        await sendSimpleMessage(chatId, `🤖 <i>Thinking... Let me check the latest opportunities for you.</i>`);
 
         let allItems = await getCachedOpportunities(headers);
 
@@ -267,6 +289,27 @@ Format your response using ONLY Telegram-compatible HTML tags: <b>, <i>, <u>, <s
         
         await sendSimpleMessage(chatId, aiResponse);
 
+        // 4. Save to Q&A Cache if cacheable
+        if (cacheable) {
+            const keywords = extractKeywords(userMessage);
+            if (keywords) {
+                try {
+                    await axios.post(
+                        `${SUPABASE_URL}/rest/v1/bot_qna_cache`,
+                        {
+                            question: userMessage,
+                            answer: aiResponse,
+                            keywords: keywords
+                        },
+                        { headers }
+                    );
+                    console.log(`[Q&A Cache Save] Saved new Q&A with keywords: "${keywords}"`);
+                } catch (saveErr) {
+                    console.error('Failed to save Q&A to cache:', saveErr.response?.data || saveErr.message);
+                }
+            }
+        }
+
     } catch (err) {
         console.error('AI Chat Error:', err);
         await sendSimpleMessage(chatId, `❌ <b>AI Error:</b> Sorry, I couldn't process your request right now.`);
@@ -284,4 +327,41 @@ async function sendSimpleMessage(chatId, text) {
         lastError = `Send Error: ${err.message}`;
         console.error('Failed to send response message:', err.message);
     }
+}
+
+function extractKeywords(text) {
+    const stopwords = new Set([
+        'what', 'is', 'my', 'how', 'to', 'the', 'a', 'an', 'and', 'or', 'but', 'for', 
+        'with', 'about', 'in', 'on', 'at', 'of', 'by', 'from', 'this', 'that', 'these', 
+        'those', 'i', 'you', 'he', 'she', 'they', 'we', 'me', 'us', 'him', 'her', 'them',
+        'do', 'does', 'did', 'can', 'could', 'will', 'would', 'should', 'shall', 'may',
+        'might', 'must', 'tell', 'show', 'give', 'get', 'want', 'please', 'thanks', 'thank'
+    ]);
+    
+    // Clean text: lowercase and remove non-alphanumeric (except spaces)
+    const cleaned = text.toLowerCase().replace(/[^a-z0-9\s]/g, '');
+    
+    // Split into words, filter out stopwords and short/empty words
+    const words = cleaned.split(/\s+/)
+        .map(w => w.trim())
+        .filter(w => w.length > 2 && !stopwords.has(w));
+        
+    // Return unique keywords joined by comma
+    return [...new Set(words)].join(',');
+}
+
+function isCacheableQuery(text) {
+    const normalized = text.toLowerCase();
+    
+    // Personal queries (e.g. referencing 'my reputation', 'my skills', 'my profile', etc.)
+    if (/\b(my|mine|reputation|score|skills|profile)\b/i.test(normalized)) {
+        return false;
+    }
+    
+    // Live jobs queries
+    if (/\b(opportunity|opportunities|job|jobs|bounty|bounties|gig|gigs|listing|listings|live|apply|latest)\b/i.test(normalized)) {
+        return false;
+    }
+    
+    return true;
 }
