@@ -45,7 +45,7 @@ export default async (req, res) => {
   console.log('--- TELEGRAM WEBHOOK RECEIVED ---');
   
   if (req.method === 'GET') {
-      const mask = (val) => val ? `${val.slice(0, 6)}...${val.slice(-6)}` : 'undefined';
+      const mask = (val) => (val && typeof val === 'string') ? `${val.slice(0, 6)}...${val.slice(-6)}` : 'undefined';
       return res.status(200).json({ 
           status: 'live', 
           last_error: lastError,
