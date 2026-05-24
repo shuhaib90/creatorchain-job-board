@@ -97,11 +97,15 @@ export default async (req, res) => {
         const opportunities = oppsResp.data || [];
         const listings = listingsResp.data || [];
         
-        // Combine and add metadata
+        // Combine, add metadata, and filter out expired deadlines
+        const now = new Date();
         let allItems = [
             ...opportunities.map(o => ({...o, item_type: 'opp', is_exclusive: (o.project_name || '').toLowerCase().includes('creatorchain')})), 
             ...listings.map(l => ({...l, item_type: 'list', is_exclusive: (l.project || '').toLowerCase().includes('creatorchain')}))
-        ];
+        ].filter(item => {
+            if (!item.deadline) return true;
+            return new Date(item.deadline) >= now;
+        });
 
         // Sort: Exclusive first, then Featured, then Newest
         allItems.sort((a, b) => {
@@ -198,10 +202,14 @@ async function handleAIChat(chatId, userMessage) {
         const listings = listingsResp.data || [];
         const profile = profileResp.data && profileResp.data.length > 0 ? profileResp.data[0] : null;
         
+        const now = new Date();
         let allItems = [
             ...opportunities.map(o => ({...o, item_type: 'opp', is_exclusive: (o.project_name || '').toLowerCase().includes('creatorchain')})), 
             ...listings.map(l => ({...l, item_type: 'list', is_exclusive: (l.project || '').toLowerCase().includes('creatorchain')}))
-        ];
+        ].filter(item => {
+            if (!item.deadline) return true;
+            return new Date(item.deadline) >= now;
+        });
 
         let contextText = "Active Opportunities:\n";
         allItems.slice(0, 20).forEach((item, index) => {

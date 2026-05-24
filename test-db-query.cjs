@@ -8,8 +8,10 @@ async function test() {
             'apikey': SUPABASE_KEY, 
             'Authorization': `Bearer ${SUPABASE_KEY}`
         };
-        const res = await axios.get(`${SUPABASE_URL}/rest/v1/user_profiles?select=*&limit=1`, { headers });
-        console.log("Profiles:", res.data);
+        const opps = await axios.get(`${SUPABASE_URL}/rest/v1/opportunities?limit=1`, { headers });
+        const listings = await axios.get(`${SUPABASE_URL}/rest/v1/listings?limit=1`, { headers });
+        console.log("Opps columns:", Object.keys(opps.data[0] || {}));
+        console.log("Listings columns:", Object.keys(listings.data[0] || {}));
     } catch (e) {
         console.error(e.response?.data || e.message);
     }
