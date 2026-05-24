@@ -9,6 +9,37 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyCQ03BwZHXIQnxXQjdM3C
 
 let lastError = null;
 
+let oppsCache = { data: null, timestamp: 0 };
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+async function getCachedOpportunities(headers) {
+    const now = Date.now();
+    if (oppsCache.data && (now - oppsCache.timestamp < CACHE_TTL)) {
+        return oppsCache.data;
+    }
+
+    const [oppsResp, listingsResp] = await Promise.all([
+        axios.get(`${SUPABASE_URL}/rest/v1/opportunities?status=eq.open&select=*`, { headers }),
+        axios.get(`${SUPABASE_URL}/rest/v1/listings?approval_status=eq.approved&status=eq.Open&select=*`, { headers })
+    ]);
+
+    const opportunities = oppsResp.data || [];
+    const listings = listingsResp.data || [];
+    
+    const currentDate = new Date();
+    let allItems = [
+        ...opportunities.map(o => ({...o, item_type: 'opp', is_exclusive: (o.project_name || '').toLowerCase().includes('creatorchain')})), 
+        ...listings.map(l => ({...l, item_type: 'list', is_exclusive: (l.project || '').toLowerCase().includes('creatorchain')}))
+    ].filter(item => {
+        if (!item.deadline) return true;
+        return new Date(item.deadline) >= currentDate;
+    });
+
+    oppsCache.data = allItems;
+    oppsCache.timestamp = now;
+
+    return allItems;
+}
 export default async (req, res) => {
   // Handle incoming Telegram Webhook
   console.log('--- TELEGRAM WEBHOOK RECEIVED ---');
@@ -88,24 +119,7 @@ export default async (req, res) => {
             'Authorization': `Bearer ${SUPABASE_KEY}`
         };
 
-        // Fetch active opportunities and listings (filter for open/approved status)
-        const [oppsResp, listingsResp] = await Promise.all([
-            axios.get(`${SUPABASE_URL}/rest/v1/opportunities?status=eq.open&select=*`, { headers }),
-            axios.get(`${SUPABASE_URL}/rest/v1/listings?approval_status=eq.approved&status=eq.Open&select=*`, { headers })
-        ]);
-
-        const opportunities = oppsResp.data || [];
-        const listings = listingsResp.data || [];
-        
-        // Combine, add metadata, and filter out expired deadlines
-        const now = new Date();
-        let allItems = [
-            ...opportunities.map(o => ({...o, item_type: 'opp', is_exclusive: (o.project_name || '').toLowerCase().includes('creatorchain')})), 
-            ...listings.map(l => ({...l, item_type: 'list', is_exclusive: (l.project || '').toLowerCase().includes('creatorchain')}))
-        ].filter(item => {
-            if (!item.deadline) return true;
-            return new Date(item.deadline) >= now;
-        });
+        let allItems = await getCachedOpportunities(headers);
 
         // Sort: Exclusive first, then Featured, then Newest
         allItems.sort((a, b) => {
@@ -192,24 +206,15 @@ async function handleAIChat(chatId, userMessage) {
             'Authorization': `Bearer ${SUPABASE_KEY}`
         };
 
-        const [oppsResp, listingsResp, profileResp] = await Promise.all([
-            axios.get(`${SUPABASE_URL}/rest/v1/opportunities?status=eq.open&select=*`, { headers }),
-            axios.get(`${SUPABASE_URL}/rest/v1/listings?approval_status=eq.approved&status=eq.Open&select=*`, { headers }),
-            axios.get(`${SUPABASE_URL}/rest/v1/user_profiles?telegram_id=eq.${chatId}`, { headers })
-        ]);
-
-        const opportunities = oppsResp.data || [];
-        const listings = listingsResp.data || [];
+        const profileResp = await axios.get(`${SUPABASE_URL}/rest/v1/user_profiles?telegram_id=eq.${chatId}`, { headers });
         const profile = profileResp.data && profileResp.data.length > 0 ? profileResp.data[0] : null;
-        
-        const now = new Date();
-        let allItems = [
-            ...opportunities.map(o => ({...o, item_type: 'opp', is_exclusive: (o.project_name || '').toLowerCase().includes('creatorchain')})), 
-            ...listings.map(l => ({...l, item_type: 'list', is_exclusive: (l.project || '').toLowerCase().includes('creatorchain')}))
-        ].filter(item => {
-            if (!item.deadline) return true;
-            return new Date(item.deadline) >= now;
-        });
+
+        if (!profile) {
+            await sendSimpleMessage(chatId, `🚫 <b>Account Not Linked</b>\n\nThe AI Assistant is an exclusive feature for registered CreatorChain users.\n\nPlease log in to <a href="https://creatorchain.site/">CreatorChain</a>, save your Telegram Handle in your profile, and type /start here to link your account!`);
+            return;
+        }
+
+        let allItems = await getCachedOpportunities(headers);
 
         let contextText = "Active Opportunities:\n";
         allItems.slice(0, 20).forEach((item, index) => {
