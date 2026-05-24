@@ -1,9 +1,11 @@
 import axios from 'axios';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Config
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://mwefmtmcljdsptcgowmb.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im13ZWZtdG1jbGpkc3B0Y2dvd21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4MDM1MTIsImV4cCI6MjA5MDM3OTUxMn0.MWkosFtcKB5UAQGvNTB6fABEIMfkgzXgnwb_17pJabU';
 const TG_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8299168473:AAF0yDJtR0B34y_Xc3_TbmzkMzFN7I1-eh8';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyCQ03BwZHXIQnxXQjdM3CZubhx4zKNrFkA';
 
 let lastError = null;
 
@@ -165,12 +167,78 @@ export default async (req, res) => {
                       `Visit <a href="https://creatorchain.site/">CreatorChain</a> for the full experience.`;
      await sendSimpleMessage(chatId, helpText);
   } else {
-      // Default response for unknown commands
-      await sendSimpleMessage(chatId, `❓ <b>Unknown command:</b> <code>${command}</code>\n\nType /help to see available commands.`);
+      if (text.startsWith('/')) {
+          // Default response for unknown commands
+          await sendSimpleMessage(chatId, `❓ <b>Unknown command:</b> <code>${command}</code>\n\nType /help to see available commands.`);
+      } else {
+          // AI Chat integration
+          await handleAIChat(chatId, text);
+      }
   }
 
   res.status(200).send('OK');
 };
+
+async function handleAIChat(chatId, userMessage) {
+    try {
+        await sendSimpleMessage(chatId, `🤖 <i>Thinking... Let me check the latest opportunities for you.</i>`);
+        
+        const headers = { 
+            'apikey': SUPABASE_KEY, 
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+        };
+
+        const [oppsResp, listingsResp] = await Promise.all([
+            axios.get(`${SUPABASE_URL}/rest/v1/opportunities?status=eq.open&select=*`, { headers }),
+            axios.get(`${SUPABASE_URL}/rest/v1/listings?approval_status=eq.approved&status=eq.Open&select=*`, { headers })
+        ]);
+
+        const opportunities = oppsResp.data || [];
+        const listings = listingsResp.data || [];
+        
+        let allItems = [
+            ...opportunities.map(o => ({...o, item_type: 'opp', is_exclusive: (o.project_name || '').toLowerCase().includes('creatorchain')})), 
+            ...listings.map(l => ({...l, item_type: 'list', is_exclusive: (l.project || '').toLowerCase().includes('creatorchain')}))
+        ];
+
+        let contextText = "Active Opportunities:\n";
+        allItems.slice(0, 20).forEach((item, index) => {
+            const title = item.title || item.project_name || 'Untitled';
+            const project = item.project_name || item.project || 'Web3 Project';
+            const reward = item.reward || 'TBA';
+            const id = item.id;
+            const url = `https://creatorchain.site/opportunity.html?id=${id}`;
+            contextText += `- [${project}] ${title} | Reward: ${reward} | Link: ${url}\n`;
+        });
+
+        const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+        const model = genAI.getGenerativeModel({ 
+            model: "gemini-1.5-flash",
+            systemInstruction: `You are the CreatorChain Web3 Job Assistant Telegram Bot. 
+A user has sent you a message. Here are the current active Web3 job opportunities and bounties:
+${contextText}
+
+Answer the user's question concisely based primarily on these active opportunities. If they ask about specific skills, mention the jobs that fit best and provide the link. 
+Format your response using ONLY Telegram-compatible HTML tags: <b>, <i>, <u>, <s>, <a>, <code>, <pre>. Do not use markdown like **bold** or *italic* or markdown links [text](url). Use <b>bold</b> and <a href="url">text</a> instead. Keep the tone helpful and professional.`
+        });
+
+        const result = await model.generateContent(userMessage);
+        
+        let aiResponse = result.response.text();
+        
+        // Minor cleanup if Gemini uses markdown by accident
+        aiResponse = aiResponse.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+        aiResponse = aiResponse.replace(/\*(.*?)\*/g, '<i>$1</i>');
+        // Clean up markdown links that might have slipped through: [text](url) -> <a href="url">text</a>
+        aiResponse = aiResponse.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+        
+        await sendSimpleMessage(chatId, aiResponse);
+
+    } catch (err) {
+        console.error('AI Chat Error:', err);
+        await sendSimpleMessage(chatId, `❌ <b>AI Error:</b> Sorry, I couldn't process your request right now.`);
+    }
+}
 
 async function sendSimpleMessage(chatId, text) {
     try {
