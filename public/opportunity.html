@@ -271,7 +271,7 @@
             <img src="/logo.png" alt="Logo" style="height:44px;">
             <span style="font-weight:900; font-size:20px; color:var(--black); font-family: 'Space Mono', monospace;">CREATOR<span style="-webkit-text-stroke: 1px var(--black); color:transparent;">CHAIN</span></span>
         </a>
-        <a href="/" class="btn btn-black btn-sm" style="text-decoration:none;">&larr; BACK TO HQ</a>
+        <a href="/explore.html" class="btn btn-black btn-sm" style="text-decoration:none;">&larr; BACK TO HQ</a>
     </div>
 </nav>
 
@@ -373,7 +373,7 @@
         const id = urlParams.get('id');
 
         if (!id) {
-            window.location.href = '/';
+            window.location.href = '/explore.html';
             return;
         }
 
@@ -391,7 +391,7 @@
         if (error || !item) {
             const { data: listData, error: listError } = await db.from('listings').select('*').eq('id', id).single();
             if (listError || !listData) {
-                document.getElementById('loading-state').innerHTML = '<div style="padding:100px; text-align:center;"><h2 class="mono">⚠️ OPPORTUNITY_NOT_FOUND</h2><a href="/" class="btn btn-primary">RETURN_HOME</a></div>';
+                document.getElementById('loading-state').innerHTML = '<div style="padding:100px; text-align:center;"><h2 class="mono">⚠️ OPPORTUNITY_NOT_FOUND</h2><a href="/explore.html" class="btn btn-primary">RETURN_HOME</a></div>';
                 return;
             }
             renderDetail(listData);

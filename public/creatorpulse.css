@@ -110,7 +110,6 @@ body::before {
         display: none; /* Hide on mobile/tablet */
     }
 }
-
 .logo-container {
     display: flex;
     align-items: center;
@@ -123,6 +122,26 @@ body::before {
     width: 38px;
     height: 38px;
     filter: drop-shadow(0 0 8px var(--primary));
+}
+
+.logo-icon-box-neo {
+    background-color: var(--primary);
+    border: 2.5px solid #000;
+    box-shadow: 3px 3px 0px #000;
+    border-radius: 8px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.logo-icon-box-neo:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px #000;
+    background-color: #00e5ff; /* Brand Cyan */
 }
 
 .logo-text {

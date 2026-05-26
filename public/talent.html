@@ -30,7 +30,7 @@
             --muted: #64748B;
             --secondary: #FFD600;
             --font-main: 'Outfit', sans-serif;
-            --font-mono: 'Space Mono', monospace;
+            --font-mono: 'Outfit', sans-serif;
         }
         body.dark-theme {
             --bg: #121212; --white: #1e1e1e; --black: #ffffff;
@@ -929,8 +929,8 @@
             // Auto-prompt to complete profile if it doesn't exist
             if (!dbProfile) {
                 console.log("No profile found, opening setup modal...");
-                // Note: talent.html redirects to index.html with ?profile=true for editing
-                window.location.href = '/?profile=true';
+                // Note: talent.html redirects to explore.html with ?profile=true for editing
+                window.location.href = '/explore.html?profile=true';
                 return;
             }
 
