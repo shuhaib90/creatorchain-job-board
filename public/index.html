@@ -1076,135 +1076,170 @@
             overflow: hidden;
         }
 
-        .footer-grid {
+        /* ─── NEW 5-COLUMN NEOPHYSICAL FOOTER ─── */
+        .footer-grid-new {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            align-items: center;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
             gap: 40px;
+            align-items: start;
             position: relative;
             z-index: 2;
+            padding-bottom: 60px;
         }
 
-        .footer-left {
+        .footer-brand-col {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .footer-brand-links {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 5px;
+        }
+
+        .footer-brand-links a {
             font-family: var(--font-mono);
             font-size: 11px;
-            color: rgba(255,255,255,0.3);
+            font-weight: 500;
+            color: rgba(255,255,255,0.4);
+            text-decoration: underline;
+            transition: color 0.2s ease;
+        }
+
+        .footer-brand-links a:hover {
+            color: var(--cc-primary);
+        }
+
+        .footer-brand-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 240px;
+        }
+
+        .footer-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 16px;
+            font-family: var(--font-sans);
+            font-weight: 900;
+            font-size: 13px;
+            text-decoration: none;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+        }
+
+        .footer-btn-outline {
+            background: #111113;
+            color: rgba(255,255,255,0.8);
+            border: 2px solid rgba(255,255,255,0.15);
+        }
+
+        .footer-btn-outline:hover {
+            border-color: #fff;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,255,255,0.1);
+        }
+
+        .footer-btn-primary {
+            background: var(--cc-primary);
+            color: #000;
+            border: 2px solid #000;
+            box-shadow: 4px 4px 0 #000;
+        }
+
+        .footer-btn-primary:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 #000;
+            background: var(--cc-secondary);
+        }
+
+        .footer-btn-primary:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 #000;
+        }
+
+        .footer-link-col {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .footer-left a {
-            color: rgba(255,255,255,0.5);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .footer-left a:hover {
-            color: var(--cc-primary);
-        }
-
-        .footer-center {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .mailing-label {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.4);
-            text-transform: uppercase;
-        }
-
-        .mailing-input-box {
-            display: flex;
-            background: #111113;
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 99px;
-            padding: 6px 6px 6px 20px;
-            width: 100%;
-            max-width: 320px;
-            align-items: center;
-        }
-
-        .mailing-input {
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #fff;
+        .footer-link-col h4 {
             font-family: var(--font-sans);
             font-size: 13px;
-            flex-grow: 1;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
         }
 
-        .mailing-input::placeholder {
-            color: rgba(255,255,255,0.25);
-        }
-
-        .mailing-submit {
-            background: #fff;
-            color: #000;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
+        .footer-link-col a {
+            font-family: var(--font-sans);
+            font-size: 13.5px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
+            gap: 8px;
+            width: fit-content;
+        }
+
+        .footer-link-col a i {
             transition: transform 0.2s ease;
         }
 
-        .mailing-submit:hover {
-            transform: scale(1.05);
+        .footer-link-col a:hover {
+            color: var(--cc-primary);
+            padding-left: 4px;
         }
 
-        .footer-right {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 16px;
+        .footer-link-col a:hover i {
+            transform: scale(1.1);
         }
 
-        .cookies-box {
-            display: flex;
-            gap: 8px;
+        .coming-soon-link {
+            position: relative;
         }
 
-        .cookie-btn {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #fff;
-            font-family: var(--font-sans);
-            font-weight: 600;
-            font-size: 11px;
-            padding: 8px 16px;
-            border-radius: 99px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        .coming-soon-link::after {
+            content: 'SOON';
+            font-family: var(--font-mono);
+            font-size: 8px;
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.3);
+            padding: 1px 4px;
+            border-radius: 2px;
+            margin-left: 5px;
         }
 
-        .cookie-btn:hover {
-            border-color: #fff;
-            background: rgba(255,255,255,0.05);
+        @media (max-width: 992px) {
+            .footer-grid-new {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
+            .footer-brand-col {
+                grid-column: span 2;
+                max-width: 400px;
+                margin-bottom: 20px;
+            }
         }
 
-        .social-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .social-link {
-            color: rgba(255,255,255,0.4);
-            transition: color 0.2s ease;
-        }
-
-        .social-link:hover {
-            color: #fff;
+        @media (max-width: 576px) {
+            .footer-grid-new {
+                grid-template-columns: 1fr;
+            }
+            .footer-brand-col {
+                grid-column: span 1;
+            }
         }
 
         /* 3D Mascot peeking up from bottom center like the cookie portrait */
@@ -2864,45 +2899,80 @@
 
     <!-- ─── FOOTER SECTION ─── -->
     <footer>
-        <div class="container">
-            <div class="footer-grid">
+        <div class="container" style="position: relative;">
+            <div class="footer-grid-new">
                 
-                <!-- Left Details -->
-                <div class="footer-left">
-                    <span>© 2026 CreatorChain. All rights reserved.</span>
-                    <a href="/explore.html">Opportunities Board &rarr;</a>
-                    <span>Terms & Conditions</span>
-                </div>
-
-                <!-- Center Mailing List Form -->
-                <div class="footer-center">
-                    <span class="mailing-label">Mailing List</span>
-                    <div class="mailing-input-box">
-                        <input type="email" class="mailing-input" placeholder="Email Address">
-                        <button class="mailing-submit">
-                            <i data-lucide="arrow-right" style="width:16px; height:16px;"></i>
-                        </button>
+                <!-- Brand Column -->
+                <div class="footer-brand-col">
+                    <a href="/" class="logo-box" style="text-decoration:none; display:flex; align-items:center; gap: 12px; margin-bottom: 5px;">
+                        <div class="logo-icon-box-neo" style="width: 48px; height: 48px;">
+                            <img src="/logo.png" alt="CreatorChain Logo" style="height:32px; width:auto; object-fit:contain;">
+                        </div>
+                        <span class="logo-text" style="font-size: 24px; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: -1px;">CREATOR<span style="-webkit-text-stroke: 1.5px #fff; color: transparent;">CHAIN</span></span>
+                    </a>
+                    
+                    <div class="footer-brand-links">
+                        <a href="#">Sitemap</a>
+                        <a href="#">Blog Rss</a>
+                    </div>
+                    
+                    <div class="footer-brand-buttons">
+                        <a href="/launch-opportunities.html" class="footer-btn footer-btn-outline">I am a Brand</a>
+                        <a href="/explore.html" class="footer-btn footer-btn-primary">Get Started</a>
                     </div>
                 </div>
 
-                <!-- Right Cookies & Socials -->
-                <div class="footer-right">
-                    <div class="cookies-box">
-                        <span style="font-family: var(--font-sans); font-size:10px; color:rgba(255,255,255,0.3); align-self:center; margin-right:10px;">Cookie Policy</span>
-                        <button class="cookie-btn">Accept</button>
-                        <button class="cookie-btn">Find out more</button>
-                    </div>
-                    <div class="social-links">
-                        <a href="#" class="social-link"><i data-lucide="twitter" style="width:18px; height:18px;"></i></a>
-                        <a href="#" class="social-link"><i data-lucide="instagram" style="width:18px; height:18px;"></i></a>
-                        <a href="#" class="social-link"><i data-lucide="message-square" style="width:18px; height:18px;"></i></a>
-                    </div>
+                <!-- Socials Column -->
+                <div class="footer-link-col">
+                    <h4>Socials</h4>
+                    <a href="https://x.com/ZenvicAlpha" target="_blank">
+                        <i data-lucide="twitter" style="width:16px; height:16px; color:#fff;"></i> X.com
+                    </a>
+                    <a href="https://t.me/creatorchainbot" target="_blank">
+                        <i data-lucide="send" style="width:16px; height:16px; color:#2EA6DA;"></i> Telegram
+                    </a>
+                    <a href="#" class="coming-soon-link">
+                        <i data-lucide="instagram" style="width:16px; height:16px; color:#E1306C;"></i> Instagram
+                    </a>
+                    <a href="#" class="coming-soon-link">
+                        <i data-lucide="linkedin" style="width:16px; height:16px; color:#0A66C2;"></i> LinkedIn
+                    </a>
+                    <a href="#" class="coming-soon-link">
+                        <i data-lucide="youtube" style="width:16px; height:16px; color:#FF0000;"></i> YouTube
+                    </a>
+                </div>
+
+                <!-- Discover Column -->
+                <div class="footer-link-col">
+                    <h4>Discover</h4>
+                    <a href="/">Home</a>
+                    <a href="/explore.html#ambassador-section">Ambassador Programs</a>
+                    <a href="/explore.html#bounty-section">Content Bounties</a>
+                    <a href="/explore.html#developer-section">Developer Jobs</a>
+                    <a href="/talent.html">Talent Directory</a>
+                    <a href="/creatorpulse.html">CreatorPulse Feed</a>
+                </div>
+
+                <!-- Legal Column -->
+                <div class="footer-link-col">
+                    <h4>Legal</h4>
+                    <a href="/privacy.html">Privacy Policy</a>
+                    <a href="/terms.html">Terms & Conditions</a>
+                    <a href="/cookies.html">Cookie Policy</a>
+                </div>
+
+                <!-- Explore Column -->
+                <div class="footer-link-col">
+                    <h4>Explore</h4>
+                    <a href="/how-it-works.html">How It Works</a>
+                    <a href="/submit-community.html">Submit Community Project</a>
+                    <a href="/launch-opportunities.html">Launch Gigs & Campaigns</a>
                 </div>
 
             </div>
 
             <!-- Peeking 3D Mascot Character (Mascot replica) -->
-            <div class="peeking-mascot">
+            <div class="peeking-mascot" style="bottom: -80px;">
                 <div class="fox-avatar">
                     <img src="/logo.png" alt="Fox" style="width: 80px; height: 80px; margin-bottom: 20px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));">
                     <i data-lucide="sparkles" class="fox-face-deco" style="width: 14px; height: 14px; top: 25px; right: 25px;"></i>
@@ -3217,6 +3287,65 @@
             // Close if clicking outside the box
             if (e.target === document.getElementById('feature-modal')) {
                 triggerCloseModal();
+            }
+        };
+
+        window.openLegalModal = function(type) {
+            const data = {
+                privacy: {
+                    title: 'Privacy Policy',
+                    content: `
+                        <p style="margin-bottom:15px; line-height:1.6; color:rgba(255,255,255,0.7);">At CreatorChain, we respect your privacy and are committed to protecting your personal data. We only collect authenticated social graph information when you log in via X (Twitter) to bootstrap your reputation, and we do not sell your personal information to third parties.</p>
+                        <p style="margin-bottom:15px; line-height:1.6; color:rgba(255,255,255,0.7);">We collect basic analytics and connection states using local storage to verify that you are logged in and save your notification preferences. We do not track you across other websites or services.</p>
+                        <p style="line-height:1.6; color:rgba(255,255,255,0.7);">For any questions regarding our privacy practices, please contact us on X @ZenvicAlpha.</p>
+                    `
+                },
+                terms: {
+                    title: 'Terms & Conditions',
+                    content: `
+                        <p style="margin-bottom:15px; line-height:1.6; color:rgba(255,255,255,0.7);">Welcome to CreatorChain. By accessing or using our platform, you agree to comply with and be bound by these decentralized Terms & Conditions.</p>
+                        <p style="margin-bottom:15px; line-height:1.6; color:rgba(255,255,255,0.7);">You are solely responsible for all opportunities, bounties, and campaigns you list, curate, or apply for. Fraudulent postings, sybil attacks, spamming, or community moderation violations will lead to immediate reputation penalization or account blacklisting.</p>
+                        <p style="line-height:1.6; color:rgba(255,255,255,0.7);">CreatorChain is provided "as is" without warranties of any kind. We act solely as a decentralized matching canvas and hold no escrow liability beyond our smart contract definitions.</p>
+                    `
+                },
+                cookies: {
+                    title: 'Cookie Policy',
+                    content: `
+                        <p style="margin-bottom:15px; line-height:1.6; color:rgba(255,255,255,0.7);">CreatorChain utilizes cookies and local browser storage to keep you authenticated, preserve page theme configurations, and store your real-time notification alert statuses.</p>
+                        <p style="line-height:1.6; color:rgba(255,255,255,0.7);">By interacting with the platform, you consent to these essential cookies. We do not run any invasive tracking or third-party marketing scripts.</p>
+                    `
+                }
+            }[type];
+
+            if (!data) return;
+
+            // Create modal element
+            const modalHtml = `
+                <div id="legal-modal-overlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(15px); z-index:99999; display:flex; align-items:center; justify-content:center; padding:20px;">
+                    <div style="background:#0b0c10; border:3px solid #000; box-shadow:8px 8px 0 #000; max-width:550px; width:100%; padding:30px; position:relative; border-radius:8px; animation: modalSlide 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                        <button onclick="document.getElementById('legal-modal-overlay').remove(); document.body.style.overflow='';" style="position:absolute; top:20px; right:20px; background:#fff; border:2px solid #000; width:30px; height:30px; display:flex; align-items:center; justify-content:center; font-weight:900; cursor:pointer; box-shadow:2px 2px 0 #000; color:#000;">✕</button>
+                        <div style="font-family:var(--font-sans); color:#fff; text-align:left;">
+                            <div style="font-family:var(--font-mono); font-size:11px; color:var(--cc-primary); text-transform:uppercase; letter-spacing:2px; margin-bottom:10px;">LEGAL DOCUMENTS</div>
+                            <h3 style="font-size:26px; font-weight:900; margin-bottom:20px; text-transform:uppercase; letter-spacing:-1px;">\${data.title}</h3>
+                            <div style="font-size:14.5px; line-height:1.6; color:rgba(255,255,255,0.7); max-height:300px; overflow-y:auto; padding-right:10px;">
+                                \${data.content}
+                            </div>
+                            <button onclick="document.getElementById('legal-modal-overlay').remove(); document.body.style.overflow='';" style="margin-top:25px; background:var(--cc-primary); border:2.5px solid #000; box-shadow:4px 4px 0 #000; color:#000; font-weight:900; padding:12px 24px; font-family:var(--font-sans); text-transform:uppercase; cursor:pointer; width:100%; transition:all 0.15s;">Acknowledge & Close</button>
+                        </div>
+                    </div>
+                    <style>
+                        @keyframes modalSlide {
+                            from { transform: translateY(30px); opacity:0; }
+                            to { transform: translateY(0); opacity:1; }
+                        }
+                    </style>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            document.body.style.overflow = 'hidden';
+            if (window.lucide) {
+                window.lucide.createIcons();
             }
         };
         // ─── GSAP HORIZONTAL SCROLL-REVEAL FOR JOBS SECTION ───

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions | CreatorChain</title>
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="apple-touch-icon" href="/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #B6FF3B; /* lime */
+            --secondary: #00E5FF; /* cyan */
+            --accent: #d800ff; /* violet */
+            --black: #050506;
+            --white: #FFFFFF;
+            --off-white: #FAF9F6;
+            --border: 3px solid #000;
+            --shadow: 6px 6px 0px #000;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-sans); background: var(--off-white); color: var(--black); line-height: 1.6; }
+        
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+        /* NAV STYLING */
+        nav {
+            padding: 20px 0;
+            background: #fff;
+            border-bottom: 4px solid var(--black);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-icon-box-neo {
+            background-color: var(--primary);
+            border: 2.5px solid #000;
+            border-radius: 4px;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 3px 3px 0px #000;
+            transition: all 0.2s ease;
+        }
+        .logo-text {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--black);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+        .logo-text span {
+            -webkit-text-stroke: 1px var(--black);
+            color: transparent;
+        }
+
+        /* HERO HEADER */
+        .page-header {
+            padding: 80px 0 50px;
+            text-align: center;
+            background: #fff;
+            border-bottom: 4px solid var(--black);
+            position: relative;
+        }
+        .hud-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            background: var(--accent);
+            color: #fff;
+            padding: 5px 12px;
+            border: 2px solid #000;
+            display: inline-block;
+            margin-bottom: 15px;
+            box-shadow: 2px 2px 0px #000;
+            text-transform: uppercase;
+        }
+        .page-header h1 {
+            font-size: clamp(36px, 6vw, 54px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1.5px;
+            margin-bottom: 15px;
+        }
+        .page-header p {
+            font-family: var(--font-sans);
+            font-size: 16px;
+            color: #555;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* DOC CONTENT CONTAINER */
+        .doc-section {
+            padding: 60px 0 100px;
+        }
+        .doc-card {
+            background: #fff;
+            border: var(--border);
+            box-shadow: var(--shadow);
+            padding: 50px;
+            border-radius: 8px;
+        }
+        .doc-card h2 {
+            font-size: 24px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            border-left: 6px solid var(--secondary);
+            padding-left: 15px;
+        }
+        .doc-card h2:first-of-type {
+            margin-top: 0;
+        }
+        .doc-card p {
+            font-size: 15.5px;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        .doc-card ul {
+            margin-left: 25px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .doc-card li {
+            font-size: 15px;
+            color: #444;
+            line-height: 1.6;
+        }
+        .doc-card strong {
+            color: var(--black);
+        }
+
+        /* simple mini-footer */
+        footer {
+            background: var(--black);
+            color: #fff;
+            padding: 30px 0;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            border-top: 4px solid var(--primary);
+        }
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+        <a href="/" class="logo-box">
+            <div class="logo-icon-box-neo">
+                <img src="/logo.png" alt="Logo" style="width: 24px; height: 24px; object-fit: contain;">
+            </div>
+            <span class="logo-text">CREATOR<span>CHAIN</span></span>
+        </a>
+        <a href="/" style="font-family:var(--font-mono); font-weight:700; font-size:12px; color:var(--black); text-decoration:none; border:2px solid #000; padding:8px 16px; background:#fff; box-shadow:3px 3px 0px #000; transition:0.1s;" onmouseover="this.style.transform='translate(-2px,-2px)'; this.style.boxShadow='5px 5px 0 #000';" onmouseout="this.style.transform=''; this.style.boxShadow='3px 3px 0 #000';">← RETURN_HOME</a>
+    </div>
+</nav>
+
+<header class="page-header">
+    <div class="container">
+        <span class="hud-label">TERMS_&_CONDITIONS</span>
+        <h1>Terms & Conditions</h1>
+        <p>Last updated: May 26, 2026. Please read these terms carefully before participating in the decentralized CreatorChain economy.</p>
+    </div>
+</header>
+
+<section class="doc-section">
+    <div class="container">
+        <div class="doc-card">
+            <h2>1. Acceptance of Terms</h2>
+            <p>Welcome to CreatorChain. By accessing or using our website, services, or decentralized matching boards, you explicitly agree to comply with and be bound by these Terms & Conditions. If you do not agree to these terms, please refrain from using the platform.</p>
+
+            <h2>2. User Accounts & Verification</h2>
+            <p>To participate in our decentralized matchmaking ecosystem, you may link your authenticated X (Twitter) profile or cryptographic wallet:</p>
+            <ul>
+                <li>You agree that the social credentials and wallet states you connect belong strictly to you and represent verified assets.</li>
+                <li>You are solely responsible for maintaining the confidentiality of your session states and keys.</li>
+                <li>Fraudulent submissions, Sybil attacks (creating multiple fake profiles), or attempting to manipulate the public leaderboard scores will result in immediate reputation blacklisting.</li>
+            </ul>
+
+            <h2>3. Listing Opportunities & Bounties</h2>
+            <p>If you submit opportunities, developer jobs, or ambassador campaigns to CreatorChain, you agree to the following terms:</p>
+            <ul>
+                <li>You must provide accurate, clear descriptions, required skills, and clear payout rewards.</li>
+                <li>For verified CreatorChain Exclusive campaigns, teams are required to prove or deposit escrowed rewards to ensure complete payout transparency for contributors.</li>
+                <li>We reserve the right to review, reject, or remove any opportunities that violate community standards, promote malicious products, or offer fake/unspecified rewards.</li>
+            </ul>
+
+            <h2>4. Submitting Contributions & Work</h2>
+            <p>If you apply for or submit contributions to opportunities on CreatorChain:</p>
+            <ul>
+                <li>You warrant that all work submitted is your own original creation and does not infringe upon the intellectual property of third parties.</li>
+                <li>You acknowledge that CreatorChain acts solely as a matching canvas and is not responsible for escrow disputes, payment failures, or core contract changes initiated by individual brands or project teams.</li>
+            </ul>
+
+            <h2>5. Leaderboard & Reputation Score Rules</h2>
+            <p>The CreatorChain leaderboard is governed by our Reputation Engine:</p>
+            <ul>
+                <li>Reputation points are dynamically calculated (+100 points for opportunity listings, +10 points for CreatorPulse community updates, +1 point per Pulse view).</li>
+                <li>Unlocking the elite <strong>PRO badge</strong> grants a permanent 2x reputation score multiplier.</li>
+                <li>Any attempts to sybil or artificially inflate views/points will result in a permanent points deduction and the deactivation of Verified/PRO builder badges.</li>
+            </ul>
+
+            <h2>6. Platform Liability Limitation</h2>
+            <p>CreatorChain is provided entirely on an "as is" and "as available" basis without warranties of any kind. We do not guarantee uninterrupted platform uptime, payment escrows beyond verified smart contracts, or specific hiring outcomes. Under no circumstances shall CreatorChain be held liable for smart contract exploits, digital asset market drops, or external partner decisions.</p>
+
+            <h2>7. Amendments to Terms</h2>
+            <p>We reserve the right to update these terms dynamically as the ecosystem grows. Significant revisions will be highlighted on the main dashboard, the header alert dropdown, or through our active CreatorPulse hub.</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2026 CREATORCHAIN. DECENTRALIZED CREATOR PLATFORM. • <a href="/privacy.html">PRIVACY POLICY</a> • <a href="/cookies.html">COOKIE POLICY</a></p>
+    </div>
+</footer>
+
+<script>
+    lucide.createIcons();
+</script>
+</body>
+</html>

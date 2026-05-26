@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | CreatorChain</title>
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="apple-touch-icon" href="/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #B6FF3B; /* lime */
+            --secondary: #00E5FF; /* cyan */
+            --accent: #d800ff; /* violet */
+            --black: #050506;
+            --white: #FFFFFF;
+            --off-white: #FAF9F6;
+            --border: 3px solid #000;
+            --shadow: 6px 6px 0px #000;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-sans); background: var(--off-white); color: var(--black); line-height: 1.6; }
+        
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+        /* NAV STYLING */
+        nav {
+            padding: 20px 0;
+            background: #fff;
+            border-bottom: 4px solid var(--black);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-icon-box-neo {
+            background-color: var(--primary);
+            border: 2.5px solid #000;
+            border-radius: 4px;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 3px 3px 0px #000;
+            transition: all 0.2s ease;
+        }
+        .logo-text {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--black);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+        .logo-text span {
+            -webkit-text-stroke: 1px var(--black);
+            color: transparent;
+        }
+
+        /* HERO HEADER */
+        .page-header {
+            padding: 80px 0 50px;
+            text-align: center;
+            background: #fff;
+            border-bottom: 4px solid var(--black);
+            position: relative;
+        }
+        .hud-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            background: var(--accent);
+            color: #fff;
+            padding: 5px 12px;
+            border: 2px solid #000;
+            display: inline-block;
+            margin-bottom: 15px;
+            box-shadow: 2px 2px 0px #000;
+            text-transform: uppercase;
+        }
+        .page-header h1 {
+            font-size: clamp(36px, 6vw, 54px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1.5px;
+            margin-bottom: 15px;
+        }
+        .page-header p {
+            font-family: var(--font-sans);
+            font-size: 16px;
+            color: #555;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* DOC CONTENT CONTAINER */
+        .doc-section {
+            padding: 60px 0 100px;
+        }
+        .doc-card {
+            background: #fff;
+            border: var(--border);
+            box-shadow: var(--shadow);
+            padding: 50px;
+            border-radius: 8px;
+        }
+        .doc-card h2 {
+            font-size: 24px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            border-left: 6px solid var(--secondary);
+            padding-left: 15px;
+        }
+        .doc-card h2:first-of-type {
+            margin-top: 0;
+        }
+        .doc-card p {
+            font-size: 15.5px;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        .doc-card ul {
+            margin-left: 25px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .doc-card li {
+            font-size: 15px;
+            color: #444;
+            line-height: 1.6;
+        }
+        .doc-card strong {
+            color: var(--black);
+        }
+
+        /* simple mini-footer */
+        footer {
+            background: var(--black);
+            color: #fff;
+            padding: 30px 0;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            border-top: 4px solid var(--primary);
+        }
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+        <a href="/" class="logo-box">
+            <div class="logo-icon-box-neo">
+                <img src="/logo.png" alt="Logo" style="width: 24px; height: 24px; object-fit: contain;">
+            </div>
+            <span class="logo-text">CREATOR<span>CHAIN</span></span>
+        </a>
+        <a href="/" style="font-family:var(--font-mono); font-weight:700; font-size:12px; color:var(--black); text-decoration:none; border:2px solid #000; padding:8px 16px; background:#fff; box-shadow:3px 3px 0px #000; transition:0.1s;" onmouseover="this.style.transform='translate(-2px,-2px)'; this.style.boxShadow='5px 5px 0 #000';" onmouseout="this.style.transform=''; this.style.boxShadow='3px 3px 0 #000';">← RETURN_HOME</a>
+    </div>
+</nav>
+
+<header class="page-header">
+    <div class="container">
+        <span class="hud-label">PRIVACY_POLICY</span>
+        <h1>Privacy Policy</h1>
+        <p>Last updated: May 26, 2026. Learn how we collect, store, and protect your data across our decentralized ecosystem.</p>
+    </div>
+</header>
+
+<section class="doc-section">
+    <div class="container">
+        <div class="doc-card">
+            <h2>1. Introduction</h2>
+            <p>Welcome to CreatorChain. We are committed to protecting the privacy of our builders, creators, and partners. This Privacy Policy details our approach to information gathering, storage, and sharing across the platform.</p>
+
+            <h2>2. Information We Collect</h2>
+            <p>To deliver a high-quality, frictionless experience for Web3 builders, we collect and store the following fields:</p>
+            <ul>
+                <li><strong>Authenticated Social Profile:</strong> When signing in with X (Twitter) or Google, we capture your handle, display name, and avatar to bootstrap your builder profile automatically.</li>
+                <li><strong>Wallet Information:</strong> Connected cryptographic wallet addresses (e.g. MetaMask, Phantom) to verify on-chain contributions and process bounty distribution.</li>
+                <li><strong>Profile Details:</strong> Skills, bio, hire status, and links to your portfolios or repositories (e.g. GitHub).</li>
+                <li><strong>Usage Logs:</strong> Strictly anonymous telemetry including page view states, feature clicks, and connection status alerts to improve platform operations.</li>
+            </ul>
+
+            <h2>3. How We Use Your Data</h2>
+            <p>Your details are used solely to run and secure the match-making experience:</p>
+            <ul>
+                <li>To build your authenticated builder profile card for recruiters and protocols.</li>
+                <li>To calculate reputation points and showcase leaderboard rankings fairly.</li>
+                <li>To alert you via the header bell or Telegram bot when matching campaigns or developer gigs go live.</li>
+                <li>To prevent sybil attacks, bot spamming, or fraudulent listing submissions.</li>
+            </ul>
+
+            <h2>4. Information Sharing & Transfers</h2>
+            <p>We do **not** sell, rent, or lease your private data. Since CreatorChain acts as a public matching canvas, information that you explicitly choose to add to your profile (such as skills, X handle, and GitHub profile) is made public so that brands and project leads can reach out to you directly.</p>
+
+            <h2>5. On-Chain Transparency</h2>
+            <p>Please note that any transactions, smart contract executions, or escrow payments made through CreatorChain utilize public blockchain infrastructure (such as Solana or Ethereum subnets). All transaction hashes, address fields, and bounty amounts are completely public and immutable by nature.</p>
+
+            <h2>6. Your Choices & Data Deletion</h2>
+            <p>You maintain full control of your builder identity. You can update your skills, profile assets, and hiring availability at any time by navigating to your Profile. If you wish to delete your account entirely, please log in and select the 'Deactivate Profile' option or reach out to our team directly.</p>
+
+            <h2>7. Updates to This Policy</h2>
+            <p>We may modify this policy periodically to reflect contract shifts or security adjustments. We will notify the community of any significant updates directly through our alert engine or via the CreatorPulse feed.</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2026 CREATORCHAIN. DECENTRALIZED CREATOR PLATFORM. • <a href="/terms.html">TERMS & CONDITIONS</a> • <a href="/cookies.html">COOKIE POLICY</a></p>
+    </div>
+</footer>
+
+<script>
+    lucide.createIcons();
+</script>
+</body>
+</html>

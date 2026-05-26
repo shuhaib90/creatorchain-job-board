@@ -484,17 +484,176 @@
         }
 
         /* FOOTER */
-        footer { background: var(--black); border-top: 4px solid var(--primary); padding: 60px 0 40px; color: #fff; margin-top: 80px; position: relative; overflow: hidden; }
+        footer { background: var(--black); border-top: 4px solid var(--primary); padding: 80px 0; color: #fff; margin-top: 80px; position: relative; overflow: hidden; }
         footer::before { content: ''; position: absolute; inset: 0; background: url('/footer-bg.jpg') center/cover no-repeat; opacity: 0.5; filter: blur(6px); transform: scale(1.02); z-index: 0; }
         footer::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.3) 40%, rgba(10,10,10,0.65) 100%); z-index: 1; }
         footer .container { position: relative; z-index: 2; }
-        .footer-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
-        .footer-logo { font-size: 36px; font-weight: 900; color: var(--primary); margin-bottom: 12px; }
-        .footer-logo span { -webkit-text-stroke: 1.5px #fff; color: transparent; }
-        .footer-link { color: #bbb; text-decoration: none; display: block; margin-bottom: 8px; font-size: 14px; transition: color 0.2s; }
-        .footer-link:hover { color: var(--primary); }
-        .footer-submit-cta { background: rgba(255,255,255,0.06); border: 1px solid rgba(0,232,122,0.3); padding: 30px; margin-top: 30px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08); }
-        .submit-count { font-family: 'Space Mono', monospace; font-size: 11px; color: #888; margin-top: 8px; }
+        
+        /* ─── NEW 5-COLUMN NEOPHYSICAL FOOTER ─── */
+        .footer-grid-new {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-brand-col {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .footer-brand-links {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 5px;
+        }
+
+        .footer-brand-links a {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.4);
+            text-decoration: underline;
+            transition: color 0.2s ease;
+        }
+
+        .footer-brand-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-brand-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 240px;
+        }
+
+        .footer-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 16px;
+            font-family: inherit;
+            font-weight: 900;
+            font-size: 13px;
+            text-decoration: none;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+        }
+
+        .footer-btn-outline {
+            background: #111113;
+            color: rgba(255,255,255,0.8);
+            border: 2px solid rgba(255,255,255,0.15);
+        }
+
+        .footer-btn-outline:hover {
+            border-color: #fff;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,255,255,0.1);
+        }
+
+        .footer-btn-primary {
+            background: var(--primary);
+            color: #000;
+            border: 2px solid #000;
+            box-shadow: 4px 4px 0 #000;
+        }
+
+        .footer-btn-primary:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 #000;
+            background: var(--primary);
+            filter: brightness(1.1);
+        }
+
+        .footer-btn-primary:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 #000;
+        }
+
+        .footer-link-col {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-link-col h4 {
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .footer-link-col a {
+            font-family: inherit;
+            font-size: 13.5px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+        }
+
+        .footer-link-col a i {
+            transition: transform 0.2s ease;
+        }
+
+        .footer-link-col a:hover {
+            color: var(--primary);
+            padding-left: 4px;
+        }
+
+        .footer-link-col a:hover i {
+            transform: scale(1.1);
+        }
+
+        .coming-soon-link {
+            position: relative;
+        }
+
+        .coming-soon-link::after {
+            content: 'SOON';
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.3);
+            padding: 1px 4px;
+            border-radius: 2px;
+            margin-left: 5px;
+        }
+
+        @media (max-width: 992px) {
+            .footer-grid-new {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
+            .footer-brand-col {
+                grid-column: span 2;
+                max-width: 400px;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .footer-grid-new {
+                grid-template-columns: 1fr;
+            }
+            .footer-brand-col {
+                grid-column: span 1;
+            }
+        }
         .footer-divider { border-top: 1px solid #222; margin-top: 40px; padding-top: 20px; color: #555; font-size: 12px; text-align: center; }
         
         /* AI MATCHING */
@@ -1299,47 +1458,83 @@
 
 <!-- FOOTER -->
 <footer>
-    <div class="container">
-        <div class="footer-inner">
-            <div>
-                <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
-                    <a href="/" style="display:flex; align-items:center; text-decoration:none; color:inherit; font-weight:900; font-size:20px; gap: 10px;">
-                        <div class="logo-icon-box-neo" style="width: 38px; height: 38px;">
-                            <img src="/logo.png" alt="Logo" style="height:24px; width:24px; object-fit:contain; display:block;">
-                        </div>
-                        <span style="color:#fff;">CREATOR<span class="outline" style="-webkit-text-stroke: 1px #fff; color:transparent;">CHAIN</span></span>
-                    </a>
+    <div class="container" style="position: relative;">
+        <div class="footer-grid-new">
+            
+            <!-- Brand Column -->
+            <div class="footer-brand-col">
+                <a href="/" class="logo-box" style="text-decoration:none; display:flex; align-items:center; gap: 12px; margin-bottom: 5px;">
+                    <div class="logo-icon-box-neo" style="width: 48px; height: 48px;">
+                        <img src="/logo.png" alt="CreatorChain Logo" style="height:32px; width:auto; object-fit:contain;">
+                    </div>
+                    <span class="logo-text" style="font-size: 24px; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: -1px;">CREATOR<span style="-webkit-text-stroke: 1.5px #fff; color: transparent;">CHAIN</span></span>
+                </a>
+                
+                <div class="footer-brand-links">
+                    <a href="#">Sitemap</a>
+                    <a href="#">Blog Rss</a>
                 </div>
-                <p style="color:#ccc; font-size:14px; max-width:300px;">The Web3 opportunity board for creators, builders, and community leaders.</p>
-                <div style="margin-top:25px;">
-                    <a href="#ambassador-section" class="footer-link">→ Ambassador Programs</a>
-                    <a href="#discord-section" class="footer-link">→ Discord Moderation</a>
-                    <a href="#bounty-section" class="footer-link">→ Content Bounties</a>
-                    <a href="#" onclick="openStatusModal(); return false;" class="footer-link">→ Track Your Submission</a>
+                
+                <div class="footer-brand-buttons">
+                    <a href="/launch-opportunities.html" class="footer-btn footer-btn-outline">I am a Brand</a>
+                    <a href="/" class="footer-btn footer-btn-primary">Get Started</a>
                 </div>
-                <div style="margin-top:20px;">
-                    <p style="color:var(--primary); font-family:'Space Mono',monospace; font-size:11px; margin-bottom:10px;">SOCIALS</p>
-                    <a href="https://x.com/ZenvicAlpha" target="_blank" class="footer-link" style="color:#fff; font-weight:700;">𝕏 @ZenvicAlpha</a>
-                    <a href="#" onclick="openStatusModal(); return false;" class="footer-link">🔍 Check your submission status →</a>
-                    <a href="#" onclick="return false;" class="footer-link">💬 Discord (Soon)</a>
-                    <a href="#" onclick="return false;" class="footer-link">✈️ Telegram (Soon)</a>
-                </div>
+            </div>
 
+            <!-- Socials Column -->
+            <div class="footer-link-col">
+                <h4>Socials</h4>
+                <a href="https://x.com/ZenvicAlpha" target="_blank">
+                    <i data-lucide="twitter" style="width:16px; height:16px; color:#fff;"></i> X.com
+                </a>
+                <a href="https://t.me/creatorchainbot" target="_blank">
+                    <i data-lucide="send" style="width:16px; height:16px; color:#2EA6DA;"></i> Telegram
+                </a>
+                <a href="#" class="coming-soon-link">
+                    <i data-lucide="instagram" style="width:16px; height:16px; color:#E1306C;"></i> Instagram
+                </a>
+                <a href="#" class="coming-soon-link">
+                    <i data-lucide="linkedin" style="width:16px; height:16px; color:#0A66C2;"></i> LinkedIn
+                </a>
+                <a href="#" class="coming-soon-link">
+                    <i data-lucide="youtube" style="width:16px; height:16px; color:#FF0000;"></i> YouTube
+                </a>
             </div>
-            <div>
-                <div class="footer-submit-cta">
-                    <h3 style="font-size:22px; color:var(--primary);">Running a Web3 Project?</h3>
-                    <p style="color:#aaa; font-size:14px; margin: 10px 0 20px;">Submit your opportunity and reach thousands of Web3 creators.</p>
-                    <a href="/launch-opportunities.html" class="btn btn-secondary" style="width:100%; margin-bottom:10px;">Launch Exclusive Opportunity &rarr;</a>
-                    <a href="/submit-community.html" class="btn btn-white" style="width:100%; font-size:12px; text-decoration:none; text-align:center; display:block;">Submit Found Project (Community) &rarr;</a>
-                    <p class="submit-count" id="submission-count">Loading submissions...</p>
-                </div>
+
+            <!-- Discover Column -->
+            <div class="footer-link-col">
+                <h4>Discover</h4>
+                <a href="/">Home</a>
+                <a href="#ambassador-section">Ambassador Programs</a>
+                <a href="#bounty-section">Content Bounties</a>
+                <a href="#developer-section">Developer Jobs</a>
+                <a href="/talent.html">Talent Directory</a>
+                <a href="/creatorpulse.html">CreatorPulse Feed</a>
             </div>
+
+            <!-- Legal Column -->
+            <div class="footer-link-col">
+                <h4>Legal</h4>
+                <a href="/privacy.html">Privacy Policy</a>
+                <a href="/terms.html">Terms & Conditions</a>
+                <a href="/cookies.html">Cookie Policy</a>
+            </div>
+
+            <!-- Explore Column -->
+            <div class="footer-link-col">
+                <h4>Explore</h4>
+                <a href="/how-it-works.html">How It Works</a>
+                <a href="/submit-community.html">Submit Community Project</a>
+                <a href="/launch-opportunities.html">Launch Gigs & Campaigns</a>
+            </div>
+
         </div>
+
         <div class="footer-divider">
             <div id="admin-link-wrapper" style="margin-top:15px; display:none;">
                 <span style="color:#444; font-size:11px;">&copy; 2026 CreatorChain. Decentralized Creator Economy Platform. • <a href="#" onclick="showLogin(); return false;" style="color:#222; text-decoration:none;">Admin Access</a></span>
             </div>
+            <p class="submit-count" id="submission-count" style="margin-top: 10px;">Loading submissions...</p>
         </div>
 
     </div>
@@ -2699,6 +2894,7 @@
 
 
     // ─── Admin Auth & Dashboard Access ─────────────────────
+    // ─── Admin Auth & Dashboard Access ─────────────────────
     async function openStatusModal() {
         const { data: { user } } = await db.auth.getUser();
         if (!user) {
@@ -2709,6 +2905,65 @@
         document.getElementById('status-modal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
+
+    window.openLegalModal = function(type) {
+        const data = {
+            privacy: {
+                title: 'Privacy Policy',
+                content: `
+                    <p style="margin-bottom:15px; line-height:1.6; color:rgba(255,255,255,0.7);">At CreatorChain, we respect your privacy and are committed to protecting your personal data. We only collect authenticated social graph information when you log in via X (Twitter) to bootstrap your reputation, and we do not sell your personal information to third parties.</p>
+                    <p style="margin-bottom:15px; line-height:1.6; color:rgba(255,255,255,0.7);">We collect basic analytics and connection states using local storage to verify that you are logged in and save your notification preferences. We do not track you across other websites or services.</p>
+                    <p style="line-height:1.6; color:rgba(255,255,255,0.7);">For any questions regarding our privacy practices, please contact us on X @ZenvicAlpha.</p>
+                `
+            },
+            terms: {
+                title: 'Terms & Conditions',
+                content: `
+                    <p style="margin-bottom:15px; line-height:1.6; color:rgba(255,255,255,0.7);">Welcome to CreatorChain. By accessing or using our platform, you agree to comply with and be bound by these decentralized Terms & Conditions.</p>
+                    <p style="margin-bottom:15px; line-height:1.6; color:rgba(255,255,255,0.7);">You are solely responsible for all opportunities, bounties, and campaigns you list, curate, or apply for. Fraudulent postings, sybil attacks, spamming, or community moderation violations will lead to immediate reputation penalization or account blacklisting.</p>
+                    <p style="line-height:1.6; color:rgba(255,255,255,0.7);">CreatorChain is provided "as is" without warranties of any kind. We act solely as a decentralized matching canvas and hold no escrow liability beyond our smart contract definitions.</p>
+                `
+            },
+            cookies: {
+                title: 'Cookie Policy',
+                content: `
+                    <p style="margin-bottom:15px; line-height:1.6; color:rgba(255,255,255,0.7);">CreatorChain utilizes cookies and local browser storage to keep you authenticated, preserve page theme configurations, and store your real-time notification alert statuses.</p>
+                    <p style="line-height:1.6; color:rgba(255,255,255,0.7);">By interacting with the platform, you consent to these essential cookies. We do not run any invasive tracking or third-party marketing scripts.</p>
+                `
+            }
+        }[type];
+
+        if (!data) return;
+
+        // Create modal element
+        const modalHtml = `
+            <div id="legal-modal-overlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(15px); z-index:99999; display:flex; align-items:center; justify-content:center; padding:20px;">
+                <div style="background:#0b0c10; border:3px solid #000; box-shadow:8px 8px 0 #000; max-width:550px; width:100%; padding:30px; position:relative; border-radius:8px; animation: modalSlide 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <button onclick="document.getElementById('legal-modal-overlay').remove(); document.body.style.overflow='';" style="position:absolute; top:20px; right:20px; background:#fff; border:2px solid #000; width:30px; height:30px; display:flex; align-items:center; justify-content:center; font-weight:900; cursor:pointer; box-shadow:2px 2px 0 #000; color:#000;">✕</button>
+                    <div style="font-family:var(--font-main); color:#fff; text-align:left;">
+                        <div style="font-family:var(--font-mono); font-size:11px; color:#00e87a; text-transform:uppercase; letter-spacing:2px; margin-bottom:10px;">LEGAL DOCUMENTS</div>
+                        <h3 style="font-size:26px; font-weight:900; margin-bottom:20px; text-transform:uppercase; letter-spacing:-1px;">\${data.title}</h3>
+                        <div style="font-size:14.5px; line-height:1.6; color:rgba(255,255,255,0.7); max-height:300px; overflow-y:auto; padding-right:10px;">
+                            \${data.content}
+                        </div>
+                        <button onclick="document.getElementById('legal-modal-overlay').remove(); document.body.style.overflow='';" style="margin-top:25px; background:#00e87a; border:2.5px solid #000; box-shadow:4px 4px 0 #000; color:#000; font-weight:900; padding:12px 24px; font-family:var(--font-main); text-transform:uppercase; cursor:pointer; width:100%; transition:all 0.15s;">Acknowledge & Close</button>
+                    </div>
+                </div>
+                <style>
+                    @keyframes modalSlide {
+                        from { transform: translateY(30px); opacity:0; }
+                        to { transform: translateY(0); opacity:1; }
+                    }
+                </style>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        document.body.style.overflow = 'hidden';
+        if (window.lucide) {
+            window.lucide.createIcons();
+        }
+    };
 
     function checkPass() {
         // Redirect to new admin page

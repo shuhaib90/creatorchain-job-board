@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Policy | CreatorChain</title>
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="apple-touch-icon" href="/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #B6FF3B; /* lime */
+            --secondary: #00E5FF; /* cyan */
+            --accent: #d800ff; /* violet */
+            --black: #050506;
+            --white: #FFFFFF;
+            --off-white: #FAF9F6;
+            --border: 3px solid #000;
+            --shadow: 6px 6px 0px #000;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-sans); background: var(--off-white); color: var(--black); line-height: 1.6; }
+        
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+        /* NAV STYLING */
+        nav {
+            padding: 20px 0;
+            background: #fff;
+            border-bottom: 4px solid var(--black);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-icon-box-neo {
+            background-color: var(--primary);
+            border: 2.5px solid #000;
+            border-radius: 4px;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 3px 3px 0px #000;
+            transition: all 0.2s ease;
+        }
+        .logo-text {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--black);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+        .logo-text span {
+            -webkit-text-stroke: 1px var(--black);
+            color: transparent;
+        }
+
+        /* HERO HEADER */
+        .page-header {
+            padding: 80px 0 50px;
+            text-align: center;
+            background: #fff;
+            border-bottom: 4px solid var(--black);
+            position: relative;
+        }
+        .hud-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            background: var(--accent);
+            color: #fff;
+            padding: 5px 12px;
+            border: 2px solid #000;
+            display: inline-block;
+            margin-bottom: 15px;
+            box-shadow: 2px 2px 0px #000;
+            text-transform: uppercase;
+        }
+        .page-header h1 {
+            font-size: clamp(36px, 6vw, 54px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1.5px;
+            margin-bottom: 15px;
+        }
+        .page-header p {
+            font-family: var(--font-sans);
+            font-size: 16px;
+            color: #555;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* DOC CONTENT CONTAINER */
+        .doc-section {
+            padding: 60px 0 100px;
+        }
+        .doc-card {
+            background: #fff;
+            border: var(--border);
+            box-shadow: var(--shadow);
+            padding: 50px;
+            border-radius: 8px;
+        }
+        .doc-card h2 {
+            font-size: 24px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            border-left: 6px solid var(--secondary);
+            padding-left: 15px;
+        }
+        .doc-card h2:first-of-type {
+            margin-top: 0;
+        }
+        .doc-card p {
+            font-size: 15.5px;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        .doc-card ul {
+            margin-left: 25px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .doc-card li {
+            font-size: 15px;
+            color: #444;
+            line-height: 1.6;
+        }
+        .doc-card strong {
+            color: var(--black);
+        }
+
+        /* simple mini-footer */
+        footer {
+            background: var(--black);
+            color: #fff;
+            padding: 30px 0;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            border-top: 4px solid var(--primary);
+        }
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+        <a href="/" class="logo-box">
+            <div class="logo-icon-box-neo">
+                <img src="/logo.png" alt="Logo" style="width: 24px; height: 24px; object-fit: contain;">
+            </div>
+            <span class="logo-text">CREATOR<span>CHAIN</span></span>
+        </a>
+        <a href="/" style="font-family:var(--font-mono); font-weight:700; font-size:12px; color:var(--black); text-decoration:none; border:2px solid #000; padding:8px 16px; background:#fff; box-shadow:3px 3px 0px #000; transition:0.1s;" onmouseover="this.style.transform='translate(-2px,-2px)'; this.style.boxShadow='5px 5px 0 #000';" onmouseout="this.style.transform=''; this.style.boxShadow='3px 3px 0 #000';">← RETURN_HOME</a>
+    </div>
+</nav>
+
+<header class="page-header">
+    <div class="container">
+        <span class="hud-label">COOKIE_POLICY</span>
+        <h1>Cookie Policy</h1>
+        <p>Last updated: May 26, 2026. Understand how we use essential cookies and storage mechanisms to optimize session integrity.</p>
+    </div>
+</header>
+
+<section class="doc-section">
+    <div class="container">
+        <div class="doc-card">
+            <h2>1. What Are Cookies?</h2>
+            <p>Cookies are simple text fragments loaded onto your computer or mobile device by websites you visit. They are widely used to make platforms load, function, or communicate status records with background databases securely.</p>
+
+            <h2>2. How We Use Cookies & Storage</h2>
+            <p>At CreatorChain, we follow a strict **zero-tracking, zero-ad** philosophy. We do not use third-party marketing cookies. We strictly utilize essential cookies and browser Local Storage to enable the following primary features:</p>
+            <ul>
+                <li><strong>Session Authentications:</strong> Saving your authenticated status when you log in via X (Twitter) or Google so you do not have to reconnect your social profile on every click.</li>
+                <li><strong>Bell Notification Alerts:</strong> Retaining your last-checked notification timestamp to alert you precisely when new matching campaigns or dev gigs are launched on the platform.</li>
+                <li><strong>State Settings:</strong> Memorizing your preferred user configurations, theme details, and dashboard view filter options.</li>
+            </ul>
+
+            <h2>3. Types of Cookies in Play</h2>
+            <p>All items active on CreatorChain fall under **Strictly Necessary Storage Elements**:</p>
+            <ul>
+                <li><strong>Session ID:</strong> Temporary storage keys that are deactivated the moment you close your browser tab or sign out.</li>
+                <li><strong>Ecosystem Tokens:</strong> Secure local storage records provided by our database layer (Supabase) to keep your authenticated builder profile active and secured against cross-site exploits.</li>
+            </ul>
+
+            <h2>4. Third-Party Connections</h2>
+            <p>While we do not host third-party marketing networks, we connect with verified Web3 vectors to distribute notifications and bounties. For example, our alert engine integrates with **Telegram** for real-time notifications, and we support connecting cryptographic wallets (such as MetaMask or Phantom). These providers utilize their own cookie layers when you launch their corresponding applications or extensions.</p>
+
+            <h2>5. Managing Your Storage Choices</h2>
+            <p>You can clear, reject, or control local browser storage at any time by accessing your browser's Preferences or Security Settings panel. Please note that disabling essential storage elements may prevent you from logging in, checking submission statuses, or receiving live opportunity alerts.</p>
+
+            <h2>6. Revisions to Cookie Policy</h2>
+            <p>Any future integrations (such as premium Web3 social analytical partners) will be updated here. We will ensure all future updates maintain our commitment to strict user data respect and privacy.</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2026 CREATORCHAIN. DECENTRALIZED CREATOR PLATFORM. • <a href="/privacy.html">PRIVACY POLICY</a> • <a href="/terms.html">TERMS & CONDITIONS</a></p>
+    </div>
+</footer>
+
+<script>
+    lucide.createIcons();
+</script>
+</body>
+</html>
